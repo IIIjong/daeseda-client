@@ -1,0 +1,24 @@
+/* 사용 폰트 - Noto Sans KR, GmarketSans
+GmarketSans - 제목과 강조되는 글자에 사용(h1~h6태그로 지정하면 적용 가능)
+Noto Sans KR - 그 외의 글자에 사용 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: "GmarketSans";
+  src: url("../assets//fonts/GmarketSansTTFLight.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'GmarketSans', sans-serif;
+}
+
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+}
