@@ -18,7 +18,7 @@
 - feature/페이지명
 ***
 ### 폴더 구조
-img
+<img width="646" alt="폴더 구조" src="https://github.com/Daeseda/daeseda-client/assets/113826092/a97d55aa-160d-4668-91d7-fd3da76dd40a">
 ***
 ### 네이밍 컨벤션
 - 폴더명, 함수명 - camelCase
