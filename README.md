@@ -18,7 +18,7 @@
 - feature/페이지명
 ***
 ### 폴더 구조
-<img width="646" alt="폴더 구조" src="https://github.com/Daeseda/daeseda-client/assets/113826092/a97d55aa-160d-4668-91d7-fd3da76dd40a">
+[![폴더 구조](https://github.com/Daeseda/daeseda-client/assets/113826092/a97d55aa-160d-4668-91d7-fd3da76dd40a)](링크)
 ***
 ### 네이밍 컨벤션
 - 폴더명, 함수명 - camelCase
@@ -27,4 +27,4 @@
 ### 기타
 - 주석은 설명하려는 코드 상단에 작성
 - pages 폴더 파일명 index.jsx 로 작성(import 문장 경로 간결하게 하기 위함)
-- pages 폴더 파일 함수명 [페이지명Page] 로 작성
+- pages 폴더 파일 함수명 페이지명Page 로 작성
