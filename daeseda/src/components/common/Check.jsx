@@ -29,7 +29,7 @@ const CheckButton = styled.div`
     props.checked ? "rgb(93,141,242)" : "transparent"};
   color: ${(props) => (props.checked ? "white" : "transparent")};
   font-size: 12px;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 export default Check;

@@ -21,6 +21,7 @@ function PriceTag() {
           <p>{itemPrice}</p>
         </PriceRow>
       ))}
+      <Message>정확한 가격은 수거 후 책정됩니다</Message>
     </PriceTagLayout>
   );
 }
@@ -45,6 +46,12 @@ const PriceRow = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #d9d9d9;
   padding-bottom: 4px;
+`;
+
+const Message = styled.p`
+  color: rgb(93, 141, 242);
+  font-weight: 500;
+  margin: 4px 0;
 `;
 
 export default PriceTag;
