@@ -19,7 +19,7 @@ function Modal({ isOpen, onClose, children }) {
             onClick={onClose}
             style={{
               backgroundColor: "rgb(232,234,237)",
-              padding: "4px 8px",
+              padding: "8px 12px",
               borderRadius: "50%",
             }}
           />
@@ -45,14 +45,14 @@ const ModalWrapper = styled.div`
 const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 `;
 
 const Close = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 20px;
   cursor: pointer;
 `;
 export default Modal;
