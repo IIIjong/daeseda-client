@@ -1,11 +1,8 @@
 import "./styles/reset.css";
 import "./styles/fonts.css";
 function App() {
-  return (
-    <div>
-      <h1>대신세탁해드립니다</h1>
-    </div>
-  );
+  return <div>
+  </div>;
 }
 
 export default App;
