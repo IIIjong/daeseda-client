@@ -23,7 +23,7 @@ const ShowIdBox =styled.div`
     border: solid 1px grey;
     border-radius: 5px
 `;
-const Image =styled.div`
+const Image =styled.img`
 margin: auto;
 margin-top: 100px;
 width: 50px;
