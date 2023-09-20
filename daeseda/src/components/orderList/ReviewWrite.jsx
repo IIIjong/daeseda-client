@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Button from "../common/Button";
 
-function Review() {
+function ReviewWrite() {
   const [selectedImage, setSelectedImage] = useState(null);
   const addImgHandler = (event) => {
     const file = event.target.files[0];
@@ -22,7 +22,7 @@ function Review() {
   };
 
   return (
-    <ReviewLayout>
+    <ReviewWriteLayout>
       <Title>리뷰작성</Title>
       <p>사진</p>
       {selectedImage ? (
@@ -42,7 +42,7 @@ function Review() {
       )}
       <p>평점</p>
       <Rating>
-        <FontAwesomeIcon icon={faStar} style={{ color: "rgb(240,240,0)" }} />
+        <FontAwesomeIcon icon={faStar} style={{ color: "#ffc700" }} />
         <FontAwesomeIcon icon={faStar} />
         <FontAwesomeIcon icon={faStar} />
         <FontAwesomeIcon icon={faStar} />
@@ -51,11 +51,11 @@ function Review() {
       <p>내용</p>
       <Summary />
       <Button text="리뷰 작성하기" size="150px" />
-    </ReviewLayout>
+    </ReviewWriteLayout>
   );
 }
 
-const ReviewLayout = styled.section`
+const ReviewWriteLayout = styled.section`
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -98,4 +98,4 @@ const Summary = styled.textarea`
   font-size: 18px;
 `;
 
-export default Review;
+export default ReviewWrite;

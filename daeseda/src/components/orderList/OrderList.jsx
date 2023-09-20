@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Modal from "../common/Modal";
 import DeliveryDriver from "./DeliveryDriver";
-import Review from "./Review";
+import ReviewWrite from "./ReviewWrite";
 function OrderList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -40,7 +40,7 @@ function OrderList() {
             <StatusButton onClick={openModal}>취소하기</StatusButton>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
               {/* <DeliveryDriver/> */}
-              <Review/>
+              <ReviewWrite/>
             </Modal>
           </List>
         ))}

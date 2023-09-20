@@ -9,9 +9,11 @@ import DeliveryDriver from "./components/orderList/DeliveryDriver";
 import OrderList from "./components/orderList/OrderList";
 import Button from "./components/common/Button";
 import Modal from "./components/common/Modal";
+import Payment from "./components/payment/Payment";
+import Review from "./components/review/Review";
 function App() {
   return <div>
-    <OrderList/>
+    <Review/>
   </div>;
 }
 
