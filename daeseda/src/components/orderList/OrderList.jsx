@@ -2,6 +2,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Modal from "../common/Modal";
+import DeliveryDriver from "./DeliveryDriver";
+import Review from "./Review";
 function OrderList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,7 +39,8 @@ function OrderList() {
             <Status>{list[4]}</Status>
             <StatusButton onClick={openModal}>취소하기</StatusButton>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-              <p>모달 내용</p>
+              {/* <DeliveryDriver/> */}
+              <Review/>
             </Modal>
           </List>
         ))}
