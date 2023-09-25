@@ -16,6 +16,10 @@ import Sidebar from "./components/mypage/Sidebar";
 import MyInfo from "./components/mypage/MyInfo";
 import DeliveryAddress from "./components/mypage/DeliveryAddress";
 import AddDeliveryAddress from "./components/mypage/AddDeliveryAddress";
+import FindPwChange from "./components/login/FIndPwChange";
+import FindPwSucsses from "./components/login/FIndPwSucsses";
+import FIndPwAfterId from "./components/login/FIndPwAfterId";
+
 function App() {
 
   // {axios
@@ -28,7 +32,6 @@ function App() {
   //   })}
   return (
     <div>
-      <AddDeliveryAddress/>
     </div>
   );
 }
