@@ -13,8 +13,8 @@ const ButtonStyle = styled.button`
   all: unset;
   background-color: rgb(93, 141, 242);
   color: white;
-  font-size: 20px;
-  padding: 8px 24px;
+  font-size: 18px;
+  padding: 8px 12px;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
