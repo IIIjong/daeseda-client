@@ -11,10 +11,26 @@ import Button from "./components/common/Button";
 import Modal from "./components/common/Modal";
 import Payment from "./components/payment/Payment";
 import Review from "./components/review/Review";
+import axios from "axios";
+import Sidebar from "./components/mypage/Sidebar";
+import MyInfo from "./components/mypage/MyInfo";
+import DeliveryAddress from "./components/mypage/DeliveryAddress";
+import AddDeliveryAddress from "./components/mypage/AddDeliveryAddress";
 function App() {
-  return <div>
-    <Review/>
-  </div>;
+
+  // {axios
+  //   .get("http://localhost:8088/users/register")
+  //   .then((response) => {
+  //     console.log(response);
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   })}
+  return (
+    <div>
+      <AddDeliveryAddress/>
+    </div>
+  );
 }
 
 export default App;
