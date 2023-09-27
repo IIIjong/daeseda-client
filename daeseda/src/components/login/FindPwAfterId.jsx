@@ -30,7 +30,7 @@ display: flex;
 const ButtonBox =styled(Button)`
 `;
 
-const FIndPwAfterId = () => {
+const FindPwAfterId = () => {
     return (
         <MainDiv>
         <Explanation>
@@ -69,4 +69,4 @@ const FIndPwAfterId = () => {
     );
   };
   
-  export default FIndPwAfterId;
+  export default FindPwAfterId;
