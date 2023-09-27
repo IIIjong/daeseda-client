@@ -1,25 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
-
+//justify-content: center;
+//align-items: center;
+//display: flex;
+//flex-direction: column;
 const Main = styled.div`
-
+display: flex;
+flex-direction: column;
 `;
 const Title = styled.div`
 border-bottom: solid 1px grey;
 padding: 10px;
 `;
 const Content = styled.div`
+display: flex;
+    flex-direction: column;
 `;
 const Search = styled.div`
-float: right;
-margin: 10px;
+margin: 5px;
+display: flex;
+justify-content: flex-end;
 `;
-const NoticeTable = styled.table`
-  border-bottom: 1px solid #ccc;
+
+
+
+const Wrap2 = styled.div`
+    border-bottom: 1px solid gray;
+    display: flex;
 `;
-const Tr = styled.tr`
-border-bottom: 1px solid #ccc;
+const Wrap = styled.div`
+    display: flex;
+    background-color: #D9D9D9;
+`;
+const P = styled.p`
+  width: 90px;
 `;
 
 
@@ -27,7 +42,7 @@ const Faq = () => {
     return (
         <Main>
             <Title>
-            <h3>FAQ</h3>
+            <h3>자주묻는질문</h3>
             </Title>
             <Search>
                 <select>
@@ -42,31 +57,24 @@ const Faq = () => {
                 <Button text={"검색"}></Button>
                 </Search>
                 <Content>
-                <NoticeTable>
-                    <Tr>
-                    <th scope="col" >구분</th>
-                    <th scope="col" >제목</th>
-                    </Tr>
+                <Wrap>
+                <P>구분</P>
+                <p>제목</p>
+                </Wrap>
+                <Wrap2>
+                <P>로그인</P>
+                <p>제목</p>
+                </Wrap2>
+                <Wrap2>
+                <P>결제</P>
+                <p>제목</p>
+                </Wrap2>
+                <Wrap2>
+                <P>배송</P>
+                <p>제목</p>
+                </Wrap2>
+             
                 
-                <Tr>
-                <td>결제</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    </Tr>
-                    <Tr>
-                <td>배송</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    </Tr>
-                    <Tr>
-                <td>로그인</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    </Tr>
-                    </NoticeTable>
                 </Content>                           
         </Main>
   

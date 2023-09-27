@@ -48,7 +48,8 @@ const SignupInfo = () => {
       <InfoRow label="인증번호" type="text" id="certification" />
       <InfoRow label="비밀번호" type="text" id="passward" />
       <InfoRow label="주소" type="text" id="zipcode" />
-      <InfoRow label="상세주소" type="text" id="zip" />
+      <InfoRow label="상세주소" type="text" id="detailAddress" />
+
                 </Content>  
                 <ButtonWrap>
                 <Button text={"다음"}></Button>
