@@ -30,8 +30,6 @@ const PriceTagLayout = styled.div`
   flex-direction: column;
   gap: 12px;
   width: 330px;
-  border: 1px solid #111111;
-  border-radius: 4px;
   padding: 12px;
   box-sizing: border-box;
 `;
