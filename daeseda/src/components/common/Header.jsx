@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Logo from '../../assets/images/logo.png';
+import Logo from "../../assets/images/logo.png";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
-  padding-left: 20%;
-  padding-right: 20%;
   box-sizing: border-box;
 
   @media (max-width: 768px) {
@@ -60,7 +59,7 @@ const NavItem = styled.li`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = styled.span`
   text-decoration: none;
   color: black;
   font-size: 13px;
@@ -80,7 +79,7 @@ const Login = styled.button`
   outline: none;
 
   &:hover {
-    background: #5D8DF2;
+    background: #5d8df2;
     color: white;
     border: none;
   }
@@ -91,28 +90,49 @@ const Login = styled.button`
   }
 `;
 
-
 const Header = () => {
+  const navigate = useNavigate();
+
+  const linkHandler = (value) => () => {
+    navigate(`/${value}`);
+  };
+
   return (
     <Container>
-            <Navbar>
-            <LogoImage src={Logo} alt="" />
-              대신 세탁해드립니다
-                <Nav>
-                
-                    <NavList>
-                        <NavItem><NavLink href="">신청하기</NavLink></NavItem>
-                        <NavItem><NavLink href="">이용방법</NavLink></NavItem>
-                        <NavItem><NavLink href="">고객센터</NavLink></NavItem>
-                        <NavItem><NavLink href="">내정보</NavLink></NavItem>
-                        <NavItem><NavLink href="">주문내역</NavLink></NavItem>
-                        <NavItem><NavLink href=""><Login>로그인</Login></NavLink></NavItem>
-                    </NavList>
-                </Nav>
-                
-            </Navbar>
-            
-        </Container>
+      <Navbar>
+        <Link
+          to="/"
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        >
+          <LogoImage src={Logo} alt="로고" />
+          <p>대신 세탁해드립니다</p>
+        </Link>
+        <Nav>
+          <NavList>
+            <NavItem onClick={linkHandler("laundry")}>
+              <NavLink>신청하기</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>이용방법</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>고객센터</NavLink>
+            </NavItem>
+            <NavItem onClick={linkHandler("mypage")}>
+              <NavLink>내정보</NavLink>
+            </NavItem>
+            <NavItem onClick={linkHandler("orderlist")}>
+              <NavLink>주문내역</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink onClick={linkHandler("login")}>
+                <Login>로그인</Login>
+              </NavLink>
+            </NavItem>
+          </NavList>
+        </Nav>
+      </Navbar>
+    </Container>
   );
 };
 
