@@ -1,7 +1,11 @@
+import Header from "../../components/common/Header";
+import Signup from "../../components/signup/Signup";
 function SignupPage() {
   return (
-    <div>Signup</div>
-    // 프로젝트의 폴더 구조를 구성하기 위한 데모 파일입니다.
+    <div>
+      <Header/>
+      <Signup/>
+    </div>
   );
 }
 export default SignupPage;
