@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import LoginIcon from "../../assets/images/login.png";
 import axios from "axios";
+import { Link } from "react-router-dom";
 const postData = {
   userEmail: "use234234r@example.com",
   userPassword: "securepassword123",
@@ -65,7 +66,7 @@ const Login = () => {
         <LoginButton onClick={loginTest}>로그인</LoginButton>
       </LoginBox>
       <a href="">아이디찾기</a> | <a href="">비밀번호찾기</a> |{" "}
-      <a href="">회원가입</a>
+      <Link to="/signup">회원가입</Link>
     </LoginIndex>
   );
 };

@@ -6,8 +6,8 @@ import IndexPage from "./pages/indexPage/index";
 import LaundryPage from "./pages/laundryPage";
 import OrderListPage from "./pages/orderListPage";
 import MyPage from "./pages/myPage";
-import SignupTest from "./components/test/SignupTest";
 import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
 function App() {
   return (
     <BrowserRouter>
@@ -17,7 +17,7 @@ function App() {
         <Route path="/laundry" element={<LaundryPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/orderlist" element={<OrderListPage />} />
-        <Route path="/a" element={<SignupTest />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
