@@ -4,14 +4,20 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-function Check() {
+function Check({ onClick }) {
   const [check, setCheck] = useState(false);
 
   function checkHandler() {
     setCheck(!check);
   }
   return (
-    <CheckButton checked={check} onClick={checkHandler}>
+    <CheckButton
+      checked={check}
+      onClick={() => {
+        onClick();
+        checkHandler();
+      }}
+    >
       {check && <FontAwesomeIcon icon={faCheck} />}
     </CheckButton>
   );

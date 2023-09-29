@@ -1,38 +1,25 @@
-import "./styles/reset.css";
 import "./styles/fonts.css";
-import Order from "./components/laundry/Order";
-import Complete from "./components/laundry/Complete";
-import PickupDate from "./components/laundry/PickupDate";
-import PriceTag from "./components/laundry/PriceTag";
-import Request from "./components/laundry/Request";
-import DeliveryDriver from "./components/orderList/DeliveryDriver";
-import OrderList from "./components/orderList/OrderList";
-import Button from "./components/common/Button";
-import Modal from "./components/common/Modal";
-import Payment from "./components/payment/Payment";
-import Review from "./components/review/Review";
-import axios from "axios";
-import Sidebar from "./components/mypage/Sidebar";
-import MyInfo from "./components/mypage/MyInfo";
-import DeliveryAddress from "./components/mypage/DeliveryAddress";
-import AddDeliveryAddress from "./components/mypage/AddDeliveryAddress";
-import FindPwChange from "./components/login/FIndPwChange";
-import FindPwSucsses from "./components/login/FIndPwSucsses";
-import FIndPwAfterId from "./components/login/FIndPwAfterId";
-
+import "./styles/reset.css";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import IndexPage from "./pages/indexPage/index";
+import LaundryPage from "./pages/laundryPage";
+import OrderListPage from "./pages/orderListPage";
+import MyPage from "./pages/myPage";
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
 function App() {
-
-  // {axios
-  //   .get("http://localhost:8088/users/register")
-  //   .then((response) => {
-  //     console.log(response);
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   })}
   return (
-    <div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/laundry" element={<LaundryPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/orderlist" element={<OrderListPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

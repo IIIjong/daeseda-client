@@ -1,25 +1,43 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
-
+//justify-content: center;
+//align-items: center;
+//display: flex;
+//flex-direction: column;
 const Main = styled.div`
-
+display: flex;
+flex-direction: column;
 `;
 const Title = styled.div`
 border-bottom: solid 1px grey;
 padding: 10px;
 `;
 const Content = styled.div`
+display: flex;
+    flex-direction: column;
+    
 `;
 const Search = styled.div`
-float: right;
-margin: 10px;
+margin: 5px;
+display: flex;
+justify-content: flex-end;
 `;
-const NoticeTable = styled.table`
-  border-bottom: 1px solid #ccc;
+
+
+
+const Wrap2 = styled.div`
+    border-bottom: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
 `;
-const Tr = styled.tr`
-border-bottom: 1px solid #ccc;
+const Wrap = styled.div`
+    display: flex;
+    background-color: #D9D9D9;
+    justify-content: space-between;
+`;
+const P = styled.p`
+  width: 90px;
 `;
 
 
@@ -42,35 +60,28 @@ const Notice = () => {
                 <Button text={"검색"}></Button>
                 </Search>
                 <Content>
-                <NoticeTable>
-                    <Tr>
-                    <th scope="col" >번호</th>
-                    <th scope="col" >제목</th>
-                    <th scope="col" >등록일</th>
-                    </Tr>
+                <Wrap>
+                <P>구분</P>
+                <p>제목</p>
+                <p>날짜</p>
+                </Wrap>
+                <Wrap2>
+                <P>로그인</P>
+                <p>제목</p>
+                <p>날짜</p>
+                </Wrap2>
+                <Wrap2>
+                <P>결제</P>
+                <p>제목</p>
+                <p>날짜</p>
+                </Wrap2>
+                <Wrap2>
+                <P>배송</P>
+                <p>제목</p>
+                <p>날짜</p>
+                </Wrap2>
+             
                 
-                <Tr>
-                <td>3</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    <td>2023.07.13</td>
-                    </Tr>
-                    <Tr>
-                <td>3</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    <td>2023.07.13</td>
-                    </Tr>
-                    <Tr>
-                <td>3</td>
-                    <th>
-                      <a href="#!">개인정보 처리방침 변경안내처리방침</a>
-                    </th>
-                    <td>2023.07.13</td>
-                    </Tr>
-                    </NoticeTable>
                 </Content>                           
         </Main>
   
