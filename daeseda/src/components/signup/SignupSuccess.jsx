@@ -5,14 +5,14 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import Check from "../../assets/images/check.png";
-
+import { useNavigate } from "react-router-dom";
 const Main = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
 const Title = styled.div`
-  border-bottom: solid 1px grey;
+  border-bottom: solid 1px rgb(232, 234, 237);
   padding: 10px;
 `;
 const Content = styled.div`
@@ -32,7 +32,8 @@ const Image = styled.img`
   width: 5%;
 `;
 
-const SignupSucsses = () => {
+const SignupSuccess = () => {
+  const navigate = useNavigate();
   return (
     <Main>
       <Title>
@@ -43,10 +44,15 @@ const SignupSucsses = () => {
         <Image src={Check} alt="" />
       </Content>
       <ButtonWrap>
-        <Button text={"로그인하기"}></Button>
+        <Button
+          text={"로그인하기"}
+          onClick={() => {
+            navigate("/login");
+          }}
+        ></Button>
       </ButtonWrap>
     </Main>
   );
 };
 
-export default SignupSucsses;
+export default SignupSuccess;

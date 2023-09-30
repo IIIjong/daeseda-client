@@ -1,10 +1,10 @@
 // 내 정보에 사용되는 행 컴포넌트
 import styled from "styled-components";
-function InfoRow({ label, type, id }) {
+function InfoRow({ label, type, id, value, onChange}) {
   return (
     <Row>
       <Label htmlFor={id}>{label}</Label>
-      <Value type={type} id={id} />
+      <Value type={type} id={id} value={value} onChange={onChange}/>
       {id === "phone" || id === "email" ? (
         <SmallButton>인증번호 받기</SmallButton>
       ) : null}
