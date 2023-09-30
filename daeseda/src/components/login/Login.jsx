@@ -65,6 +65,7 @@ const Login = () => {
         <br />
         <LoginButton onClick={loginTest}>로그인</LoginButton>
       </LoginBox>
+      <br />
       <a href="">아이디찾기</a> | <a href="">비밀번호찾기</a> |{" "}
       <Link to="/signup">회원가입</Link>
     </LoginIndex>

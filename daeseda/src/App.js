@@ -8,6 +8,8 @@ import OrderListPage from "./pages/orderListPage";
 import MyPage from "./pages/myPage";
 import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
+import SignupInfoPage from "./pages/signupPage/SignupInfoPage";
+import SignupSuccessPage from "./pages/signupPage/SignupSuccessPage";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/orderlist" element={<OrderListPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup/info" element={<SignupInfoPage />} />
+        <Route path="/signup/success" element={<SignupSuccessPage />} />
       </Routes>
     </BrowserRouter>
   );
