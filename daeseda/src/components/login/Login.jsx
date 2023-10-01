@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 
 const LoginIndex = styled.div`
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 const Image = styled.img`
   margin: auto;
@@ -17,15 +20,19 @@ const LoginBox = styled.div`
   border-radius: 35px;
   height: 150px;
   width: 400px;
-  margin: auto;
+  margin: 10px auto;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 `;
 
 const Input = styled.input`
   width: 50%;
   padding: 10px;
-  margin-top: 10px;
-  border: 1px solid rgb(232,234,237);
+  border: 1px solid rgb(232, 234, 237);
   border-radius: 3px;
 `;
 const LoginButton = styled.button`
@@ -33,10 +40,18 @@ const LoginButton = styled.button`
   color: black;
   background: white;
   padding: 5px 0;
-  border: 1px ridge rgb(232,234,237);
+  border: 1px ridge rgb(232, 234, 237);
   border-radius: 3px;
   outline: none;
+  margin-top:20px;
 `;
+
+const BottomButton = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+`;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,9 +78,8 @@ const Login = () => {
   return (
     <LoginIndex>
       <Image src={LoginIcon} />
-      <br />
+
       <h1>로그인</h1>
-      <br />
       <LoginBox>
         <Input
           type="text"
@@ -79,13 +93,13 @@ const Login = () => {
           onChange={passwordChangeHandler}
           value={password}
         />
-        <br />
-        <br />
         <LoginButton onClick={loginHandler}>로그인</LoginButton>
       </LoginBox>
-      <br />
-      <a href="">아이디찾기</a> | <a href="">비밀번호찾기</a> |{" "}
-      <Link to="/signup">회원가입</Link>
+      <BottomButton>
+        <Link to="">아이디찾기</Link>
+        <Link to="">비밀번호찾기</Link>
+        <Link to="/signup">회원가입</Link>
+      </BottomButton>
     </LoginIndex>
   );
 };
