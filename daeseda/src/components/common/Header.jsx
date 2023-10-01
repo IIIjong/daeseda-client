@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   box-sizing: border-box;
-
   @media (max-width: 768px) {
     padding-left: 10px;
     padding-right: 10px;
@@ -26,10 +25,6 @@ const LogoImage = styled.img`
   width: 50px;
   cursor: pointer;
   padding: 10px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 10px; /* 화면이 작아질 때 로고 아래 여백 추가 */
-  }
 `;
 
 const Nav = styled.nav`
@@ -44,18 +39,13 @@ const Nav = styled.nav`
 const NavList = styled.ul`
   list-style: none;
   padding: 0;
-
-  @media (max-width: 768px) {
-    margin-top: 10px; /* 화면이 작아질 때 메뉴 위 여백 추가 */
-  }
 `;
 
 const NavItem = styled.li`
   display: inline-block;
   margin-left: 20px;
-
   @media (max-width: 768px) {
-    margin: 5px 0;
+    margin: 5px 10px;
   }
 `;
 
@@ -77,7 +67,7 @@ const Login = styled.button`
   border: 1px ridge #bcbcbc;
   border-radius: 3px;
   outline: none;
-
+  box-sizing: border-box;
   &:hover {
     background: #5d8df2;
     color: white;
@@ -87,6 +77,8 @@ const Login = styled.button`
   @media (max-width: 768px) {
     width: 100%; /* 화면이 작아질 때 버튼을 가득 채우도록 너비 조정 */
     margin-top: 10px; /* 화면이 작아질 때 버튼 위 여백 추가 */
+    padding: 5px;
+    box-sizing: border-box;
   }
 `;
 
