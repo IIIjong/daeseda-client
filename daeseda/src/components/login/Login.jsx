@@ -1,22 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LoginIcon from "../../assets/images/login.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const postData = {
-  userEmail: "use234234r@example.com",
-  userPassword: "securepassword123",
-};
-function loginTest() {
-  axios
-    .post("http://localhost:8088/users/authenticate", postData)
-    .then(function (response) {
-      console.log("login response:", response);
-    })
-    .catch(function (error) {
-      console.log("login error:", error);
-    });
-}
 
 const LoginIndex = styled.div`
   text-align: center;
@@ -39,7 +25,7 @@ const Input = styled.input`
   width: 50%;
   padding: 10px;
   margin-top: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(232,234,237);
   border-radius: 3px;
 `;
 const LoginButton = styled.button`
@@ -47,11 +33,33 @@ const LoginButton = styled.button`
   color: black;
   background: white;
   padding: 5px 0;
-  border: 1px ridge #bcbcbc;
+  border: 1px ridge rgb(232,234,237);
   border-radius: 3px;
   outline: none;
 `;
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  function emailChangeHandler(e) {
+    setEmail(e.target.value);
+  }
+  function passwordChangeHandler(e) {
+    setPassword(e.target.value);
+  }
+  const loginInfo = {
+    userEmail: email,
+    userPassword: password,
+  };
+  function loginHandler() {
+    axios
+      .post("http://localhost:8088/users/authenticate", loginInfo)
+      .then(function (response) {
+        console.log("login response:", response);
+      })
+      .catch(function (error) {
+        console.log("login error:", error);
+      });
+  }
   return (
     <LoginIndex>
       <Image src={LoginIcon} />
@@ -59,11 +67,21 @@ const Login = () => {
       <h1>로그인</h1>
       <br />
       <LoginBox>
-        <Input type="text" placeholder="Username" />
-        <Input type="password" placeholder="Password" />
+        <Input
+          type="text"
+          placeholder="Email"
+          onChange={emailChangeHandler}
+          value={email}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={passwordChangeHandler}
+          value={password}
+        />
         <br />
         <br />
-        <LoginButton onClick={loginTest}>로그인</LoginButton>
+        <LoginButton onClick={loginHandler}>로그인</LoginButton>
       </LoginBox>
       <br />
       <a href="">아이디찾기</a> | <a href="">비밀번호찾기</a> |{" "}
