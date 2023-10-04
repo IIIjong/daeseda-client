@@ -10,6 +10,7 @@ import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
 import SignupInfoPage from "./pages/signupPage/SignupInfoPage";
 import SignupSuccessPage from "./pages/signupPage/SignupSuccessPage";
+import AddDeliveryAddressPage from "./pages/myPage/AddDeliveryAddressPage";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/laundry" element={<LaundryPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/add-delivery-address" element={<AddDeliveryAddressPage />} />
         <Route path="/orderlist" element={<OrderListPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/info" element={<SignupInfoPage />} />

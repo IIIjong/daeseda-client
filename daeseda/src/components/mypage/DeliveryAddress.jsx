@@ -1,7 +1,9 @@
+//배송지 관리 페이지 컴포넌트, 현재 등록된 배송지의 리스트를 볼 수 있고, 수정, 삭제, 추가 버튼이 존재함
 import styled from "styled-components";
 import Button from "../common/Button";
-//배송지 관리 페이지 컴포넌트, 현재 등록된 배송지의 리스트를 볼 수 있고, 수정, 삭제, 추가 버튼이 존재함
+import { useNavigate } from "react-router-dom";
 function DeliveryAddress() {
+  const navigate = useNavigate();
   return (
     <DeliveryAddressLayout>
       <DeliveryAddressArticle>
@@ -13,7 +15,9 @@ function DeliveryAddress() {
         </ButtonWrapper>
       </DeliveryAddressArticle>
 
-      <Button text="배송지 추가하기" size="120px" />
+      <Button text="배송지 추가하기" size="120px" onClick={() => 
+        navigate('add-delivery-address')
+      } />
     </DeliveryAddressLayout>
   );
 }
@@ -47,8 +51,10 @@ const ButtonWrapper = styled.div`
 `;
 
 const EditDeleteButton = styled.button`
-  border: 1px solid #111111;
+  border: 1px solid rgb(232, 234, 237);
   padding: 4px 8px;
   border-radius: 4px;
+  margin-top: 5px;
 `;
+
 export default DeliveryAddress;

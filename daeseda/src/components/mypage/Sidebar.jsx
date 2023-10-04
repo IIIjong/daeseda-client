@@ -1,4 +1,3 @@
-// 내 정보의 왼쪽 사이드바
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -8,11 +7,9 @@ const sidebarItems = [
   { id: "withdrawal", label: "회원탈퇴" },
 ];
 
-function Sidebar() {
-  const [selectedItem, setSelectedItem] = useState("info");
-
+function Sidebar({ selectedItemId, setSelectedItemId }) {
   const handleItemClick = (itemId) => {
-    setSelectedItem(itemId);
+    setSelectedItemId(itemId);
   };
 
   return (
@@ -20,7 +17,7 @@ function Sidebar() {
       {sidebarItems.map((item) => (
         <List
           key={item.id}
-          isSelected={selectedItem === item.id}
+          isSelected={selectedItemId === item.id}
           onClick={() => handleItemClick(item.id)}
         >
           {item.label}

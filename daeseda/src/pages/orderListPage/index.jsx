@@ -4,7 +4,7 @@ function OrderListPage(){
   return(
     <div>
       <Header/>
-      <div style={{padding:"0 10%"}}>
+      <div style={{padding:"0 20px"}}>
       <OrderList/>
       </div>
     </div>
