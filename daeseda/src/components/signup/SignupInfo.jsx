@@ -6,6 +6,8 @@ import InfoRow from "../common/InfoRow";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import SmallButton from "../common/SmallButton";
+import WarningMessage from "../common/WarningMessage";
 const Main = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,6 +29,11 @@ const ButtonWrap = styled.div`
   gap: 4px;
   justify-content: center;
 `;
+const Row = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+`;
 
 const SignupInfo = () => {
   const [email, setEmail] = useState("");
@@ -34,6 +41,10 @@ const SignupInfo = () => {
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [certificationNumber, setCertificationNumber] = useState("");
+  const [certificationText, setCertificationText] = useState("인증번호전송");
+  // 인증번호를 입력하는 란을 보여줄지 말지를 결정하는 state, 인증번호가 전송되면 true가 되고 인증번호 입력창이 생김
+  const [certificationNumberView, setCertificationNumberView] = useState(false);
   const signupInfo = {
     userEmail: email,
     userName: name,
@@ -42,14 +53,37 @@ const SignupInfo = () => {
     userPassword: password,
   };
   const navigate = useNavigate();
+  //비밀번호가 영문, 숫자, 특수문자를 모두 포함한 8자 이상인지 확인하는 정규식
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
+
   function signupButton() {
+    // 회원가입 성공 시 회원가입 페이지로 이동
+    if (!passwordRegex.test(password)) {
+      alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8자 이상입니다.");
+    } else {
+      axios
+        .post(`http://localhost:8088/users/signup`, signupInfo)
+        .then(function (response) {
+          navigate("/signup/success");
+        })
+        .catch(function (error) {
+          alert(`회원가입 오류: ${error}`);
+        });
+    }
+  }
+  function emailCertificationHandler() {
+    // 이메일 인증번호 전송을 진행할 시 인증번호가 전송
     axios
-      .post(`http://localhost:8088/users/signup`, signupInfo)
+      .post(`http://localhost:8088/users/mailAuthentication`, {
+        userEmail: email,
+      })
       .then(function (response) {
-        navigate("/signup/success");
+        setCertificationNumberView(true);
+        setCertificationText("전송완료");
       })
       .catch(function (error) {
-        alert(`회원가입 오류: ${error}`);
+        setCertificationNumberView(false);
+        setCertificationText("전송실패");
       });
   }
 
@@ -59,6 +93,44 @@ const SignupInfo = () => {
         <h3>회원가입</h3>
       </Title>
       <Content>
+        <Row>
+          <InfoRow
+            label="이메일 주소"
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+          <SmallButton
+            text={certificationText}
+            onClick={emailCertificationHandler}
+          />
+        </Row>
+        {certificationNumberView ? (
+          <InfoRow
+            label="인증번호"
+            type="text"
+            id="certificationNumber"
+            value={certificationNumber}
+            onChange={(e) => {
+              setCertificationNumber(e.target.value);
+            }}
+          />
+        ) : null}
+        <Row>
+          <InfoRow
+            label="비밀번호"
+            type="text"
+            id="passward"
+            value={password}
+            placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </Row>
         <InfoRow
           label="이름"
           type="text"
@@ -86,28 +158,6 @@ const SignupInfo = () => {
             setPhone(e.target.value);
           }}
         />
-        {/* <InfoRow label="인증번호" type="text" id="certification" /> */}
-        <InfoRow
-          label="이메일 주소"
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        {/* <InfoRow label="인증번호" type="text" id="certification" /> */}
-        <InfoRow
-          label="비밀번호"
-          type="text"
-          id="passward"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-        {/* <InfoRow label="주소" type="text" id="zipcode" /> */}
-        {/* <InfoRow label="상세주소" type="text" id="detailAddress" /> */}
       </Content>
       <ButtonWrap>
         <Button text={"다음"} onClick={signupButton}></Button>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "../common/Button";
 import Check from "../common/Check";
 import { useNavigate } from "react-router-dom";
+import WarningMessage from "../common/WarningMessage";
 
 const Main = styled.div`
   display: flex;
@@ -39,10 +40,18 @@ const CheckWrap = styled.div`
 const Signup = () => {
   //이용약관을 동의했는지 state값으로 유지
   const [firstTerms, setFirstTerms] = useState(false);
+  const [firstTermsValidation, setFirstTermsValidation] = useState(true);
   const [secondTerms, setSecondTerms] = useState(false);
+  const [secondTermsValidation, setSecondTermsValidation] = useState(true);
+
   const navigate = useNavigate();
   //이용약관을 모두 동의했으면 다음 버튼 클릭 시 info로 이동, 가입할 회원의 정보를 입력함
   function nextButton() {
+    if (firstTerms) setFirstTermsValidation(true);
+    else setFirstTermsValidation(false);
+    if (secondTerms) setSecondTermsValidation(true);
+    else setSecondTermsValidation(false);
+
     if (firstTerms && secondTerms) navigate("info");
   }
   return (
@@ -58,6 +67,9 @@ const Signup = () => {
             }}
           />
           <p>1. 서비스 이용</p>
+          {firstTermsValidation ? null : (
+            <WarningMessage text="서비스 이용에 동의하세요" />
+          )}
         </CheckWrap>
         <Agree>
           <p> 1.1. 회원은 회사의 세탁 예약 서비스를 이용할 수 있습니다.</p>
@@ -80,6 +92,9 @@ const Signup = () => {
             }}
           />
           <p>2. 예약 및 결제</p>
+          {secondTermsValidation ? null : (
+            <WarningMessage text="예약 및 결제에 동의하세요" />
+          )}
         </CheckWrap>
         <Agree>
           <p>
