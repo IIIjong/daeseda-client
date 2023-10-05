@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import LoginIcon from "../../assets/images/login.png";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import WarningMessage from "../common/WarningMessage";
 
 const LoginIndex = styled.div`
   text-align: center;
@@ -43,7 +44,7 @@ const LoginButton = styled.button`
   border: 1px ridge rgb(232, 234, 237);
   border-radius: 3px;
   outline: none;
-  margin-top:20px;
+  /* margin-top: 20px; */
 `;
 
 const BottomButton = styled.div`
@@ -55,6 +56,10 @@ const BottomButton = styled.div`
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //로그인 실패나 이메일, 비밀번호를 입력하지 않고 로그인을 시도할 시 경고문을 표시, View는 표시할지 말지를 지정, Text는 어떤 경고문을 표시할지 지정
+  const [warningMessageView, setWarningMessageView] = useState(false);
+  const [warningMessageText, setWarningMessageText] = useState("");
+  const navigate = useNavigate();
   function emailChangeHandler(e) {
     setEmail(e.target.value);
   }
@@ -66,14 +71,24 @@ const Login = () => {
     userPassword: password,
   };
   function loginHandler() {
-    axios
-      .post("http://localhost:8088/users/authenticate", loginInfo)
-      .then(function (response) {
-        console.log("login response:", response);
-      })
-      .catch(function (error) {
-        console.log("login error:", error);
-      });
+    if (email === "") {
+      setWarningMessageView(true);
+      setWarningMessageText("이메일을 입력하세요");
+    } else if (password === "") {
+      setWarningMessageView(true);
+      setWarningMessageText("비밀번호를 입력하세요");
+    } else {
+      axios
+        .post("http://localhost:8088/users/authenticate", loginInfo)
+        .then(function (response) {
+          navigate("/")
+          console.log(response.data.token) //토큰 값, 전역 변수로 보관해야 함
+        })
+        .catch(function (error) {
+          setWarningMessageView(true);
+          setWarningMessageText("로그인에 실패하였습니다")
+        });
+    }
   }
   return (
     <LoginIndex>
@@ -94,6 +109,9 @@ const Login = () => {
           value={password}
         />
         <LoginButton onClick={loginHandler}>로그인</LoginButton>
+        {warningMessageView ? (
+          <WarningMessage text={warningMessageText} />
+        ) : null}
       </LoginBox>
       <BottomButton>
         <Link to="">아이디찾기</Link>
