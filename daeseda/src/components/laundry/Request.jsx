@@ -2,14 +2,21 @@
 import styled from "styled-components";
 import Button from "../common/Button";
 import Check from "../common/Check";
+import { useState } from "react";
 function Request() {
+  const [normalLaundry, setNormalLaundry] = useState(false);
+  const [specialLaundry, setSpecialLaundry] = useState(false);
   return (
     <RequestLayout>
       <Title>세탁 서비스를 선택하세요</Title>
 
       <Article>
         <Service>
-          <Check />
+          <Check
+            onClick={() => {
+              setNormalLaundry(!normalLaundry);
+            }}
+          />
           <p>일반 세탁</p>
         </Service>
         <Summary>일반 세탁은 L당 세탁입니다</Summary>
@@ -21,7 +28,11 @@ function Request() {
 
       <Article>
         <Service>
-          <Check />
+          <Check
+            onClick={() => {
+              setSpecialLaundry(!specialLaundry);
+            }}
+          />
           <p>특수 세탁</p>
         </Service>
         <Summary>특수 세탁은 특수 세제를 사용합니다</Summary>
