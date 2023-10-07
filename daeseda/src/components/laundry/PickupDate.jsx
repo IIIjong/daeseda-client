@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function PickupDate() {
-  const [date, setDate] = useState(new Date());
+function PickupDate({date, setDate}) {
 
   useEffect(() => {
     // 초기값 설정

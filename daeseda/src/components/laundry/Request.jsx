@@ -3,9 +3,30 @@ import styled from "styled-components";
 import Button from "../common/Button";
 import Check from "../common/Check";
 import { useState } from "react";
-function Request() {
-  const [normalLaundry, setNormalLaundry] = useState(false);
-  const [specialLaundry, setSpecialLaundry] = useState(false);
+import { useNavigate } from "react-router-dom";
+function Request({
+  normalLaundry,
+  setNormalLaundry,
+  specialLaundry,
+  setSpecialLaundry,
+  date,
+}) {
+  const [buttonText, setButtonText] = useState("세탁 신청하기");
+  const navigate = useNavigate();
+  function requestHandler() {
+    if (!(normalLaundry || specialLaundry)) {
+      //일반세탁, 특수세탁 아무것도 선택하지 않았을 때
+      setButtonText("세탁 서비스를 선택 후 신청하세요");
+    } else {
+      navigate("order", {
+        state: {
+          normalLaundry: normalLaundry,
+          specialLaundry: specialLaundry,
+          date: date,
+        },
+      });
+    }
+  }
   return (
     <RequestLayout>
       <Title>세탁 서비스를 선택하세요</Title>
@@ -41,7 +62,7 @@ function Request() {
           <Category>반팔, 바지, 수건</Category>
         </CategoryRow>
       </Article>
-      <Button text="세탁 신청하기" />
+      <Button text={buttonText} onClick={requestHandler} />
     </RequestLayout>
   );
 }
@@ -92,4 +113,5 @@ const CategoryRow = styled.div`
 const Category = styled.p`
   color: rgb(93, 141, 242);
 `;
+
 export default Request;
