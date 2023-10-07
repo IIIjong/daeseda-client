@@ -3,14 +3,24 @@ import PickupDate from "../../components/laundry/PickupDate";
 import Request from "../../components/laundry/Request";
 import PriceTag from "../../components/laundry/PriceTag";
 import styled from "styled-components";
+import { useState } from "react";
 function LaundryPage() {
+  const [date, setDate] = useState(new Date());
+  const [normalLaundry, setNormalLaundry] = useState(false);
+  const [specialLaundry, setSpecialLaundry] = useState(false);
   return (
     <div>
       <Header />
       <Layout>
         <Left>
-          <PickupDate />
-          <Request />
+          <PickupDate date={date} setDate={setDate} />
+          <Request
+            normalLaundry={normalLaundry}
+            setNormalLaundry={setNormalLaundry}
+            specialLaundry={specialLaundry}
+            setSpecialLaundry={setSpecialLaundry}
+            date={date}
+          />
         </Left>
         <PriceTag />
       </Layout>
