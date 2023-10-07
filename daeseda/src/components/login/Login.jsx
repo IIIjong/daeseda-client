@@ -82,7 +82,7 @@ const Login = () => {
         .post("http://localhost:8088/users/authenticate", loginInfo)
         .then(function (response) {
           navigate("/")
-          console.log(response.data.token) //토큰 값, 전역 변수로 보관해야 함
+          localStorage.setItem('token', response.data.token); //token 이라는 이름으로 token값을 localStorage에 저장
         })
         .catch(function (error) {
           setWarningMessageView(true);
