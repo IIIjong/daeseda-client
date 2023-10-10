@@ -11,6 +11,7 @@ import SignupPage from "./pages/signupPage";
 import SignupInfoPage from "./pages/signupPage/SignupInfoPage";
 import SignupSuccessPage from "./pages/signupPage/SignupSuccessPage";
 import AddDeliveryAddressPage from "./pages/myPage/AddDeliveryAddressPage";
+import EditDeliveryAddressPage from "./pages/myPage/EditDeliveryAddressPage";
 import OrderPage from "./pages/laundryPage/OrderPage";
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
           path="/mypage/add-delivery-address"
           element={<AddDeliveryAddressPage />}
         />
+        <Route
+          path="/mypage/edit-delivery-address/:addressId"
+          element={<EditDeliveryAddressPage />}
+        />
+
         <Route path="/orderlist" element={<OrderListPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/info" element={<SignupInfoPage />} />
