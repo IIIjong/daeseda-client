@@ -6,86 +6,76 @@ import Button from "../common/Button";
 //display: flex;
 //flex-direction: column;
 const Main = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 const Title = styled.div`
-border-bottom: solid 1px grey;
-padding: 10px;
+  border-bottom: solid 1px grey;
+  padding: 10px;
 `;
 const Content = styled.div`
-display: flex;
-    flex-direction: column;
-    
+  display: flex;
+  flex-direction: column;
 `;
 const Search = styled.div`
-margin: 5px;
-display: flex;
-justify-content: flex-end;
+  margin: 5px;
+  display: flex;
+  justify-content: flex-end;
 `;
-
-
 
 const Wrap2 = styled.div`
-    border-bottom: 1px solid gray;
-    display: flex;
-    justify-content: space-between;
+  border-bottom: 1px solid gray;
+  display: flex;
+  padding: 4px 8px;
 `;
 const Wrap = styled.div`
-    display: flex;
-    background-color: #D9D9D9;
-    justify-content: space-between;
+  display: flex;
+  background-color: #d9d9d9;
+  padding: 4px 8px;
 `;
 const P = styled.p`
-  width: 90px;
+  width: 10%;
 `;
 
+const NoticeTitle = styled.p`
+  width: 80%;
+`;
+const NoticeDate = styled.p`
+  width: 10%;
+`;
 
 const Notice = () => {
-    return (
-        <Main>
-            <Title>
-            <h3>공지사항</h3>
-            </Title>
-            <Search>
-                <select>
-                <option value="">전체</option>
-                <option value="">배송</option>
-                <option value="">결제</option>
-                <option value="">로그인</option>
-                <option value="">주문</option>
-                <option value="기타">기타</option>
-                </select>
-                <input type="text" placeholder="Search"></input>
-                <Button text={"검색"}></Button>
-                </Search>
-                <Content>
-                <Wrap>
-                <P>구분</P>
-                <p>제목</p>
-                <p>날짜</p>
-                </Wrap>
-                <Wrap2>
-                <P>로그인</P>
-                <p>제목</p>
-                <p>날짜</p>
-                </Wrap2>
-                <Wrap2>
-                <P>결제</P>
-                <p>제목</p>
-                <p>날짜</p>
-                </Wrap2>
-                <Wrap2>
-                <P>배송</P>
-                <p>제목</p>
-                <p>날짜</p>
-                </Wrap2>
-             
-                
-                </Content>                           
-        </Main>
-  
-    );
-  };
-  
-  export default Notice;
+  return (
+    <Main>
+      <Title>
+        <h3>공지사항</h3>
+      </Title>
+      <Search>
+        <select style={{textAlign:"center", marginRight:"5px", outline:"none"}}>
+          <option value="">전체</option>
+          <option value="">배송</option>
+          <option value="">결제</option>
+          <option value="">로그인</option>
+          <option value="">주문</option>
+          <option value="기타">기타</option>
+        </select>
+        <input type="text" placeholder="Search" style={{outline:"none"}}></input>
+        <Button text={"검색"}></Button>
+      </Search>
+      <Content>
+        <Wrap>
+          <P>구분</P>
+          <NoticeTitle>제목</NoticeTitle>
+          <NoticeDate>날짜</NoticeDate>
+        </Wrap>
+        <Wrap2>
+          <P>로그인</P>
+          <NoticeTitle>로그인이 잘 안되는데</NoticeTitle>
+          <NoticeDate>2023-10-10</NoticeDate>
+        </Wrap2>
+      </Content>
+    </Main>
+  );
+};
+
+export default Notice;

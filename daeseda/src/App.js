@@ -13,6 +13,8 @@ import SignupSuccessPage from "./pages/signupPage/SignupSuccessPage";
 import AddDeliveryAddressPage from "./pages/myPage/AddDeliveryAddressPage";
 import EditDeliveryAddressPage from "./pages/myPage/EditDeliveryAddressPage";
 import OrderPage from "./pages/laundryPage/OrderPage";
+import CscenterPage from "./pages/cscenterPage";
+import QuestionWritePage from "./pages/cscenterPage/QuestionWritePage";
 function App() {
   return (
     <BrowserRouter>
@@ -30,11 +32,15 @@ function App() {
           path="/mypage/edit-delivery-address/:addressId"
           element={<EditDeliveryAddressPage />}
         />
-
         <Route path="/orderlist" element={<OrderListPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/info" element={<SignupInfoPage />} />
         <Route path="/signup/success" element={<SignupSuccessPage />} />
+        <Route path="/cscenter" element={<CscenterPage />} />
+        <Route
+          path="/cscenter/question-write"
+          element={<QuestionWritePage />}
+        />
       </Routes>
     </BrowserRouter>
   );

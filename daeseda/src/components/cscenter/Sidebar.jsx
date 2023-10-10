@@ -8,11 +8,12 @@ const sidebarItems = [
   { id: "question", label: "1:1문의" },
 ];
 
-function Sidebar() {
-  const [selectedItem, setSelectedItem] = useState("info");
+function Sidebar({sidebarStatus, setSidebarStatus}) {
+  const [selectedItem, setSelectedItem] = useState("notice");
 
   const handleItemClick = (itemId) => {
     setSelectedItem(itemId);
+    setSidebarStatus(itemId);
   };
 
   return (
