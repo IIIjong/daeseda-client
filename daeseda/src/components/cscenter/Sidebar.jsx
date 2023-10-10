@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const sidebarItems = [
+  { id: "question", label: "1:1문의" },
   { id: "notice", label: "공지사항" },
   { id: "faq", label: "자주묻는질문" },
-  { id: "question", label: "1:1문의" },
 ];
 
 function Sidebar({sidebarStatus, setSidebarStatus}) {
-  const [selectedItem, setSelectedItem] = useState("notice");
+  const [selectedItem, setSelectedItem] = useState("question");
 
   const handleItemClick = (itemId) => {
     setSelectedItem(itemId);

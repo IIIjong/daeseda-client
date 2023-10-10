@@ -61,7 +61,7 @@ const Question = () => {
           // 날짜 변환 로직 추가
           const dateObject = new Date(notice.regDate);
           const formattedDate = dateObject.toISOString().split("T")[0];
-          
+
           // 변환된 날짜를 포함한 객체 반환
           return {
             ...notice,
@@ -89,7 +89,12 @@ const Question = () => {
           <NoticeDate>날짜</NoticeDate>
         </Wrap>
         {noticeDummy.map((notice) => (
-          <Wrap2 key={notice.noticeId}>
+          <Wrap2
+            key={notice.noticeId}
+            onClick={() => {
+              navigate(`${notice.noticeId}`);
+            }}
+          >
             <P>{notice.noticeCategory}</P>
             <NoticeTitle>{notice.noticeTitle}</NoticeTitle>
             <NoticeDate>{notice.regDate}</NoticeDate>

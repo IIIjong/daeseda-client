@@ -7,7 +7,7 @@ import Sidebar from "../../components/cscenter/Sidebar";
 import styled from "styled-components";
 import { useState } from "react";
 function CscenterPage() {
-  const [sidebarStatus, setSidebarStatus] = useState("notice");
+  const [sidebarStatus, setSidebarStatus] = useState("question");
   return (
     <div>
       <Header />
