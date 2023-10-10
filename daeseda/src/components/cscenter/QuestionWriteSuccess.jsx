@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import Check from "../../assets/images/check.png";
+import { useNavigate } from "react-router-dom";
 
 const MainDiv = styled.div`
-  padding-left: 20%;
-  padding-right: 20%;
+  padding: 0 20px;
 `;
 const Input = styled.input`
   width: 70%;
@@ -31,7 +31,8 @@ const Image = styled.img`
 `;
 const ButtonBox = styled(Button)``;
 
-const QuestionWriteSucsses = () => {
+const QuestionWriteSuccess = () => {
+  const navigate = useNavigate();
   return (
     <MainDiv>
       <Explanation>
@@ -45,10 +46,15 @@ const QuestionWriteSucsses = () => {
             <Image src={Check} alt="" />
           </ShowIdBox>
         </IdBox>
-        <ButtonBox text={"홈으로"}></ButtonBox>
+        <ButtonBox
+          text={"홈으로"}
+          onClick={() => {
+            navigate("/");
+          }}
+        ></ButtonBox>
       </ShowIdIndex>
     </MainDiv>
   );
 };
 
-export default QuestionWriteSucsses;
+export default QuestionWriteSuccess;

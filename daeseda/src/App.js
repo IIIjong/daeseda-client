@@ -15,6 +15,7 @@ import EditDeliveryAddressPage from "./pages/myPage/EditDeliveryAddressPage";
 import OrderPage from "./pages/laundryPage/OrderPage";
 import CscenterPage from "./pages/cscenterPage";
 import QuestionWritePage from "./pages/cscenterPage/QuestionWritePage";
+import QuestionWriteSuccessPage from "./pages/cscenterPage/QuestionWriteSuccessPage";
 function App() {
   return (
     <BrowserRouter>
@@ -40,7 +41,10 @@ function App() {
         <Route
           path="/cscenter/question-write"
           element={<QuestionWritePage />}
-        />
+        /><Route
+        path="/cscenter/question-write/success"
+        element={<QuestionWriteSuccessPage />}
+      />
       </Routes>
     </BrowserRouter>
   );

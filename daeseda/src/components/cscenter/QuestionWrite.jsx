@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
-import Check from "../common/Check";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 const Main = styled.div`
   display: flex;
@@ -9,10 +11,12 @@ const Main = styled.div`
   gap: 4px;
   margin: 20px;
 `;
+
 const Title = styled.div`
   border-bottom: solid 1px grey;
   padding: 10px;
 `;
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,11 +26,13 @@ const Content = styled.div`
   margin: 10px 0;
   border-radius: 4px;
 `;
+
 const ButtonWrap = styled.div`
   display: flex;
   gap: 4px;
   justify-content: center;
 `;
+
 const Button2 = styled.button`
   border: 1px solid gray;
   border-radius: 4px;
@@ -35,13 +41,52 @@ const Button2 = styled.button`
   padding: 8px 12px;
   text-align: center;
 `;
+
 const SubTitle = styled.div``;
+
 const CheckWrap = styled.div`
   display: flex;
   gap: 10px;
 `;
 
 const QuestionWrite = () => {
+  const navigate = useNavigate();
+  const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타"];
+  const [category, setCategory] = useState("전체");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  function categoryChangeHandler(e) {
+    setCategory(e.target.value);
+  }
+
+  function titleChangeHandler(e) {
+    setTitle(e.target.value);
+  }
+
+  function contentChangeHandler(e) {
+    setContent(e.target.value);
+  }
+
+  function questionWriteHandler() {
+    if (title === "" || content === "") {
+      alert("제목과 내용을 입력해주세요");
+    } else {
+      axios
+        .post("http://localhost:8088/notice/register", {
+          noticeCategory: category,
+          noticeTitle: title,
+          noticeContent: content,
+        })
+        .then(function (response) {
+          navigate("success");
+        })
+        .catch(function (error) {
+          alert("문의 작성에 실패하였습니다", error);
+        });
+    }
+  }
+
   return (
     <Main>
       <Title>
@@ -49,41 +94,41 @@ const QuestionWrite = () => {
       </Title>
       <Content>
         <SubTitle>
-          <select style={{ textAlign: "center", marginRight: "5px", outline:"none"}}>
-            <option value="">전체</option>
-            <option value="">배송</option>
-            <option value="">결제</option>
-            <option value="">로그인</option>
-            <option value="">주문</option>
-            <option value="기타">기타</option>
+          <select
+            style={{ textAlign: "center", marginRight: "5px", outline: "none" }}
+            onChange={categoryChangeHandler}
+            value={category}
+          >
+            {questionCategorys.map((questionCategory) => (
+              <option key={questionCategory} value={questionCategory}>
+                {questionCategory}
+              </option>
+            ))}
           </select>
           <input
             type="text"
             placeholder="제목"
             style={{ outline: "none" }}
+            onChange={titleChangeHandler}
+            value={title}
           ></input>
         </SubTitle>
         <textarea
           placeholder="내용을 입력해주세요"
           style={{ outline: "none", height: "200px", padding: "10px" }}
+          onChange={contentChangeHandler}
+          value={content}
         ></textarea>
-        {/* <p>공개설정</p>
-        <CheckWrap>
-          <Check></Check>
-          공개
-          <Check></Check>
-          비공개
-          <input
-            type="passward"
-            placeholder="비공개 비밀번호"
-            style={{outline:"none"}}
-          ></input>
-        </CheckWrap> */}
       </Content>
       <ButtonWrap>
-        <Button text={"문의하기"}></Button>
-
-        <Button2>취소하기</Button2>
+        <Button text={"문의하기"} onClick={questionWriteHandler}></Button>
+        <Button2
+          onClick={() => {
+            navigate("/cscenter");
+          }}
+        >
+          취소하기
+        </Button2>
       </ButtonWrap>
     </Main>
   );

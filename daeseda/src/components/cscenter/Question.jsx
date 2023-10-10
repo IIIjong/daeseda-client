@@ -2,10 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import { useNavigate } from "react-router-dom";
-//justify-content: center;
-//align-items: center;
-//display: flex;
-//flex-direction: column;
+
 const Main = styled.div`
   display: flex;
   flex-direction: column;
