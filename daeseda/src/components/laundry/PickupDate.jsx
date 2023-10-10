@@ -3,10 +3,9 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function PickupDate({date, setDate}) {
-
+function PickupDate({ date, setDate }) {
   useEffect(() => {
-    // 초기값 설정
+    // 초기값 설정 (한 번만 실행)
     const today = new Date();
     setDate(today);
   }, []);
@@ -25,16 +24,20 @@ function PickupDate({date, setDate}) {
     return daysOfWeek[date.getDay()];
   }
 
-  const handleDateChange = (date) => {
-    setDate(date);
-  };
+  function formattedDate(date) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const dayOfWeek = getDayOfWeek(date);
 
-  // 선택한 날짜를 원하는 형식으로 포맷팅
-  const formattedDate = date
-    ? `${date.getFullYear()}년 ${
-        date.getMonth() + 1
-      }월 ${date.getDate()}일 ${getDayOfWeek(date)}`
-    : "";
+    return `${year}년 ${month < 10 ? `0${month}` : month}월 ${
+      day < 10 ? `0${day}` : day
+    }일 ${dayOfWeek}`;
+  }
+
+  const handleDateChange = (selectedDate) => {
+    setDate(selectedDate);
+  };
 
   return (
     <PickupDateLayout>
@@ -43,7 +46,7 @@ function PickupDate({date, setDate}) {
         <StyledDatePicker
           selected={date}
           onChange={handleDateChange}
-          value={formattedDate}
+          value={formattedDate(date)}
         />
       </DateLayout>
       <Message>변경하려면 날짜를 클릭하세요</Message>
@@ -90,4 +93,5 @@ const Message = styled.div`
   font-size: 10px;
   text-align: center;
 `;
+
 export default PickupDate;
