@@ -27,6 +27,7 @@ const Wrap2 = styled.div`
   border-bottom: 1px solid gray;
   display: flex;
   padding: 4px 8px;
+  cursor: pointer;
 `;
 const Wrap = styled.div`
   display: flex;
@@ -52,7 +53,9 @@ const Faq = () => {
         <h3>자주묻는질문</h3>
       </Title>
       <Search>
-        <select style={{textAlign:"center", marginRight:"5px", outline:"none"}}>
+        <select
+          style={{ textAlign: "center", marginRight: "5px", outline: "none" }}
+        >
           <option value="">전체</option>
           <option value="">배송</option>
           <option value="">결제</option>
@@ -60,7 +63,11 @@ const Faq = () => {
           <option value="">주문</option>
           <option value="기타">기타</option>
         </select>
-        <input type="text" placeholder="Search" style={{outline:"none"}}></input>
+        <input
+          type="text"
+          placeholder="Search"
+          style={{ outline: "none" }}
+        ></input>
         <Button text={"검색"}></Button>
       </Search>
       <Content>

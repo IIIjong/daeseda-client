@@ -23,6 +23,7 @@ const Wrap2 = styled.div`
   border-bottom: 1px solid gray;
   display: flex;
   padding: 4px 8px;
+  cursor:pointer;
 `;
 
 const Wrap = styled.div`
