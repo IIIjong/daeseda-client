@@ -51,7 +51,7 @@ const CheckWrap = styled.div`
 
 const QuestionWrite = () => {
   const navigate = useNavigate();
-  const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타"];
+  const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타", "공지사항", "자주묻는질문"];
   const [category, setCategory] = useState("전체");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

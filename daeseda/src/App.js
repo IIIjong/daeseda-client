@@ -42,16 +42,13 @@ function App() {
         <Route
           path="/cscenter/question-write"
           element={<QuestionWritePage />}
-        /><Route
-        path="/cscenter/question-write/success"
-        element={<QuestionWriteSuccessPage />}
-      />
-      <Route
-        path="/cscenter/:id"
-        element={<QuestionUpdatePage />}
-      />
+        />
+        <Route
+          path="/cscenter/question-write/success"
+          element={<QuestionWriteSuccessPage />}
+        />
+        <Route path="/cscenter/:id" element={<QuestionUpdatePage />} />
       </Routes>
-      
     </BrowserRouter>
   );
 }

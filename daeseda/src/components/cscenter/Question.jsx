@@ -23,7 +23,7 @@ const Wrap2 = styled.div`
   border-bottom: 1px solid gray;
   display: flex;
   padding: 4px 8px;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const Wrap = styled.div`
@@ -45,6 +45,12 @@ const NoticeDate = styled.p`
 `;
 
 const ButtonWrap = styled.div`
+  margin: 5px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Search = styled.div`
   margin: 5px;
   display: flex;
   justify-content: flex-end;
@@ -83,6 +89,26 @@ const Question = () => {
       <Title>
         <h3>1:1문의</h3>
       </Title>
+      <Search>
+        <select
+          style={{ textAlign: "center", marginRight: "5px", outline: "none" }}
+        >
+          <option value="">전체</option>
+          <option value="배송">배송</option>
+          <option value="결제">결제</option>
+          <option value="로그인">로그인</option>
+          <option value="주문">주문</option>
+          <option value="기타">기타</option>
+          <option value="공지사항">공지사항</option>
+          <option value="자주묻는질문">자주묻는질문</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Search"
+          style={{ outline: "none" }}
+        ></input>
+        <Button text={"검색"}></Button>
+      </Search>
       <Content>
         <Wrap>
           <P>구분</P>
