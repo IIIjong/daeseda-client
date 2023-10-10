@@ -6,9 +6,14 @@ import axios from "axios";
 
 function DeliveryAddress() {
   const navigate = useNavigate();
-  const [addresses, setAddresses] = useState([]); // 주소 목록 상태 변수
-  const [loading, setLoading] = useState(true); // 데이터 로딩 상태
+  const [addresses, setAddresses] = useState([]); 
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
+
+  const handleEditClick = (addressId) => {
+    // 클릭한 주소의 ID를 사용하여 수정 페이지로 이동
+    navigate(`edit-delivery-address/${addressId}`);
+  };
 
   useEffect(() => {
     
@@ -33,47 +38,54 @@ function DeliveryAddress() {
     }
   }, []);
 
-  const deleteAddress = (addressId) => {
+  const deleteAddress = (addressId, address) => {
     if (!window.confirm('주소를 삭제하시겠습니까?')) {
       return;
     }
-
+  
     axios
-      .delete(`http://localhost:8088/users/address/delete/${addressId}`, {
+      .delete(`http://localhost:8088/users/address/delete?addressId=${addressId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        data: address,
       })
       .then(() => {
         // 주소 삭제 성공
         setAddresses(addresses.filter((address) => address.addressId !== addressId));
         alert('주소가 삭제되었습니다.');
+        navigate("/mypage"); //페이지 갱신
       })
       .catch((error) => {
         console.error('주소 삭제 중 에러 발생:', error);
         alert('주소 삭제에 실패했습니다.');
       });
   };
+  
 
   return (
     <DeliveryAddressLayout>
+      <DeliveryWrap>
       {loading ? (
         <div>Loading...</div>
       ) : (
         addresses.map((address) => (
+          
           <DeliveryAddressArticle key={address.addressId}>
-            <Name>{address.addressName}</Name>
+            <Name>{address.addressName} {address.addressDetail}</Name>
             <Address>
-              {address.addressZipcode} {address.addressDetail}
+              {address.addressZipcode}
             </Address>
             <ButtonWrapper>
-              <EditDeleteButton>수정하기</EditDeleteButton>
-              <EditDeleteButton onClick={() => deleteAddress(address.addressId)}>삭제하기</EditDeleteButton>
+            <EditDeleteButton onClick={() => handleEditClick(address.addressId)}>수정하기</EditDeleteButton>
+            <EditDeleteButton onClick={() => deleteAddress(address.addressId, address)}>삭제하기</EditDeleteButton>
             </ButtonWrapper>
           </DeliveryAddressArticle>
+          
+          
         ))
       )}
-
+      </DeliveryWrap>
       <Button
         text="배송지 추가하기"
         size="120px"
@@ -82,7 +94,11 @@ function DeliveryAddress() {
     </DeliveryAddressLayout>
   );
 }
-
+const DeliveryWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
 const DeliveryAddressLayout = styled.section`
   display: flex;
   flex-direction: column;
