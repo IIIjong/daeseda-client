@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,  useEffect  } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -89,6 +89,21 @@ const Header = () => {
     navigate(`/${value}`);
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/");
+}
+
+useEffect(() => {
+  const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰을 가져옴
+  if (token) {
+    // 토큰이 존재하는 경우, 로그인 상태로 설정
+    setIsLoggedIn(true);
+  }
+}, []);
   return (
     <Container>
       <Navbar>
@@ -100,26 +115,61 @@ const Header = () => {
           <p>대신 세탁해드립니다</p>
         </Link>
         <Nav>
+        
           <NavList>
-            <NavItem onClick={linkHandler("laundry")}>
-              <NavLink>신청하기</NavLink>
+            <NavItem>
+            {isLoggedIn ? (
+                <NavLink onClick={linkHandler("laundry")}>신청하기</NavLink>
+              ) : (
+                <Link to="/login">
+                  <NavLink>신청하기
+                  </NavLink>
+                </Link>
+            )}
             </NavItem>
             <NavItem>
               <NavLink>이용방법</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink>고객센터</NavLink>
-            </NavItem>
-            <NavItem onClick={linkHandler("mypage")}>
-              <NavLink>내정보</NavLink>
-            </NavItem>
-            <NavItem onClick={linkHandler("orderlist")}>
-              <NavLink>주문내역</NavLink>
+            {isLoggedIn ? (
+                <NavLink onClick={linkHandler("orderlist")}>고객센터</NavLink>
+              ) : (
+                <Link to="/login">
+                  <NavLink>고객센터
+                  </NavLink>
+                </Link>
+            )}
             </NavItem>
             <NavItem>
-              <NavLink onClick={linkHandler("login")}>
-                <Login>로그인</Login>
-              </NavLink>
+            {isLoggedIn ? (
+                <NavLink onClick={linkHandler("mypage")}>내정보</NavLink>
+              ) : (
+                <Link to="/login">
+                  <NavLink>내정보
+                  </NavLink>
+                </Link>
+            )}
+            </NavItem>
+            <NavItem>
+            {isLoggedIn ? (
+                <NavLink onClick={linkHandler("orderlist")}>주문내역</NavLink>
+              ) : (
+                <Link to="/login">
+                  <NavLink>주문내역
+                  </NavLink>
+                </Link>
+            )}
+            </NavItem>
+            <NavItem>
+            {isLoggedIn ? (
+                <NavLink onClick={logoutHandler}>
+                  <Login>로그아웃</Login>
+                </NavLink>
+              ) : (
+                <Link to="/login">
+                  <Login>로그인</Login>
+                </Link>
+              )}
             </NavItem>
           </NavList>
         </Nav>

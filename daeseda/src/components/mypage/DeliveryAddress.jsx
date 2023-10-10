@@ -1,26 +1,88 @@
-//배송지 관리 페이지 컴포넌트, 현재 등록된 배송지의 리스트를 볼 수 있고, 수정, 삭제, 추가 버튼이 존재함
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 function DeliveryAddress() {
   const navigate = useNavigate();
+  const [addresses, setAddresses] = useState([]); // 주소 목록 상태 변수
+  const [loading, setLoading] = useState(true); // 데이터 로딩 상태
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    
+
+    if (token) {
+      axios
+        .get("http://localhost:8088/users/address/list", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setAddresses(response.data[0].addressList); // 주소 목록 데이터 설정
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("주소 목록을 가져오는 중 에러 발생:", error);
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const deleteAddress = (addressId) => {
+    if (!window.confirm('주소를 삭제하시겠습니까?')) {
+      return;
+    }
+
+    axios
+      .delete(`http://localhost:8088/users/address/delete/${addressId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        // 주소 삭제 성공
+        setAddresses(addresses.filter((address) => address.addressId !== addressId));
+        alert('주소가 삭제되었습니다.');
+      })
+      .catch((error) => {
+        console.error('주소 삭제 중 에러 발생:', error);
+        alert('주소 삭제에 실패했습니다.');
+      });
+  };
+
   return (
     <DeliveryAddressLayout>
-      <DeliveryAddressArticle>
-        <Name>내 집</Name>
-        <Address>12591 서울특별시 관악구 101동 101호</Address>
-        <ButtonWrapper>
-          <EditDeleteButton>수정하기</EditDeleteButton>
-          <EditDeleteButton>삭제하기</EditDeleteButton>
-        </ButtonWrapper>
-      </DeliveryAddressArticle>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        addresses.map((address) => (
+          <DeliveryAddressArticle key={address.addressId}>
+            <Name>{address.addressName}</Name>
+            <Address>
+              {address.addressZipcode} {address.addressDetail}
+            </Address>
+            <ButtonWrapper>
+              <EditDeleteButton>수정하기</EditDeleteButton>
+              <EditDeleteButton onClick={() => deleteAddress(address.addressId)}>삭제하기</EditDeleteButton>
+            </ButtonWrapper>
+          </DeliveryAddressArticle>
+        ))
+      )}
 
-      <Button text="배송지 추가하기" size="120px" onClick={() => 
-        navigate('add-delivery-address')
-      } />
+      <Button
+        text="배송지 추가하기"
+        size="120px"
+        onClick={() => navigate("add-delivery-address")}
+      />
     </DeliveryAddressLayout>
   );
 }
+
 const DeliveryAddressLayout = styled.section`
   display: flex;
   flex-direction: column;
