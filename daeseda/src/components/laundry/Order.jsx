@@ -106,7 +106,10 @@ function Order() {
   }
 
   const [addresses, setAddresses] = useState([]);
-  const [address, setAddress] = useState("");
+  const [addressId, setAddressId] = useState("")
+  const [addressName, setAddressName] = useState("")
+  const [addressDetail, setAddressDetail] = useState("")
+  const [addressZipcode, setAddressZipcode] = useState("")
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) {
@@ -118,7 +121,10 @@ function Order() {
         })
         .then((response) => {
           setAddresses(response.data); // 주소 목록 데이터 설정
-          setAddress(response.data[0].addressDetail);
+          setAddressId(response.data[0].addressId);
+          setAddressName(response.data[0].addressName)
+          setAddressDetail(response.data[0].addressDetail)
+          setAddressZipcode(response.data[0].addressZipcode)
         })
         .catch((error) => {
           console.error("주소 목록을 가져오는 중 에러 발생:", error);
@@ -133,6 +139,7 @@ function Order() {
     else setSecondTermsWarningMessage(false);
     if (firstTerms && secondTerms) {
       // axios 코드 추가하기
+      console.log(addressId, addressName, addressDetail, addressZipcode)
     }
   }
 
@@ -242,12 +249,14 @@ function Order() {
           name=""
           id=""
           style={{ fontSize: "16px" }}
-          onChange={(e) => {
-            setAddress(e.target.value);
-          }}
         >
           {addresses.map((address) => (
-            <option key={address.addressId} value={address.addressDetail}>
+            <option key={address.addressId} value={address.addressDetail} onChange={()=>{
+          setAddressId(address.addressId);
+          setAddressName(address.addressName)
+          setAddressDetail(address.addressDetail)
+          setAddressZipcode(address.addressZipcode)
+            }}>
               ({address.addressZipcode}) {address.addressDetail}
             </option>
           ))}

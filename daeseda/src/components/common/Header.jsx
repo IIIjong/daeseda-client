@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const Container = styled.div`
   box-sizing: border-box;
   @media (max-width: 768px) {
@@ -92,9 +92,23 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
 
   const logoutHandler = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    navigate("/");
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .post("http://localhost:8088/users/logout", null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          localStorage.removeItem("token");
+          setIsLoggedIn(false);
+          navigate("/");
+        })
+        .catch(function (error) {
+          alert("로그아웃에 실패하였습니다");
+        });
+    }
   };
 
   useEffect(() => {
