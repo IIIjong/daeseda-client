@@ -39,7 +39,8 @@ body {
 }
 
 /* 리스트 스타일 초기화 */
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -91,4 +92,5 @@ input,
 select,
 textarea {
   vertical-align: middle;
+  outline: none;
 }
