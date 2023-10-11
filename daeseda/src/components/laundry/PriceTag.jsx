@@ -28,7 +28,7 @@ function PriceTag() {
 
   return (
     <PriceTagLayout>
-      <Title>인기 품목 가격표</Title>
+      <Title>세탁 가격표</Title>
       {categoryDummy.map((category) => (
         <div key={category.categoryId}>
           <CategoryTitle>{category.categoryName}</CategoryTitle>

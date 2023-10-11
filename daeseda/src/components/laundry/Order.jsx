@@ -6,8 +6,16 @@ import bill from "../../assets/images/bill.png";
 import change from "../../assets/images/change.png";
 import Button from "../common/Button";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WarningMessage from "../common/WarningMessage";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus,
+  faMinus,
+  faDeleteLeft,
+} from "@fortawesome/free-solid-svg-icons";
+
 function Order() {
   //Request에서 보낸 데이터를 state 초기값으로 저장
   const location = useLocation();
@@ -61,6 +69,44 @@ function Order() {
     }
   }
 
+  const [clothesDummy, setClothesDummy] = useState([]);
+  const [selectedClothes, setSelectedClothes] = useState("");
+  const [selectedClothesPrice, setSelectedClothesPrice] = useState("");
+  const [count, setCount] = useState(1);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8088/clothes/list")
+      .then(function (response) {
+        setClothesDummy(response.data);
+      })
+      .catch(function (error) {
+        console.error("의류 정보를 불러오는 데에 실패하였습니다", error);
+      });
+  }, []);
+
+  const handleClothesSelect = (e) => {
+    const selectedClothesName = e.target.value;
+    const selectedClothesItem = clothesDummy.find(
+      (clothes) => clothes.clothesName === selectedClothesName
+    );
+
+    if (selectedClothesItem) {
+      setSelectedClothes(selectedClothesName);
+      setSelectedClothesPrice(selectedClothesItem.clothesPrice);
+    }
+  };
+
+  function countPlusHandler() {
+    if (!(count === 9)) {
+      setCount(count + 1);
+    }
+  }
+  function countMinusHandler() {
+    if (!(count === 1)) {
+      setCount(count - 1);
+    }
+  }
+
   function orderHandler() {
     if (!firstTerms) setFirstTermsWarningMessage(true);
     else setFirstTermsWarningMessage(false);
@@ -73,6 +119,65 @@ function Order() {
   return (
     <OrderLayout>
       <Title>주문내용</Title>
+      <Row>
+        <RowRight>
+          <Select name="" id="" onChange={handleClothesSelect}>
+            <option value="">세탁할 의류를 선택하세요</option>
+            {clothesDummy.map((clothes) => (
+              <option key={clothes.clothesId} value={clothes.clothesName}>
+                {clothes.clothesName}
+              </option>
+            ))}
+          </Select>
+          {selectedClothesPrice === "" ? null : (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Count>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  onClick={countMinusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+                <CountText>{count}</CountText>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  onClick={countPlusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+              </Count>
+
+              <ClothesPrice>
+                {(parseInt(selectedClothesPrice) * count).toLocaleString()}원
+              </ClothesPrice>
+            </div>
+          )}
+        </RowRight>
+        {selectedClothesPrice === "" ? null : (
+          <FontAwesomeIcon icon={faDeleteLeft} style={{ fontSize: "25px" }} />
+        )}
+      </Row>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          margin: "10px 0",
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faPlus}
+          style={{
+            backgroundColor: "rgb(232,234,237)",
+            padding: "8px",
+            fontSize: "18px",
+          }}
+        />
+      </div>
+      <div style={{ margin: "5px 0" }}></div>
       <Row>
         <p>세탁서비스</p>
         {normalLaundry && specialLaundry ? (
@@ -110,26 +215,6 @@ function Order() {
           <Change src={change} onClick={deliveryLocationChangeHandler} />
         </RowRight>
       </Row>
-
-      {/* <Title>공동현관비밀번호</Title>
-      <PasswordRow>
-        <Check onClick={() => {}} />
-        <input
-          type="text"
-          placeholder="예) 1234**"
-          style={{ outline: "none" }}
-          onChange={(e)=>{
-            setPassword(e.target.value)
-          }}
-          value={password}
-        />
-      </PasswordRow>
-      <PasswordRow
-        style={{ borderBottom: "1px solid #111111", paddingBottom: "20px" }}
-      >
-        <Check onClick={() => {setPassword("")}} />
-        <button>비밀번호 없음</button>
-      </PasswordRow> */}
       <Title>이용안내</Title>
       <Guide>
         <GuideImg src={truck} alt="" />
@@ -194,13 +279,9 @@ const Change = styled.img`
 
 const RequestMessage = styled.input`
   padding: 12px 0;
-  font-size: 18px;
+  font-size: 14px;
   border-bottom: 1px solid #d9d9d9;
   outline: none;
-`;
-const PasswordRow = styled.div`
-  display: flex;
-  gap: 4px;
 `;
 
 const Guide = styled.div`
@@ -214,4 +295,21 @@ const GuideImg = styled.img`
   height: 40px;
 `;
 
+const Select = styled.select`
+  font-size: 16px;
+`;
+
+const ClothesPrice = styled.p`
+  text-align: right;
+`;
+
+const Count = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const CountText = styled.p`
+  margin: 0 4px;
+`;
 export default Order;
