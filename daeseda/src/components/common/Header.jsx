@@ -139,7 +139,7 @@ const Header = () => {
             </NavItem>
             <NavItem>
               {isLoggedIn ? (
-                <NavLink onClick={linkHandler("mypage")}>내정보</NavLink>
+                <NavLink onClick={linkHandler("myinfo")}>내정보</NavLink>
               ) : (
                 <Link to="/login">
                   <NavLink>내정보</NavLink>

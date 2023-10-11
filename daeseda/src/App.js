@@ -25,13 +25,13 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/laundry" element={<LaundryPage />} />
         <Route path="/laundry/order" element={<OrderPage />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/myinfo" element={<MyPage />} />
         <Route
-          path="/mypage/add-delivery-address"
+          path="/myinfo/add-delivery-address"
           element={<AddDeliveryAddressPage />}
         />
         <Route
-          path="/mypage/edit-delivery-address/:addressId"
+          path="/myinfo/edit-delivery-address/:addressId"
           element={<EditDeliveryAddressPage />}
         />
         <Route path="/orderlist" element={<OrderListPage />} />

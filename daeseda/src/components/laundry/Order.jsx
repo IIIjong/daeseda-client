@@ -10,11 +10,7 @@ import { useState, useEffect } from "react";
 import WarningMessage from "../common/WarningMessage";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faMinus,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function Order() {
   // Request에서 보낸 데이터를 state 초기값으로 저장
@@ -29,8 +25,10 @@ function Order() {
   const [password, setPassword] = useState("");
   const [firstTerms, setFirstTerms] = useState(false);
   const [secondTerms, setSecondTerms] = useState(false);
-  const [firstTermsWarningMessage, setFirstTermsWarningMessage] = useState(false);
-  const [secondTermsWarningMessage, setSecondTermsWarningMessage] = useState(false);
+  const [firstTermsWarningMessage, setFirstTermsWarningMessage] =
+    useState(false);
+  const [secondTermsWarningMessage, setSecondTermsWarningMessage] =
+    useState(false);
   const [deliveryLocation, setDeliveryLocation] = useState("문 앞");
   // 요일을 반환하는 함수 선언식으로 정의
   function getDayOfWeek(date) {
@@ -52,7 +50,9 @@ function Order() {
     const day = date.getDate();
     const dayOfWeek = getDayOfWeek(date);
 
-    return `${year}년 ${month < 10 ? `0${month}` : month}월 ${day < 10 ? `0${day}` : day}일 ${dayOfWeek}`;
+    return `${year}년 ${month < 10 ? `0${month}` : month}월 ${
+      day < 10 ? `0${day}` : day
+    }일 ${dayOfWeek}`;
   }
 
   function deliveryLocationChangeHandler() {
@@ -105,6 +105,27 @@ function Order() {
     }
   }
 
+  const [addresses, setAddresses] = useState([]);
+  const [address, setAddress] = useState("");
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("http://localhost:8088/users/address/list", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setAddresses(response.data); // 주소 목록 데이터 설정
+          setAddress(response.data[0].addressDetail);
+        })
+        .catch((error) => {
+          console.error("주소 목록을 가져오는 중 에러 발생:", error);
+        });
+    }
+  }, []);
+
   function orderHandler() {
     if (!firstTerms) setFirstTermsWarningMessage(true);
     else setFirstTermsWarningMessage(false);
@@ -114,59 +135,65 @@ function Order() {
       // axios 코드 추가하기
     }
   }
+
   return (
     <OrderLayout>
       <Title>주문내용</Title>
-      {Array(selectCount).fill().map((_, index) => (
-        <Row key={index}>
-          <RowRight>
-            <Select name="" id="" onChange={handleClothesSelect}>
-              <option value="">세탁할 의류를 선택하세요</option>
-              {clothesDummy.map((clothes) => (
-                <option key={clothes.clothesId} value={clothes.clothesName}>
-                  {clothes.clothesName}
-                </option>
-              ))}
-            </Select>
-            {selectedClothesPrice === "" ? null : (
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <Count>
-                  <FontAwesomeIcon
-                    icon={faMinus}
-                    onClick={countMinusHandler}
-                    style={{
-                      backgroundColor: "rgb(232,234,237)",
-                      padding: "4px",
-                    }}
-                  />
-                  <CountText>{count}</CountText>
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    onClick={countPlusHandler}
-                    style={{
-                      backgroundColor: "rgb(232,234,237)",
-                      padding: "4px",
-                    }}
-                  />
-                </Count>
+      {Array(selectCount)
+        .fill()
+        .map((_, index) => (
+          <Row key={index}>
+            <RowRight>
+              <Select name="" id="" onChange={handleClothesSelect}>
+                <option value="">세탁할 의류를 선택하세요</option>
+                {clothesDummy.map((clothes) => (
+                  <option key={clothes.clothesId} value={clothes.clothesName}>
+                    {clothes.clothesName}
+                  </option>
+                ))}
+              </Select>
+              {selectedClothesPrice === "" ? null : (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <Count>
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      onClick={countMinusHandler}
+                      style={{
+                        backgroundColor: "rgb(232,234,237)",
+                        padding: "4px",
+                      }}
+                    />
+                    <CountText>{count}</CountText>
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      onClick={countPlusHandler}
+                      style={{
+                        backgroundColor: "rgb(232,234,237)",
+                        padding: "4px",
+                      }}
+                    />
+                  </Count>
 
-                <ClothesPrice>
-                  {(parseInt(selectedClothesPrice) * count).toLocaleString()}원
-                </ClothesPrice>
-              </div>
+                  <ClothesPrice>
+                    {(parseInt(selectedClothesPrice) * count).toLocaleString()}
+                    원
+                  </ClothesPrice>
+                </div>
+              )}
+            </RowRight>
+            {selectedClothesPrice === "" ? null : (
+              <FontAwesomeIcon
+                icon={faTrash}
+                style={{ fontSize: "25px" }}
+                onClick={() => {
+                  if (!(selectCount === 1)) setSelectCount(selectCount - 1);
+                }}
+              />
             )}
-          </RowRight>
-          {selectedClothesPrice === "" ? null : (
-            <FontAwesomeIcon
-              icon={faTrash}
-              style={{ fontSize: "25px" }}
-              onClick={() => {
-                if (!(selectCount === 1)) setSelectCount(selectCount - 1);
-              }}
-            />
-          )}
-        </Row>
-      ))}
+          </Row>
+        ))}
       <div
         style={{
           display: "flex",
@@ -211,10 +238,20 @@ function Order() {
 
       <Row>
         <p>배송주소</p>
-        <RowRight>
-          <p>서울시 노원구 101동 101호</p>
-          <Change src={change} />
-        </RowRight>
+        <select
+          name=""
+          id=""
+          style={{ fontSize: "16px" }}
+          onChange={(e) => {
+            setAddress(e.target.value);
+          }}
+        >
+          {addresses.map((address) => (
+            <option key={address.addressId} value={address.addressDetail}>
+              ({address.addressZipcode}) {address.addressDetail}
+            </option>
+          ))}
+        </select>
       </Row>
 
       <Row style={{ borderBottom: "1px solid #111111", paddingBottom: "20px" }}>
