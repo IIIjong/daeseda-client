@@ -4,6 +4,7 @@ import Header from "../../components/common/Header";
 import Sidebar from "../../components/mypage/Sidebar";
 import MyInfo from "../../components/mypage/MyInfo";
 import DeliveryAddress from "../../components/mypage/DeliveryAddress";
+import Withdraw from "../../components/mypage/Withdraw";
 
 function MyPage() {
   const [selectedItemId, setSelectedItemId] = useState("info");
@@ -20,7 +21,7 @@ function MyPage() {
           <MyInfo />
         ) : selectedItemId === "delivery" ? (
           <DeliveryAddress />
-        ) : selectedItemId === "withdrawal" ? null : null}
+        ) : selectedItemId === "withdrawal" ? <Withdraw/> : null}
       </GridLayout>
     </div>
   );
