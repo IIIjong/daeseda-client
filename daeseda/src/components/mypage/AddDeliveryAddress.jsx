@@ -35,25 +35,23 @@ const Wrap = styled.div`
   gap: 4px;
 `;
 
-
-
 const AddDeliveryAddress = () => {
   const [addressName, setAddressName] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
-
+  const [addressContent, setAddressContent] = useState("");
   const addressInfo = {
-    addressName,
-    addressZipcode,
-    addressDetail,
-  };
+    "addressName": addressName,
+    "addressDetail": addressContent + " " + addressDetail,
+    "addressZipcode": addressZipcode
+}
   const navigate = useNavigate();
 
   const searchAddress = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
         setAddressZipcode(data.zonecode); // 우편번호 설정
-        setAddressName(data.address); // 주소 설정
+        setAddressContent(data.address); // 주소 설정
       },
     }).open();
   };
@@ -62,7 +60,7 @@ const AddDeliveryAddress = () => {
     const token = localStorage.getItem("token"); // 토큰
 
     const headers = {
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
     };
 
     axios
@@ -93,23 +91,31 @@ const AddDeliveryAddress = () => {
           value={addressName}
           onChange={(e) => setAddressName(e.target.value)}
         />
-      <Wrap>
-      <InfoRow
-          label="우편번호"
+        <Wrap>
+          <InfoRow
+            label="우편번호"
+            type="text"
+            id="addressZipcode"
+            value={addressZipcode}
+            onChange={(e) => setAddressZipcode(e.target.value)}
+          />
+          <SmallButton text="주소 찾기" onClick={searchAddress} style={{verticalAlign:"middle"}}/>
+        </Wrap>
+        <InfoRow
+          label="주소"
           type="text"
-          id="addressZipcode"
-          value={addressZipcode}
-          onChange={(e) => setAddressZipcode(e.target.value)}
+          id="addressContent"
+          value={addressContent}
+          readonly
         />
-        <SmallButton text="주소 찾기" onClick={searchAddress}/>
-      </Wrap>
-        
         <InfoRow
           label="상세 주소"
           type="text"
           id="addressDetail"
           value={addressDetail}
-          onChange={(e) => setAddressDetail(e.target.value)}
+          onChange={(e) => {
+            setAddressDetail(e.target.value);
+          }}
         />
       </Content>
       <ButtonWrap>

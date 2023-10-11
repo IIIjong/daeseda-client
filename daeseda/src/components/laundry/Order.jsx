@@ -13,11 +13,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
   faMinus,
-  faDeleteLeft,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Order() {
-  //Request에서 보낸 데이터를 state 초기값으로 저장
+  // Request에서 보낸 데이터를 state 초기값으로 저장
   const location = useLocation();
   const [normalLaundry, setNormalLaundry] = useState(
     location.state.normalLaundry
@@ -29,10 +29,8 @@ function Order() {
   const [password, setPassword] = useState("");
   const [firstTerms, setFirstTerms] = useState(false);
   const [secondTerms, setSecondTerms] = useState(false);
-  const [firstTermsWarningMessage, setFirstTermsWarningMessage] =
-    useState(false);
-  const [secondTermsWarningMessage, setSecondTermsWarningMessage] =
-    useState(false);
+  const [firstTermsWarningMessage, setFirstTermsWarningMessage] = useState(false);
+  const [secondTermsWarningMessage, setSecondTermsWarningMessage] = useState(false);
   const [deliveryLocation, setDeliveryLocation] = useState("문 앞");
   // 요일을 반환하는 함수 선언식으로 정의
   function getDayOfWeek(date) {
@@ -54,9 +52,7 @@ function Order() {
     const day = date.getDate();
     const dayOfWeek = getDayOfWeek(date);
 
-    return `${year}년 ${month < 10 ? `0${month}` : month}월 ${
-      day < 10 ? `0${day}` : day
-    }일 ${dayOfWeek}`;
+    return `${year}년 ${month < 10 ? `0${month}` : month}월 ${day < 10 ? `0${day}` : day}일 ${dayOfWeek}`;
   }
 
   function deliveryLocationChangeHandler() {
@@ -73,6 +69,7 @@ function Order() {
   const [selectedClothes, setSelectedClothes] = useState("");
   const [selectedClothesPrice, setSelectedClothesPrice] = useState("");
   const [count, setCount] = useState(1);
+  const [selectCount, setSelectCount] = useState(1);
   useEffect(() => {
     axios
       .get("http://localhost:8088/clothes/list")
@@ -101,6 +98,7 @@ function Order() {
       setCount(count + 1);
     }
   }
+
   function countMinusHandler() {
     if (!(count === 1)) {
       setCount(count - 1);
@@ -119,48 +117,56 @@ function Order() {
   return (
     <OrderLayout>
       <Title>주문내용</Title>
-      <Row>
-        <RowRight>
-          <Select name="" id="" onChange={handleClothesSelect}>
-            <option value="">세탁할 의류를 선택하세요</option>
-            {clothesDummy.map((clothes) => (
-              <option key={clothes.clothesId} value={clothes.clothesName}>
-                {clothes.clothesName}
-              </option>
-            ))}
-          </Select>
-          {selectedClothesPrice === "" ? null : (
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Count>
-                <FontAwesomeIcon
-                  icon={faMinus}
-                  onClick={countMinusHandler}
-                  style={{
-                    backgroundColor: "rgb(232,234,237)",
-                    padding: "4px",
-                  }}
-                />
-                <CountText>{count}</CountText>
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  onClick={countPlusHandler}
-                  style={{
-                    backgroundColor: "rgb(232,234,237)",
-                    padding: "4px",
-                  }}
-                />
-              </Count>
+      {Array(selectCount).fill().map((_, index) => (
+        <Row key={index}>
+          <RowRight>
+            <Select name="" id="" onChange={handleClothesSelect}>
+              <option value="">세탁할 의류를 선택하세요</option>
+              {clothesDummy.map((clothes) => (
+                <option key={clothes.clothesId} value={clothes.clothesName}>
+                  {clothes.clothesName}
+                </option>
+              ))}
+            </Select>
+            {selectedClothesPrice === "" ? null : (
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <Count>
+                  <FontAwesomeIcon
+                    icon={faMinus}
+                    onClick={countMinusHandler}
+                    style={{
+                      backgroundColor: "rgb(232,234,237)",
+                      padding: "4px",
+                    }}
+                  />
+                  <CountText>{count}</CountText>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    onClick={countPlusHandler}
+                    style={{
+                      backgroundColor: "rgb(232,234,237)",
+                      padding: "4px",
+                    }}
+                  />
+                </Count>
 
-              <ClothesPrice>
-                {(parseInt(selectedClothesPrice) * count).toLocaleString()}원
-              </ClothesPrice>
-            </div>
+                <ClothesPrice>
+                  {(parseInt(selectedClothesPrice) * count).toLocaleString()}원
+                </ClothesPrice>
+              </div>
+            )}
+          </RowRight>
+          {selectedClothesPrice === "" ? null : (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ fontSize: "25px" }}
+              onClick={() => {
+                if (!(selectCount === 1)) setSelectCount(selectCount - 1);
+              }}
+            />
           )}
-        </RowRight>
-        {selectedClothesPrice === "" ? null : (
-          <FontAwesomeIcon icon={faDeleteLeft} style={{ fontSize: "25px" }} />
-        )}
-      </Row>
+        </Row>
+      ))}
       <div
         style={{
           display: "flex",
@@ -174,6 +180,9 @@ function Order() {
             backgroundColor: "rgb(232,234,237)",
             padding: "8px",
             fontSize: "18px",
+          }}
+          onClick={() => {
+            setSelectCount(selectCount + 1);
           }}
         />
       </div>
