@@ -45,6 +45,7 @@ const SignupInfo = () => {
   const [certificationText, setCertificationText] = useState("인증번호전송");
   // 인증번호를 입력하는 란을 보여줄지 말지를 결정하는 state, 인증번호가 전송되면 true가 되고 인증번호 입력창이 생김
   const [certificationNumberView, setCertificationNumberView] = useState(false);
+  const [certificationValidation, setCertificationValidation] = useState(false); // 이메일 인증이 완료되었는지 완료되지않았는지 상태를 저장
   const signupInfo = {
     userEmail: email,
     userName: name,
@@ -57,20 +58,41 @@ const SignupInfo = () => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
 
   function signupButton() {
-    // 회원가입 성공 시 회원가입 페이지로 이동
-    if (!passwordRegex.test(password)) {
-      alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8자 이상입니다.");
-    } else {
-      axios
-        .post(`http://localhost:8088/users/signup`, signupInfo)
-        .then(function (response) {
-          navigate("/signup/success");
-        })
-        .catch(function (error) {
-          alert(`회원가입 오류: ${error}`);
-        });
-    }
+    axios
+      .post("http://localhost:8088/users/mailConfirm", {
+        userEmail: email,
+        code: certificationNumber,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          // 이메일 인증 성공
+          setCertificationValidation(true);
+  
+          if (!passwordRegex.test(password)) {
+            alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8자 이상이어야 합니다.");
+          } else {
+            // 회원가입 요청
+            axios
+              .post(`http://localhost:8088/users/signup`, signupInfo)
+              .then(function (response) {
+                navigate("/signup/success");
+              })
+              .catch(function (error) {
+                alert(`회원가입 오류: ${error}`);
+              });
+          }
+        } else {
+          // 이메일 인증 실패
+          alert("이메일 인증이 완료되지 않았습니다.");
+        }
+      })
+      .catch((error) => {
+        console.log("이메일 인증 중 오류가 발생했습니다", error);
+        alert("이메일 인증이 완료되지 않았습니다")
+        setCertificationValidation(false);
+      });
   }
+  
   function emailCertificationHandler() {
     // 이메일 인증번호 전송을 진행할 시 인증번호가 전송
     axios
