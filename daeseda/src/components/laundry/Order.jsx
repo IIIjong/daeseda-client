@@ -30,7 +30,7 @@ function Order() {
   const [secondTermsWarningMessage, setSecondTermsWarningMessage] =
     useState(false);
   const [deliveryLocation, setDeliveryLocation] = useState("문 앞");
-  // 요일을 반환하는 함수 선언식으로 정의
+  // 날짜 관련 함수, 요일을 반환하는 함수 선언식으로 정의
   function getDayOfWeek(date) {
     const daysOfWeek = [
       "일요일",
@@ -55,6 +55,7 @@ function Order() {
     }일 ${dayOfWeek}`;
   }
 
+  //수거 위치 관련 함수
   function deliveryLocationChangeHandler() {
     if (deliveryLocation === "문 앞") {
       setDeliveryLocation("경비실");
@@ -65,46 +66,7 @@ function Order() {
     }
   }
 
-  const [clothesDummy, setClothesDummy] = useState([]);
-  const [selectedClothes, setSelectedClothes] = useState("");
-  const [selectedClothesPrice, setSelectedClothesPrice] = useState("");
-  const [count, setCount] = useState(1);
-  const [selectCount, setSelectCount] = useState(1);
-  useEffect(() => {
-    axios
-      .get("http://localhost:8088/clothes/list")
-      .then(function (response) {
-        setClothesDummy(response.data);
-      })
-      .catch(function (error) {
-        console.error("의류 정보를 불러오는 데에 실패하였습니다", error);
-      });
-  }, []);
-
-  const handleClothesSelect = (e) => {
-    const selectedClothesName = e.target.value;
-    const selectedClothesItem = clothesDummy.find(
-      (clothes) => clothes.clothesName == selectedClothesName
-    );
-
-    if (selectedClothesItem) {
-      setSelectedClothes(selectedClothesName);
-      setSelectedClothesPrice(selectedClothesItem.clothesPrice);
-    }
-  };
-
-  function countPlusHandler() {
-    if (!(count === 9)) {
-      setCount(count + 1);
-    }
-  }
-
-  function countMinusHandler() {
-    if (!(count === 1)) {
-      setCount(count - 1);
-    }
-  }
-
+  //주소 관련 함수
   const [addresses, setAddresses] = useState([]);
   const [addressId, setAddressId] = useState("");
   const [addressName, setAddressName] = useState("");
@@ -139,6 +101,119 @@ function Order() {
     }
   }, []);
 
+  function addressChangeHandler(e) {
+    const selectedAddressId = e.target.value;
+    setAddressId(selectedAddressId);
+
+    const selectedAddress = addresses.find(
+      (address) => address.addressId == selectedAddressId
+    );
+    if (selectedAddress) {
+      setAddressName(selectedAddress.addressName);
+      setAddressDetail(selectedAddress.addressDetail);
+      setAddressZipcode(selectedAddress.addressZipcode);
+    }
+  }
+
+  //의류 선택 관련 함수
+  const [clothesDummy, setClothesDummy] = useState([]);
+  const [firstSelectedCategoryId, setFirstSelectedCategoryId] = useState("");
+  const [firstSelectedClothesId, setFirstSelectedClothesId] = useState("");
+  const [firstSelectedClothesName, setFirstSelectedClothesName] = useState("");
+  const [firstSelectedClothesPrice, setFirstSelectedClothesPrice] =
+    useState("");
+  const [firstSelectedClothesCount, setFirstSelectedClothesCount] = useState(1);
+
+  const [secondSelectedCategoryId, setSecondSelectedCategoryId] = useState("");
+  const [secondSelectedClothesId, setSecondSelectedClothesId] = useState("");
+  const [secondSelectedClothesName, setSecondSelectedClothesName] =
+    useState("");
+  const [secondSelectedClothesPrice, setSecondSelectedClothesPrice] =
+    useState("");
+  const [secondSelectedClothesCount, setSecondSelectedClothesCount] =
+    useState(1);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8088/clothes/list")
+      .then(function (response) {
+        setClothesDummy(response.data);
+      })
+      .catch(function (error) {
+        console.error("의류 정보를 불러오는 데에 실패하였습니다", error);
+      });
+  }, []);
+
+  const firstClothesChangeHandler = (e) => {
+    const selectedClothesItem = clothesDummy.find(
+      (clothes) => clothes.clothesId == e.target.value
+    );
+
+    if (selectedClothesItem) {
+      setFirstSelectedCategoryId(selectedClothesItem.categoryId);
+      setFirstSelectedClothesId(selectedClothesItem.clothesId);
+      setFirstSelectedClothesName(selectedClothesItem.clothesName);
+      setFirstSelectedClothesPrice(selectedClothesItem.clothesPrice);
+    }
+  };
+
+  function firstCountPlusHandler() {
+    if (!(firstSelectedClothesCount == 9))
+      setFirstSelectedClothesCount(firstSelectedClothesCount + 1);
+  }
+
+  function firstCountMinusHandler() {
+    if (!(firstSelectedClothesCount == 1))
+      setFirstSelectedClothesCount(firstSelectedClothesCount - 1);
+  }
+
+  //
+  const secondClothesChangeHandler = (e) => {
+    const selectedClothesItem = clothesDummy.find(
+      (clothes) => clothes.clothesId == e.target.value
+    );
+
+    if (selectedClothesItem) {
+      setSecondSelectedCategoryId(selectedClothesItem.categoryId);
+      setSecondSelectedClothesId(selectedClothesItem.clothesId);
+      setSecondSelectedClothesName(selectedClothesItem.clothesName);
+      setSecondSelectedClothesPrice(selectedClothesItem.clothesPrice);
+    }
+  };
+
+  function secondCountPlusHandler() {
+    if (!(secondSelectedClothesCount == 9))
+      setSecondSelectedClothesCount(secondSelectedClothesCount + 1);
+  }
+
+  function secondCountMinusHandler() {
+    if (!(secondSelectedClothesCount == 1))
+      setSecondSelectedClothesCount(secondSelectedClothesCount - 1);
+  }
+
+  //3일 후의 날짜를 리턴하는 함수, 배송예정일을 안내함
+  function calculateDateAndFormatToKoreanLong(date) {
+    const weekdays = [
+      "일요일",
+      "월요일",
+      "화요일",
+      "수요일",
+      "목요일",
+      "금요일",
+      "토요일",
+    ];
+
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 3);
+
+    const year = newDate.getFullYear();
+    const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = newDate.getDate().toString().padStart(2, "0");
+    const dayOfWeek = weekdays[newDate.getDay()];
+
+    return `${year}년 ${month}월 ${day}일 ${dayOfWeek}`;
+  }
+
   function orderHandler() {
     if (!firstTerms) setFirstTermsWarningMessage(true);
     else setFirstTermsWarningMessage(false);
@@ -157,18 +232,35 @@ function Order() {
           clothesCount: [
             {
               clothes: {
-                clothesId: 1,
-                clothesName: "흰색바지",
-                categoryId: 1,
+                clothesId: firstSelectedClothesId,
+                clothesName: firstSelectedClothesName,
+                categoryId: firstSelectedCategoryId,
               },
-              count: 5,
+              count: firstSelectedClothesCount,
+            },
+            {
+              clothes: {
+                clothesId: secondSelectedClothesId,
+                clothesName: secondSelectedClothesName,
+                categoryId: secondSelectedCategoryId,
+              },
+              count: secondSelectedClothesCount,
             },
           ],
-          totalPrice: 10000,
-          washingMethod: "DELICATE",
-          pickupDate: "2023-10-10",
-          deliveryDate: "2023-10-15",
-          deliveryLocation: "123 Main St",
+          totalPrice:
+            firstSelectedClothesPrice * firstSelectedClothesCount +
+            secondSelectedClothesPrice * secondSelectedClothesCount,
+          washingMethod:
+            normalLaundry && specialLaundry
+              ? "일반세탁, 특수세탁"
+              : normalLaundry
+              ? "일반세탁"
+              : specialLaundry
+              ? "특수세탁"
+              : null,
+          pickupDate: formattedDate(date),
+          deliveryDate: calculateDateAndFormatToKoreanLong(date),
+          deliveryLocation: deliveryLocation,
         })
         .then(function (response) {
           alert(response);
@@ -179,78 +271,102 @@ function Order() {
     }
   }
 
-  function addressChangeHandler(e) {
-    const selectedAddressId = e.target.value;
-    setAddressId(selectedAddressId);
-
-    const selectedAddress = addresses.find(
-      (address) => address.addressId == selectedAddressId
-    );
-    if (selectedAddress) {
-      setAddressName(selectedAddress.addressName);
-      setAddressDetail(selectedAddress.addressDetail);
-      setAddressZipcode(selectedAddress.addressZipcode);
-    }
-  }
-
   return (
     <OrderLayout>
       <Title>주문내용</Title>
-      {Array(selectCount)
-        .fill()
-        .map((_, index) => (
-          <Row key={index}>
-            <RowRight>
-              <Select name="" id="" onChange={handleClothesSelect}>
-                <option value="">세탁할 의류를 선택하세요</option>
-                {clothesDummy.map((clothes) => (
-                  <option key={clothes.clothesId} value={clothes.clothesName}>
-                    {clothes.clothesName}
-                  </option>
-                ))}
-              </Select>
-              {selectedClothesPrice === "" ? null : (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                >
-                  <Count>
-                    <FontAwesomeIcon
-                      icon={faMinus}
-                      onClick={countMinusHandler}
-                      style={{
-                        backgroundColor: "rgb(232,234,237)",
-                        padding: "4px",
-                      }}
-                    />
-                    <CountText>{count}</CountText>
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      onClick={countPlusHandler}
-                      style={{
-                        backgroundColor: "rgb(232,234,237)",
-                        padding: "4px",
-                      }}
-                    />
-                  </Count>
+      <Row>
+        <RowRight>
+          <Select name="" id="" onChange={firstClothesChangeHandler}>
+            <option value="">세탁할 의류를 선택하세요</option>
+            {clothesDummy.map((clothes) => (
+              <option key={clothes.clothesId} value={clothes.clothesId}>
+                {clothes.clothesName}
+              </option>
+            ))}
+          </Select>
+          {firstSelectedClothesPrice === "" ? null : (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Count>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  onClick={firstCountMinusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+                <CountText>{firstSelectedClothesCount}</CountText>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  onClick={firstCountPlusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+              </Count>
 
-                  <ClothesPrice>
-                    {(parseInt(selectedClothesPrice) * count).toLocaleString()}
-                    원
-                  </ClothesPrice>
-                </div>
-              )}
-            </RowRight>
-            {selectedClothesPrice === "" ? null : (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ fontSize: "25px" }}
-                onClick={() => {
-                  if (!(selectCount === 1)) setSelectCount(selectCount - 1);
-                }}
-              />
-            )}
-          </Row>
-        ))}
+              <ClothesPrice>
+                {(
+                  parseInt(firstSelectedClothesPrice) *
+                  firstSelectedClothesCount
+                ).toLocaleString()}
+                원
+              </ClothesPrice>
+            </div>
+          )}
+        </RowRight>
+        {firstSelectedClothesPrice === "" ? null : (
+          <FontAwesomeIcon icon={faTrash} style={{ fontSize: "25px" }} />
+        )}
+      </Row>
+
+      <Row>
+        <RowRight>
+          <Select name="" id="" onChange={secondClothesChangeHandler}>
+            <option value="">세탁할 의류를 선택하세요</option>
+            {clothesDummy.map((clothes) => (
+              <option key={clothes.clothesId} value={clothes.clothesId}>
+                {clothes.clothesName}
+              </option>
+            ))}
+          </Select>
+          {secondSelectedClothesPrice === "" ? null : (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Count>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  onClick={secondCountMinusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+                <CountText>{secondSelectedClothesCount}</CountText>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  onClick={secondCountPlusHandler}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "4px",
+                  }}
+                />
+              </Count>
+
+              <ClothesPrice>
+                {(
+                  parseInt(secondSelectedClothesPrice) *
+                  secondSelectedClothesCount
+                ).toLocaleString()}
+                원
+              </ClothesPrice>
+            </div>
+          )}
+        </RowRight>
+        {secondSelectedClothesPrice === "" ? null : (
+          <FontAwesomeIcon icon={faTrash} style={{ fontSize: "25px" }} />
+        )}
+      </Row>
       <div
         style={{
           display: "flex",
@@ -264,9 +380,6 @@ function Order() {
             backgroundColor: "rgb(232,234,237)",
             padding: "8px",
             fontSize: "18px",
-          }}
-          onClick={() => {
-            setSelectCount(selectCount + 1);
           }}
         />
       </div>
