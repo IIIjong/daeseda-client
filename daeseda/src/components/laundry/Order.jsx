@@ -84,7 +84,7 @@ function Order() {
   const handleClothesSelect = (e) => {
     const selectedClothesName = e.target.value;
     const selectedClothesItem = clothesDummy.find(
-      (clothes) => clothes.clothesName === selectedClothesName
+      (clothes) => clothes.clothesName == selectedClothesName
     );
 
     if (selectedClothesItem) {
@@ -106,10 +106,10 @@ function Order() {
   }
 
   const [addresses, setAddresses] = useState([]);
-  const [addressId, setAddressId] = useState("")
-  const [addressName, setAddressName] = useState("")
-  const [addressDetail, setAddressDetail] = useState("")
-  const [addressZipcode, setAddressZipcode] = useState("")
+  const [addressId, setAddressId] = useState("");
+  const [addressName, setAddressName] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
+  const [addressZipcode, setAddressZipcode] = useState("");
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) {
@@ -121,10 +121,17 @@ function Order() {
         })
         .then((response) => {
           setAddresses(response.data); // 주소 목록 데이터 설정
-          setAddressId(response.data[0].addressId);
-          setAddressName(response.data[0].addressName)
-          setAddressDetail(response.data[0].addressDetail)
-          setAddressZipcode(response.data[0].addressZipcode)
+          setAddressId(response.data[0].addressId); // 첫 번째 주소를 선택 (선택된 주소의 ID를 설정)
+          const selectedAddress = response.data.find(
+            (address) => address.addressId == response.data[0].addressId
+          );
+
+          if (selectedAddress) {
+            // 선택한 주소 정보를 설정
+            setAddressName(selectedAddress.addressName);
+            setAddressDetail(selectedAddress.addressDetail);
+            setAddressZipcode(selectedAddress.addressZipcode);
+          }
         })
         .catch((error) => {
           console.error("주소 목록을 가져오는 중 에러 발생:", error);
@@ -137,9 +144,52 @@ function Order() {
     else setFirstTermsWarningMessage(false);
     if (!secondTerms) setSecondTermsWarningMessage(true);
     else setSecondTermsWarningMessage(false);
+
     if (firstTerms && secondTerms) {
-      // axios 코드 추가하기
-      console.log(addressId, addressName, addressDetail, addressZipcode)
+      axios
+        .post("http://localhost:8088/orders/request", {
+          address: {
+            addressId: addressId,
+            addressName: addressName,
+            addressDetail: addressDetail,
+            addressZipcode: addressZipcode,
+          },
+          clothesCount: [
+            {
+              clothes: {
+                clothesId: 1,
+                clothesName: "흰색바지",
+                categoryId: 1,
+              },
+              count: 5,
+            },
+          ],
+          totalPrice: 10000,
+          washingMethod: "DELICATE",
+          pickupDate: "2023-10-10",
+          deliveryDate: "2023-10-15",
+          deliveryLocation: "123 Main St",
+        })
+        .then(function (response) {
+          alert(response);
+        })
+        .catch(function (error) {
+          alert(error);
+        });
+    }
+  }
+
+  function addressChangeHandler(e) {
+    const selectedAddressId = e.target.value;
+    setAddressId(selectedAddressId);
+
+    const selectedAddress = addresses.find(
+      (address) => address.addressId == selectedAddressId
+    );
+    if (selectedAddress) {
+      setAddressName(selectedAddress.addressName);
+      setAddressDetail(selectedAddress.addressDetail);
+      setAddressZipcode(selectedAddress.addressZipcode);
     }
   }
 
@@ -249,14 +299,10 @@ function Order() {
           name=""
           id=""
           style={{ fontSize: "16px" }}
+          onChange={addressChangeHandler}
         >
           {addresses.map((address) => (
-            <option key={address.addressId} value={address.addressDetail} onChange={()=>{
-          setAddressId(address.addressId);
-          setAddressName(address.addressName)
-          setAddressDetail(address.addressDetail)
-          setAddressZipcode(address.addressZipcode)
-            }}>
+            <option key={address.addressId} value={address.addressId}>
               ({address.addressZipcode}) {address.addressDetail}
             </option>
           ))}
