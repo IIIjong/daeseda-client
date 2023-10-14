@@ -191,28 +191,21 @@ function Order() {
       setSecondSelectedClothesCount(secondSelectedClothesCount - 1);
   }
 
-  //3일 후의 날짜를 리턴하는 함수, 배송예정일을 안내함
-  function calculateDateAndFormatToKoreanLong(date) {
-    const weekdays = [
-      "일요일",
-      "월요일",
-      "화요일",
-      "수요일",
-      "목요일",
-      "금요일",
-      "토요일",
-    ];
+  //몇일 후의 날짜를 리턴하는 함수, 아무 값도 넣지 않으면 오늘 날짜를 리턴
+  function addDaysToDate(inputDate, days) {
+    const date = new Date(inputDate);
+    date.setDate(date.getDate() + days);
 
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 3);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
 
-    const year = newDate.getFullYear();
-    const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
-    const day = newDate.getDate().toString().padStart(2, "0");
-    const dayOfWeek = weekdays[newDate.getDay()];
-
-    return `${year}년 ${month}월 ${day}일 ${dayOfWeek}`;
+    return `${year}-${month}-${day}`;
   }
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
   function orderHandler() {
     if (!firstTerms) setFirstTermsWarningMessage(true);
@@ -222,51 +215,55 @@ function Order() {
 
     if (firstTerms && secondTerms) {
       axios
-        .post("http://localhost:8088/orders/request", {
-          address: {
-            addressId: addressId,
-            addressName: addressName,
-            addressDetail: addressDetail,
-            addressZipcode: addressZipcode,
+        .post(
+          "http://localhost:8088/orders/request",
+          {
+            address: {
+              addressId: addressId,
+              addressName: addressName,
+              addressDetail: addressDetail,
+              addressZipcode: addressZipcode,
+            },
+            clothesCount: [
+              {
+                clothes: {
+                  clothesId: firstSelectedClothesId,
+                  clothesName: firstSelectedClothesName,
+                  categoryId: firstSelectedCategoryId,
+                },
+                count: firstSelectedClothesCount,
+              },
+              {
+                clothes: {
+                  clothesId: secondSelectedClothesId,
+                  clothesName: secondSelectedClothesName,
+                  categoryId: secondSelectedCategoryId,
+                },
+                count: secondSelectedClothesCount,
+              },
+            ],
+            totalPrice:
+              firstSelectedClothesPrice * firstSelectedClothesCount +
+              secondSelectedClothesPrice * secondSelectedClothesCount,
+            washingMethod:
+              normalLaundry && specialLaundry
+                ? "일반세탁, 특수세탁"
+                : normalLaundry
+                ? "일반세탁"
+                : specialLaundry
+                ? "특수세탁"
+                : null,
+            pickupDate: addDaysToDate(new Date(date), 0),
+            deliveryDate: addDaysToDate(new Date(date), 3),
+            deliveryLocation: deliveryLocation,
           },
-          clothesCount: [
-            {
-              clothes: {
-                clothesId: firstSelectedClothesId,
-                clothesName: firstSelectedClothesName,
-                categoryId: firstSelectedCategoryId,
-              },
-              count: firstSelectedClothesCount,
-            },
-            {
-              clothes: {
-                clothesId: secondSelectedClothesId,
-                clothesName: secondSelectedClothesName,
-                categoryId: secondSelectedCategoryId,
-              },
-              count: secondSelectedClothesCount,
-            },
-          ],
-          totalPrice:
-            firstSelectedClothesPrice * firstSelectedClothesCount +
-            secondSelectedClothesPrice * secondSelectedClothesCount,
-          washingMethod:
-            normalLaundry && specialLaundry
-              ? "일반세탁, 특수세탁"
-              : normalLaundry
-              ? "일반세탁"
-              : specialLaundry
-              ? "특수세탁"
-              : null,
-          pickupDate: formattedDate(date),
-          deliveryDate: calculateDateAndFormatToKoreanLong(date),
-          deliveryLocation: deliveryLocation,
-        })
+          { headers }
+        )
         .then(function (response) {
-          alert(response);
+          alert("주문 성공");
         })
         .catch(function (error) {
-          alert(error);
+          console.log(error);
         });
     }
   }
