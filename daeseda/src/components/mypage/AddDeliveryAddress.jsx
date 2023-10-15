@@ -70,7 +70,7 @@ const AddDeliveryAddress = () => {
       .then((response) => {
         // 성공적으로 주소를 추가한 경우
         console.log("주소 추가 성공:", response.data);
-        navigate("/mypage/");
+        navigate("/myinfo/");
       })
       .catch((error) => {
         // 주소 추가 중 에러 발생한 경우

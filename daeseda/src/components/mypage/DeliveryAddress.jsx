@@ -57,7 +57,7 @@ function DeliveryAddress() {
           addresses.filter((address) => address.addressId !== addressId)
         );
         alert("주소가 삭제되었습니다.");
-        navigate("/mypage"); //페이지 갱신
+        navigate("/myinfo"); //페이지 갱신
       })
       .catch((error) => {
         console.error("주소 삭제 중 에러 발생:", error);

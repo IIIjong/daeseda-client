@@ -1,66 +1,84 @@
-import React from "react";
+import React, { useState } from 'react';
 import styled from "styled-components";
 import Coin from "../../assets/images/coin.png";
 import Clean from "../../assets/images/clean.png";
 import Time from "../../assets/images/time.png";
+import { useNavigate } from "react-router-dom";
 
 const BoxContainer = styled.div`
+  display: flex;
   height: 565px;
   background: linear-gradient(45deg, #5d8df2, #72edf2);
+  flex-direction: column;
+ align-items: center;
+  @media (max-width: 768px) {
+    height: 250px;
+  }
+`;
+const Background = styled.div`
   display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  @media (max-width: 768px) {
+  margin-top: 15px;
+  }
+  
 `;
 
 const Text = styled.p`
   color: #ffffff;
   font-size: 48px;
+  margin: 20px;
+  font-size: 48px;
   font-weight: 700;
-  left: 300px;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  top: 180px;
+  @media (max-width: 768px) {
+    text-align: center; /* 화면이 작아질 때 가운데 정렬 */
+    font-size: 20px;
+  }
 `;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+const Content = styled.div`
+
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+
+`;
+const ContentWrap = styled.div`
+  
+  display: flex;
+  flex-direction: column;
+  margin-top: 150px;
+  @media (max-width: 768px) {
+    text-align: center; /* 화면이 작아질 때 가운데 정렬 */
+    margin-top: 50px;
+  }
+`;
+
 const Text2 = styled.p`
-  color: black;
+color: black;
   font-size: 36px;
   font-weight: 700;
-  left: 300px;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  top: 700px;
 `;
 
 const Box = styled.div`
   float: left;
   margin-right: 30px;
 `;
-const Box1 = styled(Box)`
-  width: 350px;
-  height: 300px;
-  border: 1px solid #d9d9d9;
-  border-radius: 20px;
-  text-align: center;
-  padding: 30px;
-  margin:10px;
-`;
-const Box2 = styled(Box)`
-  width: 350px;
-  height: 300px;
-  border: 1px solid #d9d9d9;
-  border-radius: 20px;
-  text-align: center;
-  padding: 30px;
-  margin:10px;
-`;
-const Box3 = styled(Box)`
-  width: 350px;
-  height: 300px;
-  border: 1px solid #d9d9d9;
-  border-radius: 20px;
-  text-align: center;
-  padding: 30px;
-  margin:10px;
+const Box1 = styled(Box)` width: 350px;
+height: 250px;
+border: 1px solid #d9d9d9;
+border-radius: 20px;
+text-align: center;
+padding:50px;
+margin:10px;
 `;
 
 const Image = styled.img`
@@ -81,29 +99,48 @@ const Button = styled.button`
   border: 1px ridge #ffffff;
   box-shadow: 1px 1px 0px 2px rgba (0, 0, 0, 0.3);
   cursor: pointer;
+  @media (max-width: 768px) {
+    margin: 10px;
+  }
+  
 `;
 
 const P = styled.p`
   font-size: 19px;
 `;
 
+const ReviewWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+
+
+
 const Index = () => {
+  const navigate = useNavigate();
   return (
     <BoxContainer>
-      <Text>
-        대신 세탁해 드립니다
-        <br />
-        당신의 편리한 일상 생활을 도와드리겠습니다
-        <br />
-        <Button>신청하기</Button>
+    <Background>
+      <Text>대신세탁해드립니다</Text>
+      <Text>당신의 편리한 일상 생활을 도와드리겠습니다</Text>
+      <ButtonWrap>
+      <Button onClick={() => navigate("laundry")} >신청하기</Button>
         <Button>이용방법</Button>
-      </Text>
-      <Text2>
+      </ButtonWrap>
+      
+    </Background>
+    <ContentWrap>
+    <Text2>
         대세다를 선택해야하는 이유
-        <br />
-        <br />
-        <Box1>
-          신속정확
+      </Text2>
+     <Content>
+     
+      <Box1>
+        <h2>
+        신속정확
+        </h2>
+          
           <Image src={Coin} />
           <br />
           <P>
@@ -111,25 +148,39 @@ const Index = () => {
             신청해주세요
           </P>
         </Box1>
-        <Box2>
-          오염케어
+     <Box1>
+     <h2>
+        오염케어
+        </h2>
           <Image src={Clean} />
           <br />
           <P>
-            신청 접수시 2시간 내 즉시 수거해드립니다 급히 세탁이 필요할 때도
-            신청해주세요
+          얼룩진 옷 때문에 걱정 많으셨죠?
+          완벽한 요염 제거를 해드리겠습니다
           </P>
-        </Box2>
-        <Box3>
-          합리적인 가격
+        </Box1>
+      <Box1>
+      <h2>
+      합리적인 가격
+        </h2>
+          
           <Image src={Time} />
           <br />
           <P>
-            신청 접수시 2시간 내 즉시 수거해드립니다 급히 세탁이 필요할 때도
-            신청해주세요
+          
+          옵션에 따라 별도 추가 요금 없이
+          가격표 가격 그대로 이용할 수 있습니다
           </P>
-        </Box3>
+        </Box1>
+        </Content>
+    </ContentWrap>
+    <ReviewWrap>
+    <Text2>
+      이용후기
       </Text2>
+      <Content>
+      </Content>
+    </ReviewWrap>
     </BoxContainer>
   );
 };
