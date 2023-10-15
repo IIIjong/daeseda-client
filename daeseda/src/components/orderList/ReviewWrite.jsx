@@ -4,29 +4,65 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { useState } from "react";
 import Button from "../common/Button";
+import axios from "axios";
 
 function ReviewWrite() {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const [selectedImage, setSelectedImage] = useState(null);
+  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState("");
+  const [orderId, setOrderId] = useState(30);
   const addImgHandler = (event) => {
     const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        setSelectedImage(e.target.result);
-      };
-
-      reader.readAsDataURL(file);
-    }
+    setSelectedImage(file);
   };
+
+  function reviewWriteHandler() {
+    const formData = new FormData();
+
+    if (selectedImage) {
+      formData.append("image", selectedImage);
+    }
+    formData.append("reviewTitle", title);
+    formData.append("orderId", orderId);
+    formData.append("rating", rating);
+    formData.append("reviewContent", content);
+
+    axios
+      .post("http://localhost:8088/review/register", formData, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("리뷰 성공:", response);
+      })
+      .catch((error) => {
+        console.error("리뷰 실패:", error);
+      });
+  }
 
   return (
     <ReviewWriteLayout>
       <Title>리뷰작성</Title>
+      <TitleInput
+        type="text"
+        placeholder="리뷰 제목을 입력하세요"
+        value={title}
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
       <p>사진</p>
       {selectedImage ? (
-        <ReviewImg src={selectedImage} alt="리뷰 사진" />
+        <ReviewImg src={URL.createObjectURL(selectedImage)} alt="리뷰 사진" />
       ) : (
         <AddImg>
           <label>
@@ -42,15 +78,26 @@ function ReviewWrite() {
       )}
       <p>평점</p>
       <Rating>
-        <FontAwesomeIcon icon={faStar} style={{ color: "#ffc700" }} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FontAwesomeIcon
+            key={star}
+            icon={faStar}
+            style={{
+              color: star <= rating ? "#ffc700" : "#d9d9d9",
+              cursor: "pointer",
+            }}
+            onClick={() => setRating(star)}
+          />
+        ))}
       </Rating>
       <p>내용</p>
-      <Summary />
-      <Button text="리뷰 작성하기" size="150px" />
+      <Summary
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+        }}
+      />
+      <Button text="리뷰 작성하기" size="150px" onClick={reviewWriteHandler} />
     </ReviewWriteLayout>
   );
 }
@@ -98,4 +145,8 @@ const Summary = styled.textarea`
   font-size: 18px;
 `;
 
+const TitleInput = styled.input`
+  border-bottom: 1px solid rgb(232, 234, 237);
+  font-size: 18px;
+`;
 export default ReviewWrite;

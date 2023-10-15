@@ -3,7 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import review from "../../assets/images/review.png";
+import axios from "axios"
 function Review() {
+  axios
+    .get("http://localhost:8088/review/list")
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   return (
     <ReviewLayout>
       <ReviewArticle>
@@ -37,7 +46,7 @@ const ReviewArticle = styled.article`
 const Img = styled.img`
   width: 200px;
   height: 200px;
-  border-radius:5px;
+  border-radius: 5px;
 `;
 
 const Rating = styled.div`

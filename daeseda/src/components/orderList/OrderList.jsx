@@ -37,7 +37,7 @@ function OrderList() {
             <Service>{list[2]}</Service>
             <Price>{list[3]}</Price>
             <Status>{list[4]}</Status>
-            <StatusButton onClick={openModal}>취소하기</StatusButton>
+            <StatusButton onClick={openModal}>리뷰 작성하기</StatusButton>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
               {/* <DeliveryDriver/> */}
               <ReviewWrite/>
