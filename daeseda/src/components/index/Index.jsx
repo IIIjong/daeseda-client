@@ -66,6 +66,8 @@ const Text2 = styled.p`
 color: black;
   font-size: 36px;
   font-weight: 700;
+  text-align:center;
+  margin-top:20px;
 `;
 
 const Box = styled.div`

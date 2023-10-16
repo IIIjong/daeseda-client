@@ -6,7 +6,7 @@ import { useState } from "react";
 import Button from "../common/Button";
 import axios from "axios";
 
-function ReviewWrite() {
+function ReviewWrite({orderId}) {
   const token = localStorage.getItem("token");
 
   const headers = {
@@ -17,7 +17,6 @@ function ReviewWrite() {
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
-  const [orderId, setOrderId] = useState(30);
   const addImgHandler = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
