@@ -1,40 +1,67 @@
-// 작성한 리뷰 목록을 출력하는 컴포넌트
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import review from "../../assets/images/review.png";
-import axios from "axios"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; 
+
 function Review() {
-  axios
-    .get("http://localhost:8088/review/list")
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  const [reviews, setReviews] = useState([]);
+  const groupSize = 5; //슬라이드당 다섯개 표현
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8088/review/list")
+      .then(function (response) {
+        setReviews(response.data);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
+  const groupedReviews = [];
+  for (let i = 0; i < reviews.length; i += groupSize) {
+    groupedReviews.push(reviews.slice(i, i + groupSize));
+  }
+
   return (
-    <ReviewLayout>
-      <ReviewArticle>
-        <Img src={review} alt="리뷰 사진" />
-        <Rating>
-          <FontAwesomeIcon icon={faStar} style={{ color: "#ffc700" }} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-        </Rating>
-        <ReviewInfo>
-          <p>좋은 세탁이네요</p>
-          <Small>홍길동</Small>
-          <Small>18시간 전</Small>
-        </ReviewInfo>
-      </ReviewArticle>
-    </ReviewLayout>
+    <Carousel>
+      {groupedReviews.map((group, groupIndex) => (
+        <ReviewLayout key={groupIndex}>
+          {group.map((reviewData, index) => (
+            <ReviewArticle key={index}>
+              <Img src={reviewData.imageUrl} alt={`Review Image ${index}`} />
+              <Rating>
+                {Array(Math.round(reviewData.rating)).fill().map((_, i) => (
+                  <FontAwesomeIcon key={i} icon={faStar} style={{ color: "#ffc700" }} />
+                ))}
+                {Array(5 - Math.round(reviewData.rating)).fill().map((_, i) => (
+                  <FontAwesomeIcon key={i} icon={faStar} />
+                ))}
+              </Rating>
+              <ReviewInfo>
+                <p>{reviewData.reviewTitle}</p>
+                <Small>{reviewData.reviewContent}</Small>
+              </ReviewInfo>
+            </ReviewArticle>
+          ))}
+        </ReviewLayout>
+      ))}
+    </Carousel>
   );
 }
 
-const ReviewLayout = styled.section``;
+
+const ReviewLayout = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
 
 const ReviewArticle = styled.article`
   width: 200px;
@@ -44,9 +71,10 @@ const ReviewArticle = styled.article`
 `;
 
 const Img = styled.img`
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 7px #666;
   width: 200px;
   height: 200px;
-  border-radius: 5px;
 `;
 
 const Rating = styled.div`
@@ -63,7 +91,7 @@ const ReviewInfo = styled.div`
 `;
 
 const Small = styled.p`
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 export default Review;

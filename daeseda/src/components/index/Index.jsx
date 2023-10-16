@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
+import Review from "../review/Review"
 import Coin from "../../assets/images/coin.png";
 import Clean from "../../assets/images/clean.png";
 import Time from "../../assets/images/time.png";
@@ -78,6 +79,7 @@ const Box1 = styled(Box)` width: 350px;
 height: 250px;
 border: 1px solid #d9d9d9;
 border-radius: 20px;
+width: 250px;
 text-align: center;
 padding:50px;
 margin:10px;
@@ -108,7 +110,7 @@ const Button = styled.button`
 `;
 
 const P = styled.p`
-  font-size: 19px;
+  font-size: 18px;
 `;
 
 const ReviewWrap = styled.div`
@@ -158,7 +160,8 @@ const Index = () => {
           <br />
           <P>
           얼룩진 옷 때문에 걱정 많으셨죠?
-          완벽한 요염 제거를 해드리겠습니다
+          <br />
+          완벽히 요염 제거를 해드리겠습니다
           </P>
         </Box1>
       <Box1>
@@ -181,6 +184,7 @@ const Index = () => {
       이용후기
       </Text2>
       <Content>
+        <Review/>
       </Content>
     </ReviewWrap>
     </BoxContainer>
