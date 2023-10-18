@@ -7,17 +7,29 @@ import ReviewWrite from "./ReviewWrite";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import OrderDetail from "./OrderDetail";
 
 function OrderList() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
+  const [isReviewWriteModalOpen, setIsReviewWriteModalOpen] = useState(false);
+
+  const openOrderDetailModal = () => {
+    setIsOrderDetailModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeOrderDetailModal = () => {
+    setIsOrderDetailModalOpen(false);
+  };
+
+  const openReviewWriteModal = () => {
+    setIsReviewWriteModalOpen(true);
+  };
+
+  const closeReviewWriteModal = () => {
+    setIsReviewWriteModalOpen(false);
   };
 
   // 2023-01-01로 오는 데이터를 2023년 01월 01일로 변경
@@ -46,17 +58,20 @@ function OrderList() {
   }, []);
 
   // 결제하기 테스트용
-
   function paymentHandler(order) {
-    console.log(order)
+    //난수 생성, 주문번호에 사용
+    const array = new Uint32Array(1); // 32비트 정수를 생성
+    crypto.getRandomValues(array);
+    const randomNumber = array[0];
+
     const { IMP } = window;
     IMP.init("imp33350778");
     IMP.request_pay(
       {
         pg: "html5_inicis", // PG사 선택 (예: html5_inicis, kakao, uplus, nice, kcp 등)
         pay_method: "card", // 결제 수단 선택 (예: card, vbank, trans 등)
-        merchant_uid: order.orderId, // 주문 번호 (고유하게 생성)
-        name: order.user.userNickname+"님의 세탁", // 상품명
+        merchant_uid: randomNumber, // 주문 번호 (고유하게 생성)
+        name: order.user.userNickname + "님의 세탁", // 상품명
         amount: order.totalPrice, // 결제 금액
         buyer_email: order.user.userEmail, // 구매자 이메일
         buyer_name: order.user.userName, // 구매자 이름
@@ -69,7 +84,7 @@ function OrderList() {
         if (rsp.success) {
           // 결제 성공 시의 처리
           alert("결제가 성공적으로 이루어졌습니다.");
-          console.log(rsp)
+          console.log(rsp);
         } else {
           // 결제 실패 시의 처리
           alert("결제에 실패했습니다. 에러 메시지:" + rsp.error_msg);
@@ -107,7 +122,13 @@ function OrderList() {
                   paddingLeft: "50px",
                 }}
               />
-              <Number>{order.orderId}</Number>
+              <Number onClick={openOrderDetailModal}>{order.orderId}</Number>
+              <Modal
+                isOpen={isOrderDetailModalOpen}
+                onClose={closeOrderDetailModal}
+              >
+                <OrderDetail order={order} formatDate={formatDate} />
+              </Modal>
               <Date>{formatDate(order.pickupDate)}</Date>
               <Date>{formatDate(order.deliveryDate)}</Date>
               <Service>{order.washingMethod}</Service>
@@ -129,12 +150,23 @@ function OrderList() {
               {/* 테스트를 위해 ORDER 상태일 때 리뷰 작성하기가 나오도록 함, 수정 필요 */}
               {order.orderStatus === "ORDER" && (
                 <>
-                  {/* <StatusButton onClick={openModal}>리뷰쓰기</StatusButton>
-                  <Modal isOpen={isModalOpen} onClose={closeModal}>
+                  <StatusButton onClick={openReviewWriteModal}>
+                    리뷰쓰기
+                  </StatusButton>
+                  <Modal
+                    isOpen={isReviewWriteModalOpen}
+                    onClose={closeReviewWriteModal}
+                  >
                     <ReviewWrite orderId={order.orderId} />
-                  </Modal> */}
-                  <button onClick={()=>{
-                    paymentHandler(order)}}>결제하기</button>
+                  </Modal>
+
+                  <StatusButton
+                    onClick={() => {
+                      paymentHandler(order);
+                    }}
+                  >
+                    결제하기
+                  </StatusButton>
                 </>
               )}
             </List>

@@ -2,40 +2,39 @@
 import styled from "styled-components";
 import Button from "../common/Button";
 import laundry from "../../assets/images/laundry.png";
-function Complete() {
+import { useNavigate } from "react-router-dom";
+function Complete({pickupDate, addressDetail, deliveryLocation}) {
+  const navigate = useNavigate();
   return (
     <CompleteLayout>
       <Header>
         <Img src={laundry} alt="" />
-        <Title>주문이 완료되었습니다</Title>
-        <p>2023.09.11 주문하신 세탁의</p>
+        <p>{pickupDate} 주문하신 세탁의</p>
         <p>
-          주문번호는<BlueBold>202309110001</BlueBold>입니다
+          주문이<BlueBold>완료</BlueBold>되었습니다
         </p>
         <p>
-          <RedBold>9/11(월) 오후 11시</RedBold>까지 세탁물을
-          <RedBold>문 앞</RedBold>에 위치시켜주세요
+          <RedBold>{pickupDate}</RedBold>까지 세탁물을
+          <RedBold>{deliveryLocation}</RedBold>에 위치시켜주세요
         </p>
       </Header>
       <Main>
         <p>주문정보</p>
         <Row>
-          <p>수거시간</p>
-          <p>9/11(월) 오후 11시부터</p>
+          <p>수거날짜</p>
+          <p>{pickupDate}</p>
         </Row>
         <Row>
           <p>배송주소</p>
-          <p>서울시 노원구 101동 101호</p>
+          <p>{addressDetail}</p>
         </Row>
-        <Row>
+        <Row style={{marginBottom:"20px"}}>
           <p>수거/배송위치</p>
-          <p>문 앞</p>
+          <p>{deliveryLocation}</p>
         </Row>
-        <Row style={{ marginBottom: "20px" }}>
-          <p>공동현관비밀번호</p>
-          <p>1234**</p>
-        </Row>
-        <Button text="주문내역 확인하기" />
+        <Button text="주문내역 확인하기" onClick={()=>{
+          navigate("/orderlist")
+        }}/>
       </Main>
     </CompleteLayout>
   );
@@ -61,6 +60,7 @@ const Img = styled.img`
   background-color: rgb(232, 234, 237);
   border-radius: 35%;
   padding: 12px;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.p`

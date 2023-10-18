@@ -11,6 +11,9 @@ import WarningMessage from "../common/WarningMessage";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Complete from "./Complete";
+import Modal from "../common/Modal";
+import AddDeliveryAddress from "../mypage/AddDeliveryAddress";
 
 function Order() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -32,6 +35,7 @@ function Order() {
   const [secondTermsWarningMessage, setSecondTermsWarningMessage] =
     useState(false);
   const [deliveryLocation, setDeliveryLocation] = useState("문 앞");
+  const [isAddAddressModalOpen, setIsAddAdressModalOpen] = useState(false);
   // 날짜 관련 함수, 요일을 반환하는 함수 선언식으로 정의
   function getDayOfWeek(date) {
     const daysOfWeek = [
@@ -101,7 +105,7 @@ function Order() {
           console.error("주소 목록을 가져오는 중 에러 발생:", error);
         });
     }
-  }, []);
+  }, [isAddAddressModalOpen]);
 
   function addressChangeHandler(e) {
     const selectedAddressId = e.target.value;
@@ -270,182 +274,233 @@ function Order() {
           { headers }
         )
         .then(function (response) {
-          alert("주문에 성공했습니다. 주문내역으로 이동합니다");
-          navigate("/orderlist");
+          setOrderComplete(true);
         })
         .catch(function (error) {
           alert("주문에 실패했습니다");
           console.log("주문 실패 오류 발생:", error);
+          setOrderComplete(false);
         });
     }
   }
 
+  const openAddAddressModal = () => {
+    setIsAddAdressModalOpen(true);
+  };
+
+  const closeAddAddressModal = () => {
+    setIsAddAdressModalOpen(false);
+  };
+
+  const [orderComplete, setOrderComplete] = useState(false);
   return (
-    <OrderLayout>
-      <Title>주문내용</Title>
-      {clothesSelections.map((selection, index) => (
-        <div key={index}>
-          <Row>
-            <RowRight>
-              <Select
-                name=""
-                id=""
-                onChange={(e) => clothesChangeHandler(e, index)}
-              >
-                <option value="">세탁할 의류를 선택하세요</option>
-                {clothesDummy.map((clothes) => (
-                  <option key={clothes.clothesId} value={clothes.clothesId}>
-                    {clothes.clothesName}
-                  </option>
-                ))}
-              </Select>
-              {selection.clothesPrice === "" ? null : (
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                >
-                  <Count>
-                    <FontAwesomeIcon
-                      icon={faMinus}
-                      onClick={() => countMinusHandler(index)}
+    <div>
+      {orderComplete === false ? (
+        <>
+          <OrderLayout>
+            <Title>주문내용</Title>
+            {clothesSelections.map((selection, index) => (
+              <div key={index}>
+                <Row>
+                  <RowRight>
+                    <Select
+                      name=""
+                      id=""
+                      onChange={(e) => clothesChangeHandler(e, index)}
+                    >
+                      <option value="">세탁할 의류를 선택하세요</option>
+                      {clothesDummy.map((clothes) => (
+                        <option
+                          key={clothes.clothesId}
+                          value={clothes.clothesId}
+                        >
+                          {clothes.clothesName}
+                        </option>
+                      ))}
+                    </Select>
+                    {selection.clothesPrice === "" ? null : (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <Count>
+                          <FontAwesomeIcon
+                            icon={faMinus}
+                            onClick={() => countMinusHandler(index)}
+                            style={{
+                              backgroundColor: "rgb(232,234,237)",
+                              padding: "4px",
+                            }}
+                          />
+                          <CountText>{selection.clothesCount}</CountText>
+                          <FontAwesomeIcon
+                            icon={faPlus}
+                            onClick={() => countPlusHandler(index)}
+                            style={{
+                              backgroundColor: "rgb(232,234,237)",
+                              padding: "4px",
+                            }}
+                          />
+                        </Count>
+                        <ClothesPrice>
+                          {(
+                            parseInt(selection.clothesPrice) *
+                            selection.clothesCount
+                          ).toLocaleString()}
+                          원
+                        </ClothesPrice>
+                      </div>
+                    )}
+                  </RowRight>
+                  {selection.clothesPrice === "" ? null : (
+                    <div
                       style={{
-                        backgroundColor: "rgb(232,234,237)",
-                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        marginLeft: "10px",
                       }}
-                    />
-                    <CountText>{selection.clothesCount}</CountText>
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      onClick={() => countPlusHandler(index)}
-                      style={{
-                        backgroundColor: "rgb(232,234,237)",
-                        padding: "4px",
-                      }}
-                    />
-                  </Count>
-                  <ClothesPrice>
-                    {(
-                      parseInt(selection.clothesPrice) * selection.clothesCount
-                    ).toLocaleString()}
-                    원
-                  </ClothesPrice>
-                </div>
-              )}
-            </RowRight>
-            {selection.clothesPrice === "" ? null : (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginLeft: "10px",
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  style={{ fontSize: "25px", cursor: "pointer" }}
-                  onClick={() => removeClothesSelection(index)}
-                />
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        style={{ fontSize: "25px", cursor: "pointer" }}
+                        onClick={() => removeClothesSelection(index)}
+                      />
+                    </div>
+                  )}
+                </Row>
               </div>
-            )}
-          </Row>
-        </div>
-      ))}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          margin: "10px 0",
-        }}
-      >
-        <FontAwesomeIcon
-          icon={faPlus}
-          style={{
-            backgroundColor: "rgb(232,234,237)",
-            padding: "8px",
-            fontSize: "18px",
-            cursor: "pointer",
-          }}
-          onClick={addClothesSelection}
-        />
-      </div>
+            ))}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                margin: "10px 0",
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faPlus}
+                style={{
+                  backgroundColor: "rgb(232,234,237)",
+                  padding: "8px",
+                  fontSize: "18px",
+                  cursor: "pointer",
+                }}
+                onClick={addClothesSelection}
+              />
+            </div>
 
-      <div style={{ margin: "5px 0" }}></div>
-      <Row>
-        <p>세탁서비스</p>
-        {normalLaundry && specialLaundry ? (
-          <p>일반세탁, 특수세탁</p>
-        ) : normalLaundry ? (
-          <p>일반세탁</p>
-        ) : specialLaundry ? (
-          <p>특수세탁</p>
-        ) : null}
-      </Row>
-      <RequestMessage type="text" placeholder="요청사항 입력하기" />
-      <Title>수거/배송정보</Title>
-      <Row>
-        <p>수거시간</p>
-        <RowRight>{formattedDate(date)}</RowRight>
-      </Row>
+            <div style={{ margin: "5px 0" }}></div>
+            <Row>
+              <p>세탁서비스</p>
+              {normalLaundry && specialLaundry ? (
+                <p>일반세탁, 특수세탁</p>
+              ) : normalLaundry ? (
+                <p>일반세탁</p>
+              ) : specialLaundry ? (
+                <p>특수세탁</p>
+              ) : null}
+            </Row>
+            <RequestMessage type="text" placeholder="요청사항 입력하기" />
+            <Title>수거/배송정보</Title>
+            <Row>
+              <p>수거시간</p>
+              <RowRight>{formattedDate(date)}</RowRight>
+            </Row>
 
-      <Row>
-        <p>배송주소</p>
-        <select
-          name=""
-          id=""
-          style={{ fontSize: "16px" }}
-          onChange={addressChangeHandler}
-        >
-          {addresses.map((address) => (
-            <option key={address.addressId} value={address.addressId}>
-              ({address.addressZipcode}) {address.addressDetail}
-            </option>
-          ))}
-        </select>
-      </Row>
+            <Row>
+              <p>배송주소</p>
+              <RowRight>
+                <select
+                  name=""
+                  id=""
+                  style={{ fontSize: "16px" }}
+                  onChange={addressChangeHandler}
+                >
+                  {addresses.map((address) => (
+                    <option key={address.addressId} value={address.addressId} style={{textAlign:"right"}}>
+                      ({address.addressZipcode}) {address.addressDetail}
+                    </option>
+                  ))}
+                </select>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  style={{
+                    backgroundColor: "rgb(232,234,237)",
+                    padding: "8px",
+                  }}
+                  onClick={openAddAddressModal}
+                />
+                <Modal
+                  isOpen={isAddAddressModalOpen}
+                  onClose={closeAddAddressModal}
+                >
+                  <AddDeliveryAddress modal={true}/>
+                </Modal>
+              </RowRight>
+            </Row>
 
-      <Row style={{ borderBottom: "1px solid #111111", paddingBottom: "20px" }}>
-        <p>수거/배송위치</p>
-        <RowRight>
-          <p>{deliveryLocation}</p>
-          <Change src={change} onClick={deliveryLocationChangeHandler} />
-        </RowRight>
-      </Row>
-      <Title>이용안내</Title>
-      <Guide>
-        <GuideImg src={truck} alt="" />
-        <p>9/11(월) 오후 11시까지 세탁물을 문 앞에 위치시켜주세요</p>
-        <Check
-          onClick={() => {
-            setFirstTerms(!firstTerms);
-          }}
+            <Row
+              style={{
+                borderBottom: "1px solid #111111",
+                paddingBottom: "20px",
+              }}
+            >
+              <p>수거/배송위치</p>
+              <RowRight>
+                <p>{deliveryLocation}</p>
+                <Change src={change} onClick={deliveryLocationChangeHandler} />
+              </RowRight>
+            </Row>
+            <Title>이용안내</Title>
+            <Guide>
+              <GuideImg src={truck} alt="" />
+              <p>9/11(월) 오후 11시까지 세탁물을 문 앞에 위치시켜주세요</p>
+              <Check
+                onClick={() => {
+                  setFirstTerms(!firstTerms);
+                }}
+              />
+              {firstTermsWarningMessage ? (
+                <WarningMessage text="이용안내 사항을 확인하고 동의하세요" />
+              ) : null}
+            </Guide>
+            <Guide style={{ marginBottom: "20px" }}>
+              <GuideImg src={bill} alt="" />
+              <p>
+                세탁비는 수거 후 인수증에서 요금을 확인하신 후 7일 이내
+                결제해주세요
+              </p>
+              <Check
+                onClick={() => {
+                  setSecondTerms(!secondTerms);
+                }}
+              />
+              {secondTermsWarningMessage ? (
+                <WarningMessage text="이용안내 사항을 확인하고 동의하세요" />
+              ) : null}
+            </Guide>
+            <Button text="세탁 신청하기" onClick={orderHandler} />
+          </OrderLayout>
+        </>
+      ) : (
+        <Complete
+          pickupDate={formattedDate(date)}
+          addressDetail={addressDetail}
+          deliveryLocation={deliveryLocation}
         />
-        {firstTermsWarningMessage ? (
-          <WarningMessage text="이용안내 사항을 확인하고 동의하세요" />
-        ) : null}
-      </Guide>
-      <Guide style={{ marginBottom: "20px" }}>
-        <GuideImg src={bill} alt="" />
-        <p>
-          세탁비는 수거 후 인수증에서 요금을 확인하신 후 7일 이내 결제해주세요
-        </p>
-        <Check
-          onClick={() => {
-            setSecondTerms(!secondTerms);
-          }}
-        />
-        {secondTermsWarningMessage ? (
-          <WarningMessage text="이용안내 사항을 확인하고 동의하세요" />
-        ) : null}
-      </Guide>
-      <Button text="세탁 신청하기" onClick={orderHandler} />
-    </OrderLayout>
+      )}
+    </div>
   );
 }
 
 const OrderLayout = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 24px 48px;
+  padding: 24px 10%;
   gap: 8px;
 `;
 
@@ -463,6 +518,7 @@ const Row = styled.div`
 
 const RowRight = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
 `;
 

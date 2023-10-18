@@ -80,21 +80,22 @@ const Login = () => {
       setWarningMessageText("비밀번호를 입력하세요");
     } else {
       axios
-        .post(`${serverUrl}/users/authenticate`, loginInfo, { withCredentials: true })
+        .post(`${serverUrl}/users/authenticate`, loginInfo, {
+          withCredentials: true,
+        })
         .then(function (response) {
-          navigate("/")
-          localStorage.setItem('token', response.data.token); //token 이라는 이름으로 token값을 localStorage에 저장
+          navigate("/");
+          localStorage.setItem("token", response.data.token); //token 이라는 이름으로 token값을 localStorage에 저장
         })
         .catch(function (error) {
           setWarningMessageView(true);
-          setWarningMessageText("로그인에 실패하였습니다")
+          setWarningMessageText("로그인에 실패하였습니다");
         });
     }
   }
   return (
     <LoginIndex>
       <Image src={LoginIcon} />
-
       <h1>로그인</h1>
       <LoginBox>
         <Input
@@ -102,13 +103,24 @@ const Login = () => {
           placeholder="Email"
           onChange={emailChangeHandler}
           value={email}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              loginHandler();
+            }
+          }}
         />
         <Input
           type="password"
           placeholder="Password"
           onChange={passwordChangeHandler}
           value={password}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              loginHandler();
+            }
+          }}
         />
+
         <LoginButton onClick={loginHandler}>로그인</LoginButton>
         {warningMessageView ? (
           <WarningMessage text={warningMessageText} />

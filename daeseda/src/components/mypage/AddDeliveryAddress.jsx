@@ -35,17 +35,17 @@ const Wrap = styled.div`
   gap: 4px;
 `;
 
-const AddDeliveryAddress = () => {
+const AddDeliveryAddress = ({ modal }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [addressName, setAddressName] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [addressContent, setAddressContent] = useState("");
   const addressInfo = {
-    "addressName": addressName,
-    "addressDetail": addressContent + " " + addressDetail,
-    "addressZipcode": addressZipcode
-}
+    addressName: addressName,
+    addressDetail: addressContent + " " + addressDetail,
+    addressZipcode: addressZipcode,
+  };
   const navigate = useNavigate();
 
   const searchAddress = () => {
@@ -71,11 +71,13 @@ const AddDeliveryAddress = () => {
       .then((response) => {
         // 성공적으로 주소를 추가한 경우
         console.log("주소 추가 성공:", response.data);
-        navigate("/myinfo/");
+        if (!modal) navigate("/myinfo");
+        else alert("주소가 추가되었습니다")
       })
       .catch((error) => {
         // 주소 추가 중 에러 발생한 경우
         console.error("주소 추가 실패:", error);
+        alert("주소 추가에 실패하였습니다", error)
       });
   };
 
@@ -100,7 +102,11 @@ const AddDeliveryAddress = () => {
             value={addressZipcode}
             onChange={(e) => setAddressZipcode(e.target.value)}
           />
-          <SmallButton text="주소 찾기" onClick={searchAddress} style={{verticalAlign:"middle"}}/>
+          <SmallButton
+            text="주소 찾기"
+            onClick={searchAddress}
+            style={{ verticalAlign: "middle" }}
+          />
         </Wrap>
         <InfoRow
           label="주소"

@@ -43,6 +43,7 @@ function ReviewWrite({orderId}) {
       })
       .then((response) => {
         console.log("리뷰 성공:", response);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("리뷰 실패:", error);

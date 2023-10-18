@@ -17,7 +17,6 @@ function Review() {
       .get(`${serverUrl}/review/list`)
       .then(function (response) {
         setReviews(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
