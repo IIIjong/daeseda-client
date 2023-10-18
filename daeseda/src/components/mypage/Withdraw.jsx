@@ -39,6 +39,7 @@ const CheckWrap = styled.div`
 
 
 const Withdraw = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [user, setUser] = useState("");
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
@@ -46,7 +47,7 @@ const Withdraw = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8088/users/myInfo", {
+        .get(`${serverUrl}/users/myInfo`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -86,7 +87,7 @@ const Withdraw = () => {
     }
 
     axios
-      .delete("http://localhost:8088/users/delete", {
+      .delete(`${serverUrl}/users/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

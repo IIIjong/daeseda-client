@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function DeliveryAddress() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ function DeliveryAddress() {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8088/users/address/list", {
+        .get(`${serverUrl}/users/address/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,7 +44,7 @@ function DeliveryAddress() {
 
     axios
       .delete(
-        `http://localhost:8088/users/address/delete?addressId=${addressId}`,
+        `${serverUrl}/users/address/delete?addressId=${addressId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

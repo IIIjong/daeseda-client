@@ -8,12 +8,13 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 
 function Review() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [reviews, setReviews] = useState([]);
   const groupSize = 5; //슬라이드당 다섯개 표현
 
   useEffect(() => {
     axios
-      .get("http://localhost:8088/review/list")
+      .get(`${serverUrl}/review/list`)
       .then(function (response) {
         setReviews(response.data);
         console.log(response.data);

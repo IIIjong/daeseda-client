@@ -54,6 +54,7 @@ const BottomButton = styled.div`
 `;
 
 const Login = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   //로그인 실패나 이메일, 비밀번호를 입력하지 않고 로그인을 시도할 시 경고문을 표시, View는 표시할지 말지를 지정, Text는 어떤 경고문을 표시할지 지정
@@ -79,7 +80,7 @@ const Login = () => {
       setWarningMessageText("비밀번호를 입력하세요");
     } else {
       axios
-        .post("http://localhost:8088/users/authenticate", loginInfo)
+        .post(`${serverUrl}/users/authenticate`, loginInfo, { withCredentials: true })
         .then(function (response) {
           navigate("/")
           localStorage.setItem('token', response.data.token); //token 이라는 이름으로 token값을 localStorage에 저장

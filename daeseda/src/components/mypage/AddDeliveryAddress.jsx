@@ -36,6 +36,7 @@ const Wrap = styled.div`
 `;
 
 const AddDeliveryAddress = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [addressName, setAddressName] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
@@ -64,7 +65,7 @@ const AddDeliveryAddress = () => {
     };
 
     axios
-      .post("http://localhost:8088/users/address/create", addressInfo, {
+      .post(`${serverUrl}/users/address/create`, addressInfo, {
         headers,
       })
       .then((response) => {

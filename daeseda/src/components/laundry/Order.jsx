@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function Order() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   // Request에서 보낸 데이터를 state 초기값으로 저장
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ function Order() {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8088/users/address/list", {
+        .get(`${serverUrl}/users/address/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -146,7 +147,7 @@ function Order() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8088/clothes/list")
+      .get(`${serverUrl}/clothes/list`)
       .then(function (response) {
         setClothesDummy(response.data);
       })
@@ -244,7 +245,7 @@ function Order() {
     if (firstTerms && secondTerms) {
       axios
         .post(
-          "http://localhost:8088/orders/request",
+          `${serverUrl}/orders/request`,
           {
             address: {
               addressId: addressId,

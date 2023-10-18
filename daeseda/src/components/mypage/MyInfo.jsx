@@ -5,6 +5,7 @@ import InfoRow from "../common/InfoRow";
 import axios from "axios";
 
 function MyInfo() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
@@ -17,7 +18,7 @@ function MyInfo() {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8088/users/myInfo", {
+        .get(`${serverUrl}/users/myInfo`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -40,7 +41,7 @@ function MyInfo() {
     if (token) {
       if (name && nickname && phone) {
         axios
-        .put("http://localhost:8088/users/update", {
+        .put(`${serverUrl}/users/update`, {
           userName: name,
           userNickname: nickname,
           userPhone: phone,

@@ -51,13 +51,15 @@ const NoticeDate = styled.p`
 `;
 
 const Notice = () => {
+
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [noticeDummy, setNoticeDummy] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8088/notice/list");
+        const response = await axios.get(`${serverUrl}/notice/list`);
         const formattedData = response.data.map((notice) => {
           // 날짜 변환 로직 추가
           const dateObject = new Date(notice.regDate);

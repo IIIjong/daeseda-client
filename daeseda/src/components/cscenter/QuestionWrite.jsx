@@ -50,6 +50,7 @@ const CheckWrap = styled.div`
 `;
 
 const QuestionWrite = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타", "공지사항", "자주묻는질문"];
   const [category, setCategory] = useState("전체");
@@ -73,7 +74,7 @@ const QuestionWrite = () => {
       alert("제목과 내용을 입력해주세요");
     } else {
       axios
-        .post("http://localhost:8088/notice/register", {
+        .post(`${serverUrl}/notice/register`, {
           noticeCategory: category,
           noticeTitle: title,
           noticeContent: content,

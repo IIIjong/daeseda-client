@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 function OrderList() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -34,10 +35,9 @@ function OrderList() {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:8088/orders/list", { headers })
+      .get(`${serverUrl}/orders/list`, { headers })
       .then(function (response) {
         setOrderList(response.data);
-        // console.log(response.data);
       })
       .catch(function (error) {
         alert("주문내역 조회 중 오류가 발생했습니다");
@@ -47,22 +47,23 @@ function OrderList() {
 
   // 결제하기 테스트용
 
-  function paymentHandler() {
+  function paymentHandler(order) {
+    console.log(order)
     const { IMP } = window;
     IMP.init("imp33350778");
     IMP.request_pay(
       {
         pg: "html5_inicis", // PG사 선택 (예: html5_inicis, kakao, uplus, nice, kcp 등)
         pay_method: "card", // 결제 수단 선택 (예: card, vbank, trans 등)
-        merchant_uid: "1", // 주문 번호 (고유하게 생성)
-        name: "상품명", // 상품명
-        amount: 100, // 결제 금액
-        buyer_email: "buyer@example.com", // 구매자 이메일
-        buyer_name: "구매자 이름", // 구매자 이름
-        buyer_tel: "010-1234-5678", // 구매자 전화번호
-        buyer_addr: "서욁특별시 강남구", // 구매자 주소
-        buyer_postcode: "123-456", // 구매자 우편번호
-        m_redirect_url: "https://your-redirect-url.com", // 결제 완료 후 리디렉션 URL
+        merchant_uid: order.orderId, // 주문 번호 (고유하게 생성)
+        name: order.user.userNickname+"님의 세탁", // 상품명
+        amount: order.totalPrice, // 결제 금액
+        buyer_email: order.user.userEmail, // 구매자 이메일
+        buyer_name: order.user.userName, // 구매자 이름
+        buyer_tel: order.user.userPhone, // 구매자 전화번호
+        buyer_addr: order.address.addressDetail, // 구매자 주소
+        buyer_postcode: order.address.addressZipcode, // 구매자 우편번호
+        m_redirect_url: "/orderlist", // 결제 완료 후 리디렉션 URL
       },
       function (rsp) {
         if (rsp.success) {
@@ -128,11 +129,12 @@ function OrderList() {
               {/* 테스트를 위해 ORDER 상태일 때 리뷰 작성하기가 나오도록 함, 수정 필요 */}
               {order.orderStatus === "ORDER" && (
                 <>
-                  {/* <StatusButton onClick={openModal}>리뷰 쓰기</StatusButton>
+                  {/* <StatusButton onClick={openModal}>리뷰쓰기</StatusButton>
                   <Modal isOpen={isModalOpen} onClose={closeModal}>
                     <ReviewWrite orderId={order.orderId} />
                   </Modal> */}
-                  <button onClick={paymentHandler}>테스트용 결제하기</button>
+                  <button onClick={()=>{
+                    paymentHandler(order)}}>결제하기</button>
                 </>
               )}
             </List>
