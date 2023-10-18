@@ -29,13 +29,11 @@ const ButtonWrap = styled.div`
 
 const Agree = styled.div`
   border: 1px solid gray;
-  margin-bottom: 10px;
   padding: 10px;
 `;
 const CheckWrap = styled.div`
   display: flex;
   gap: 10px;
-  margin-top: 10px;
 `;
 
 
@@ -112,24 +110,23 @@ const Withdraw = () => {
         <h3>회원탈퇴</h3>
       </Title>
       <Content>
+        
+        <Agree>
+          <p>사용하고 계신 아이디({user.userEmail})는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</p>
+          <p>탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.</p>
+          <p>탈퇴 후 회원정보 및 이용기록은 모두 삭제됩니다.</p>
+        </Agree>
         <CheckWrap>
           <Check
             onClick={() => {
               setFirstTerms(!firstTerms);
             }}
           />
-          <p>탈퇴 약관 동의</p>
+          <p>안내 사항을 모두 확인하였으며, 탈퇴 시 아이디 의 재사용 및 데이터 복구가 불가함에 동의합니다.</p>
           {firstTermsValidation ? null : (
             <WarningMessage text="회원탈퇴 약관에 동의하세요" />
           )}
         </CheckWrap>
-        <Agree>
-          <p> 사용하고 계신 아이디({user.userEmail})는탈퇴할 경우 재사용 및 복구가 불가능합니다.
-탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.</p>
-          <p>
-          탈퇴 후 회원정보 및 이용기록은 모두 삭제됩니다.
-          </p>
-        </Agree>
       </Content>
 
      
