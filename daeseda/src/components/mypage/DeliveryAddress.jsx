@@ -75,8 +75,8 @@ function DeliveryAddress() {
             <DeliveryAddressArticle key={address.addressId}>
               <Name>{address.addressName}</Name>
               <Address>
-                <SmallText>({address.addressZipcode})</SmallText>
                 <MiddleText>{address.addressDetail}</MiddleText>
+                <SmallText>({address.addressZipcode})</SmallText>
               </Address>
               <ButtonWrapper>
                 <EditDeleteButton
