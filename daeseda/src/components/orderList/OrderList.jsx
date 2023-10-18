@@ -160,13 +160,13 @@ function OrderList() {
                     <ReviewWrite orderId={order.orderId} />
                   </Modal>
 
-                  <StatusButton
+                  {/* <StatusButton
                     onClick={() => {
                       paymentHandler(order);
                     }}
                   >
                     결제하기
-                  </StatusButton>
+                  </StatusButton> */}
                 </>
               )}
             </List>
@@ -236,11 +236,19 @@ const Status = styled.p`
 `;
 
 const StatusButton = styled.button`
-  width: 100px;
   text-align: center;
   font-size: 16px;
-  color: rgb(253, 71, 85);
+  border:1px solid #111111;
+  border-radius:4px;
+  padding:4px;
   box-sizing: border-box;
+
+  &:hover {
+    background: #5d8df2;
+    color: white;
+    border: 1px solid #5d8df2;
+  }
+
 `;
 
 export default OrderList;
