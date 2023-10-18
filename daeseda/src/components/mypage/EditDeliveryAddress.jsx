@@ -36,6 +36,7 @@ const Wrap = styled.div`
 `;
 
 const EditDeliveryAddress = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [addressName, setAddressName] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
@@ -49,7 +50,7 @@ const EditDeliveryAddress = () => {
   useEffect(() => {
     if (addressId) {
       axios
-        .get(`http://localhost:8088/users/address/${addressId}`, {
+        .get(`${serverUrl}/users/address/${addressId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +89,7 @@ const EditDeliveryAddress = () => {
     };
 
     axios
-      .put(`http://localhost:8088/users/address/update/${addressId}`, updatedAddressInfo, {
+      .put(`${serverUrl}/users/address/update/${addressId}`, updatedAddressInfo, {
         headers,
       })
       .then((response) => {

@@ -36,6 +36,7 @@ const Row = styled.div`
 `;
 
 const SignupInfo = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -59,7 +60,7 @@ const SignupInfo = () => {
 
   function signupButton() {
     axios
-      .post("http://localhost:8088/users/mailConfirm", {
+      .post(`${serverUrl}/users/mailConfirm`, {
         userEmail: email,
         code: certificationNumber,
       })
@@ -73,7 +74,7 @@ const SignupInfo = () => {
           } else {
             // 회원가입 요청
             axios
-              .post(`http://localhost:8088/users/signup`, signupInfo)
+              .post(`${serverUrl}/users/signup`, signupInfo)
               .then(function (response) {
                 navigate("/signup/success");
               })
@@ -96,7 +97,7 @@ const SignupInfo = () => {
   function emailCertificationHandler() {
     // 이메일 인증번호 전송을 진행할 시 인증번호가 전송
     axios
-      .post(`http://localhost:8088/users/mailAuthentication`, {
+      .post(`${serverUrl}/users/mailAuthentication`, {
         userEmail: email,
       })
       .then(function (response) {

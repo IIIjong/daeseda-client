@@ -7,6 +7,7 @@ import Button from "../common/Button";
 import axios from "axios";
 
 function ReviewWrite({orderId}) {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const token = localStorage.getItem("token");
 
   const headers = {
@@ -34,7 +35,7 @@ function ReviewWrite({orderId}) {
     formData.append("reviewContent", content);
 
     axios
-      .post("http://localhost:8088/review/register", formData, {
+      .post(`${serverUrl}/review/register`, formData, {
         headers: {
           ...headers,
           "Content-Type": "multipart/form-data",

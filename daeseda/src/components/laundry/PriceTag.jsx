@@ -3,12 +3,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 function PriceTag() {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [clothesDummy, setClothesDummy] = useState([]);
   const [categoryDummy, setCategoryDummy] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8088/clothes/list")
+      .get(`${serverUrl}/clothes/list`)
       .then(function (response) {
         setClothesDummy(response.data);
       })
@@ -17,7 +18,7 @@ function PriceTag() {
       });
 
     axios
-      .get("http://localhost:8088/category/list")
+      .get(`${serverUrl}/category/list`)
       .then(function (response) {
         setCategoryDummy(response.data);
       })

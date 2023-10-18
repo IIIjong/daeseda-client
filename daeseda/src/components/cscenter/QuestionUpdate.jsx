@@ -49,6 +49,7 @@ const CheckWrap = styled.div`
 `;
 
 const QuestionUpdate = () => {
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const { id } = useParams(); // useParams로 id 받아옴
 
@@ -59,7 +60,7 @@ const QuestionUpdate = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8088/notice/${id}`)
+      .get(`${serverUrl}/notice/${id}`)
       .then(function (response) {
         setCategory(response.data.noticeCategory);
         setTitle(response.data.noticeTitle);
@@ -87,7 +88,7 @@ const QuestionUpdate = () => {
       alert("제목과 내용을 입력해주세요");
     } else {
       axios
-        .put(`http://localhost:8088/notice/${id}`, {
+        .put(`${serverUrl}/notice/${id}`, {
           noticeId: id,
           noticeCategory: category,
           noticeTitle: title,
@@ -104,7 +105,7 @@ const QuestionUpdate = () => {
 
   function questionDeleteHandler() {
     axios
-      .delete(`http://localhost:8088/notice/${id}`)
+      .delete(`${serverUrl}/notice/${id}`)
       .then(function () {
         alert("문의가 삭제되었습니다");
         navigate("/cscenter"); // 삭제 후 cscenter 페이지로 이동
