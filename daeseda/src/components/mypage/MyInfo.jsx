@@ -9,6 +9,7 @@ function MyInfo() {
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
   const [user, setUser] = useState("");
+  const [passward, setPassward] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
@@ -39,30 +40,27 @@ function MyInfo() {
     if (token) {
       if (name && nickname && phone) {
         axios
-          .put("http://localhost:8088/users/update", {
-            userName: name,
-            userNickname: nickname,
-            userPhone: phone,
-            userEmail: user.userEmail,
-          }, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              alert("사용자 정보가 업데이트되었습니다.");
-              setIsEditing(false);
-            } else {
-              alert("사용자 정보 업데이트에 실패했습니다.");
-            }
-          })
-          .catch((error) => {
-            console.error("사용자 정보 업데이트 중 에러 발생:", error);
+        .put("http://localhost:8088/users/update", {
+          userName: name,
+          userNickname: nickname,
+          userPhone: phone,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            alert("사용자 정보가 업데이트되었습니다.");
+            setIsEditing(false);
+          } else {
             alert("사용자 정보 업데이트에 실패했습니다.");
-          });
-      } else {
-        alert("모든 필수 정보를 입력해야 합니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("사용자 정보 업데이트 중 에러 발생:", error);
+          alert("사용자 정보 업데이트에 실패했습니다.");
+        });
       }
     }
   };
@@ -71,6 +69,7 @@ function MyInfo() {
     <MyInfoLayout>
       {isEditing ? (
         <>
+        <input type="hidden" name="password" value={user.userPassword} />
           <InfoRow
             label="이름"
             type="text"

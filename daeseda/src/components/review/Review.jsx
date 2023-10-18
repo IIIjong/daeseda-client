@@ -4,8 +4,8 @@ import styled from "styled-components";
 import review from "../../assets/images/review.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; 
+import { Carousel } from 'react-responsive-carousel';
 
 function Review() {
   const [reviews, setReviews] = useState([]);
@@ -29,12 +29,22 @@ function Review() {
   }
 
   return (
-    <Carousel>
+    <Carousel
+      showThumbs={false}
+      showArrows={false}
+      showStatus={false}
+      autoPlay={true}
+      dynamicHeight={false}
+      centerMode={false}
+      centerSlidePercentage={100}
+      infiniteLoop={true}
+      width={1500}
+      >
       {groupedReviews.map((group, groupIndex) => (
         <ReviewLayout key={groupIndex}>
           {group.map((reviewData, index) => (
             <ReviewArticle key={index}>
-              <Img src={reviewData.imageUrl} alt={`Review Image ${index}`} />
+              <Img src={reviewData.imageUrl || review} alt={`Review Image ${index}`} />
               <Rating>
                 {Array(Math.round(reviewData.rating)).fill().map((_, i) => (
                   <FontAwesomeIcon key={i} icon={faStar} style={{ color: "#ffc700" }} />
