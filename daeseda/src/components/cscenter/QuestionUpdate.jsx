@@ -53,18 +53,24 @@ const QuestionUpdate = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // useParams로 id 받아옴
 
-  const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타", "공지사항", "자주묻는질문"];
+  const questionCategorys = ["전체", "배송", "결제", "로그인", "주문", "기타"];
   const [category, setCategory] = useState("전체");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const token = localStorage.getItem("token"); // 토큰
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   useEffect(() => {
     axios
-      .get(`${serverUrl}/notice/${id}`)
+      .get(`${serverUrl}/board/${id}`, { headers })
       .then(function (response) {
-        setCategory(response.data.noticeCategory);
-        setTitle(response.data.noticeTitle);
-        setContent(response.data.noticeContent);
+        setCategory(response.data.boardCategory);
+        setTitle(response.data.boardTitle);
+        setContent(response.data.boardContent);
       })
       .catch(function (error) {
         alert("문의 조회에 실패하였습니다", error);
@@ -88,14 +94,18 @@ const QuestionUpdate = () => {
       alert("제목과 내용을 입력해주세요");
     } else {
       axios
-        .put(`${serverUrl}/notice/${id}`, {
-          noticeId: id,
-          noticeCategory: category,
-          noticeTitle: title,
-          noticeContent: content,
-        })
+        .put(
+          `${serverUrl}/board/${id}`,
+          {
+            boardId: id,
+            boardCategory: category,
+            boardTitle: title,
+            boardContent: content,
+          },
+          { headers }
+        )
         .then(function (response) {
-          navigate("/cscenter");
+          navigate("/myinfo");
         })
         .catch(function (error) {
           alert("문의 수정에 실패하였습니다", error);
@@ -105,10 +115,10 @@ const QuestionUpdate = () => {
 
   function questionDeleteHandler() {
     axios
-      .delete(`${serverUrl}/notice/${id}`)
+      .delete(`${serverUrl}/board/${id}`, { headers })
       .then(function () {
         alert("문의가 삭제되었습니다");
-        navigate("/cscenter"); // 삭제 후 cscenter 페이지로 이동
+        navigate("/myinfo"); // 삭제 후 myinfo 페이지로 이동
       })
       .catch(function (error) {
         alert("문의 삭제 중에 오류가 발생했습니다", error);

@@ -56,29 +56,36 @@ const Search = styled.div`
   justify-content: flex-end;
 `;
 
-const Question = () => {
+const Question = ({ write }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
-  const [noticeDummy, setNoticeDummy] = useState([]);
+  const [boardDummy, setBoardDummy] = useState([]);
 
+  const token = localStorage.getItem("token"); // 토큰
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/notice/list`);
-        const formattedData = response.data.map((notice) => {
+        const response = await axios.get(`${serverUrl}/board/list`, {
+          headers,
+        });
+        const formattedData = response.data.map((board) => {
           // 날짜 변환 로직 추가
-          const dateObject = new Date(notice.regDate);
+          const dateObject = new Date(board.regDate);
           const formattedDate = dateObject.toISOString().split("T")[0];
 
           // 변환된 날짜를 포함한 객체 반환
           return {
-            ...notice,
+            ...board,
             regDate: formattedDate,
           };
         });
-        setNoticeDummy(formattedData);
+        setBoardDummy(formattedData);
       } catch (error) {
-        alert("문의 내역을 불러오는 데 실패하였습니다", error);
+        alert("1:1 문의 내역을 불러오는 데 실패하였습니다", error);
       }
     };
 
@@ -100,8 +107,6 @@ const Question = () => {
           <option value="로그인">로그인</option>
           <option value="주문">주문</option>
           <option value="기타">기타</option>
-          <option value="공지사항">공지사항</option>
-          <option value="자주묻는질문">자주묻는질문</option>
         </select>
         <input
           type="text"
@@ -116,27 +121,29 @@ const Question = () => {
           <NoticeTitle>제목</NoticeTitle>
           <NoticeDate>날짜</NoticeDate>
         </Wrap>
-        {noticeDummy.map((notice) => (
+        {boardDummy.map((board) => (
           <Wrap2
-            key={notice.noticeId}
+            key={board.boardId}
             onClick={() => {
-              navigate(`${notice.noticeId}`);
+              navigate(`${board.boardId}`);
             }}
           >
-            <P>{notice.noticeCategory}</P>
-            <NoticeTitle>{notice.noticeTitle}</NoticeTitle>
-            <NoticeDate>{notice.regDate}</NoticeDate>
+            <P>{board.boardCategory}</P>
+            <NoticeTitle>{board.boardTitle}</NoticeTitle>
+            <NoticeDate>{board.regDate}</NoticeDate>
           </Wrap2>
         ))}
       </Content>
-      <ButtonWrap>
-        <Button
-          text={"1:1문의하기"}
-          onClick={() => {
-            navigate("question-write");
-          }}
-        ></Button>
-      </ButtonWrap>
+      {write ? (
+        <ButtonWrap>
+          <Button
+            text={"1:1문의하기"}
+            onClick={() => {
+              navigate("question-write");
+            }}
+          ></Button>
+        </ButtonWrap>
+      ) : null}
     </Main>
   );
 };

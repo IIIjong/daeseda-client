@@ -72,7 +72,7 @@ const Notice = () => {
         });
         setNoticeDummy(formattedData);
       } catch (error) {
-        alert("문의 내역을 불러오는 데 실패하였습니다", error);
+        alert("자주묻는질문 내역을 불러오는 데 실패하였습니다", error);
       }
     };
 
@@ -85,18 +85,6 @@ const Notice = () => {
         <h3>자주묻는질문</h3>
       </Title>
       <Search>
-        <select
-          style={{ textAlign: "center", marginRight: "5px", outline: "none" }}
-        >
-          <option value="">전체</option>
-          <option value="배송">배송</option>
-          <option value="결제">결제</option>
-          <option value="로그인">로그인</option>
-          <option value="주문">주문</option>
-          <option value="기타">기타</option>
-          <option value="공지사항">공지사항</option>
-          <option value="자주묻는질문">자주묻는질문</option>
-        </select>
         <input
           type="text"
           placeholder="Search"
@@ -116,7 +104,7 @@ const Notice = () => {
             <Wrap2
               key={notice.noticeId}
               onClick={() => {
-                navigate(`${notice.noticeId}`);
+                navigate(`faq/${notice.noticeId}`);
               }}
             >
               <P>{notice.noticeCategory}</P>

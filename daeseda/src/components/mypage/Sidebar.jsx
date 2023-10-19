@@ -5,7 +5,8 @@ const sidebarItems = [
   { id: "info", label: "정보확인/수정" },
   { id: "delivery", label: "배송지 관리" },
   { id: "review", label: "나의 리뷰" },
-  { id: "withdrawal", label: "회원탈퇴" }
+  { id: "board", label: "나의 문의내역" },
+  { id: "withdrawal", label: "회원탈퇴" },
   
 ];
 

@@ -17,6 +17,7 @@ import CscenterPage from "./pages/cscenterPage";
 import QuestionWritePage from "./pages/cscenterPage/QuestionWritePage";
 import QuestionWriteSuccessPage from "./pages/cscenterPage/QuestionWriteSuccessPage";
 import QuestionUpdatePage from "./pages/cscenterPage/QuestionUpdatePage";
+import QuestionDetailPage from "./pages/cscenterPage/QuestionDetailPage";
 function App() {
   return (
     <BrowserRouter>
@@ -34,6 +35,7 @@ function App() {
           path="/myinfo/edit-delivery-address/:addressId"
           element={<EditDeliveryAddressPage />}
         />
+        <Route path="/myinfo/:id" element={<QuestionUpdatePage/>} />
         <Route path="/orderlist" element={<OrderListPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signup/info" element={<SignupInfoPage />} />
@@ -47,7 +49,9 @@ function App() {
           path="/cscenter/question-write/success"
           element={<QuestionWriteSuccessPage />}
         />
-        <Route path="/cscenter/:id" element={<QuestionUpdatePage />} />
+        <Route path="/cscenter/:id" element={<QuestionDetailPage question={true}/>} />
+        <Route path="/cscenter/notice/:id" element={<QuestionDetailPage/>} />
+        <Route path="/cscenter/faq/:id" element={<QuestionDetailPage/>} />
       </Routes>
     </BrowserRouter>
   );

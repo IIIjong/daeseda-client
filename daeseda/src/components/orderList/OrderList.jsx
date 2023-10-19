@@ -160,13 +160,13 @@ function OrderList() {
                     <ReviewWrite orderId={order.orderId} />
                   </Modal>
 
-                  {/* <StatusButton
+                  <StatusButton
                     onClick={() => {
                       paymentHandler(order);
                     }}
                   >
                     결제하기
-                  </StatusButton> */}
+                  </StatusButton>
                 </>
               )}
             </List>

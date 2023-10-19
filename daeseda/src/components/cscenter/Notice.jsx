@@ -56,10 +56,16 @@ const Notice = () => {
   const navigate = useNavigate();
   const [noticeDummy, setNoticeDummy] = useState([]);
 
+  const token = localStorage.getItem("token"); // 토큰
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/notice/list`);
+        const response = await axios.get(`${serverUrl}/notice/list`, {headers});
         const formattedData = response.data.map((notice) => {
           // 날짜 변환 로직 추가
           const dateObject = new Date(notice.regDate);
@@ -73,7 +79,7 @@ const Notice = () => {
         });
         setNoticeDummy(formattedData);
       } catch (error) {
-        alert("문의 내역을 불러오는 데 실패하였습니다", error);
+        alert("공지사항 내역을 불러오는 데 실패하였습니다", error);
       }
     };
 
@@ -86,18 +92,6 @@ const Notice = () => {
         <h3>공지사항</h3>
       </Title>
       <Search>
-        <select
-          style={{ textAlign: "center", marginRight: "5px", outline: "none" }}
-        >
-          <option value="">전체</option>
-          <option value="배송">배송</option>
-          <option value="결제">결제</option>
-          <option value="로그인">로그인</option>
-          <option value="주문">주문</option>
-          <option value="기타">기타</option>
-          <option value="공지사항">공지사항</option>
-          <option value="자주묻는질문">자주묻는질문</option>
-        </select>
         <input
           type="text"
           placeholder="Search"
@@ -117,7 +111,7 @@ const Notice = () => {
             <Wrap2
               key={notice.noticeId}
               onClick={() => {
-                navigate(`${notice.noticeId}`);
+                navigate(`notice/${notice.noticeId}`);
               }}
             >
               <P>{notice.noticeCategory}</P>

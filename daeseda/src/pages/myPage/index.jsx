@@ -5,6 +5,7 @@ import Sidebar from "../../components/mypage/Sidebar";
 import MyInfo from "../../components/mypage/MyInfo";
 import DeliveryAddress from "../../components/mypage/DeliveryAddress";
 import Withdraw from "../../components/mypage/Withdraw";
+import Question from "../../components/cscenter/Question";
 
 function MyPage() {
   const [selectedItemId, setSelectedItemId] = useState("info");
@@ -21,7 +22,7 @@ function MyPage() {
           <MyInfo />
         ) : selectedItemId === "delivery" ? (
           <DeliveryAddress />
-        ) : selectedItemId === "withdrawal" ? <Withdraw/> : null}
+        ) : selectedItemId === "withdrawal" ? <Withdraw/> : selectedItemId === "board" ? <Question /> : null}
       </GridLayout>
     </div>
   );

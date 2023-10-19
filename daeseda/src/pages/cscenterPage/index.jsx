@@ -21,7 +21,7 @@ function CscenterPage() {
         ) : sidebarStatus === "faq" ? (
           <Faq />
         ) : sidebarStatus === "question" ? (
-          <Question />
+          <Question write={true}/>
         ) : null}
       </GridLayout>
     </div>
