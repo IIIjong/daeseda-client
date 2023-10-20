@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEraser, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 function Reply() {
   const { id } = useParams();
@@ -26,7 +28,11 @@ function Reply() {
   }, []);
 
   function replyHandler() {
-    if (replyContent !== "") {
+    if (replyContent.length > 30) {
+      alert(
+        `댓글은 30자 이상 넘길 수 없습니다 현재 입력한 댓글은 ${replyContent.length}자입니다`
+      );
+    } else if (replyContent !== "") {
       axios
         .post(
           `${serverUrl}/reply/register`,
@@ -77,6 +83,19 @@ function Reply() {
       });
   }
 
+  function formatDate(inputDate) {
+    const parts = inputDate.split("T");
+    const datePart = parts[0];
+    const timePart = parts[1].split(".")[0];
+
+    const [year, month, day] = datePart.split("-");
+    const [hour, minute, second] = timePart.split(":");
+
+    const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+
+    return formattedDate;
+  }
+
   return (
     <main>
       <ReplyRow>
@@ -90,27 +109,52 @@ function Reply() {
       <ReplyCount>
         댓글 수({replyList.filter((reply) => reply.boardId == id).length}개)
       </ReplyCount>
-
-      {replyList
-        .filter((reply) => reply.boardId == id)
-        .map((reply) => (
-          <ReplyListRow key={reply.replyId}>
-            <ReplyContentWrapper>
-              <Name>유저명</Name>
-              <Content>{reply.replyContent}</Content>
-            </ReplyContentWrapper>
-            <ButtonWrapper>
-              <EditDeleteBtn onClick={updateHandler}>수정</EditDeleteBtn>
-              <EditDeleteBtn
-                onClick={() => {
-                  deleteHandler(reply.replyId);
-                }}
-              >
-                삭제
-              </EditDeleteBtn>
-            </ButtonWrapper>
-          </ReplyListRow>
-        ))}
+      {replyList.filter((reply) => reply.boardId == id).length === 0 ? (
+        <p style={{ textAlign: "center", margin: "10px 0" }}>
+          작성된 댓글이 없습니다
+        </p>
+      ) : (
+        replyList
+          .filter((reply) => reply.boardId == id)
+          .map((reply) => (
+            <ReplyListRow key={reply.replyId}>
+              <ReplyContentWrapper>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Name>유저명</Name>
+                  <Date>{formatDate(reply.regDate)}</Date>
+                  <input
+                    type="text"
+                    value={reply.replyContent}
+                    onChange={(e) => {
+                      // 여기서 댓글 내용을 수정하도록 처리할 수 있습니다.
+                      // e.target.value를 이용해 수정된 내용을 저장하거나 서버로 보낼 수 있습니다.
+                    }}
+                  />
+                </div>
+              </ReplyContentWrapper>
+              <ButtonWrapper>
+                <FontAwesomeIcon
+                  icon={faEraser}
+                  onClick={updateHandler}
+                  style={{ cursor: "pointer", color: "gray" }}
+                />
+                <FontAwesomeIcon
+                  icon={faTrashCan}
+                  onClick={() => {
+                    deleteHandler(reply.replyId);
+                  }}
+                  style={{ cursor: "pointer", color: "gray" }}
+                />
+              </ButtonWrapper>
+            </ReplyListRow>
+          ))
+      )}
     </main>
   );
 }
@@ -122,9 +166,8 @@ const ReplyRow = styled.div`
   position: relative;
   width: 700px;
   height: 100px;
-  border-radius: 4px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     width: 100%; // 스크린 너비가 768px 이하일 때 width를 300px로 변경
   }
 `;
@@ -136,6 +179,7 @@ const ReplyBox = styled.textarea`
   padding: 10px;
   box-sizing: border-box;
   font-size: 18px;
+  border-radius: 4px;
   margin-bottom: 10px;
 `;
 
@@ -145,7 +189,8 @@ const Button = styled.button`
   right: 10px;
   background-color: rgb(73, 141, 242);
   color: white;
-  padding: 8px;
+  font-size: 16px;
+  padding: 8px 12px;
 `;
 
 const ReplyCount = styled.p`
@@ -155,36 +200,32 @@ const ReplyCount = styled.p`
 const ReplyListRow = styled.article`
   padding: 10px;
   display: flex;
-  align-items: center;
   gap: 10px;
 `;
 
 const ReplyContentWrapper = styled.div`
-  width: 400px;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
 `;
 
 const Name = styled.p`
-  font-size: 18px;
-  background-color: rgb(93, 141, 242);
-  color: white;
-  padding: 4px;
-  border-radius: 5px;
+  font-size: 16px;
 `;
 
-const Content = styled.p``;
+const Date = styled.p`
+  font-size: 12px;
+  color: gray;
+  margin-bottom: 5px;
+`;
+
+const Content = styled.input`
+  font-size: 15px;
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
+  align-items: flex-end;
   gap: 10px;
-`;
-
-const EditDeleteBtn = styled.button`
-  padding: 8px;
-  background-color: rgb(232, 234, 237);
-  border-radius: 5px;
 `;
 
 export default Reply;

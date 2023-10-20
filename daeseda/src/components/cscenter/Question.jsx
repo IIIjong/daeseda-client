@@ -121,18 +121,22 @@ const Question = ({ write }) => {
           <NoticeTitle>제목</NoticeTitle>
           <NoticeDate>날짜</NoticeDate>
         </Wrap>
-        {boardDummy.map((board) => (
-          <Wrap2
-            key={board.boardId}
-            onClick={() => {
-              navigate(`${board.boardId}`);
-            }}
-          >
-            <P>{board.boardCategory}</P>
-            <NoticeTitle>{board.boardTitle}</NoticeTitle>
-            <NoticeDate>{board.regDate}</NoticeDate>
-          </Wrap2>
-        ))}
+        {boardDummy.length === 0 ? (
+          <p style={{textAlign:"center", margin:"10px 0"}}>작성된 글이 없습니다</p>
+        ) : (
+          boardDummy.map((board) => (
+            <Wrap2
+              key={board.boardId}
+              onClick={() => {
+                navigate(`${board.boardId}`);
+              }}
+            >
+              <P>{board.boardCategory}</P>
+              <NoticeTitle>{board.boardTitle}</NoticeTitle>
+              <NoticeDate>{board.regDate}</NoticeDate>
+            </Wrap2>
+          ))
+        )}
       </Content>
       {write ? (
         <ButtonWrap>

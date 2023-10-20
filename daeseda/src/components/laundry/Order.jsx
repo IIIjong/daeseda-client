@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import WarningMessage from "../common/WarningMessage";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faMinus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import Complete from "./Complete";
 import Modal from "../common/Modal";
 import AddDeliveryAddress from "../mypage/AddDeliveryAddress";
@@ -333,6 +333,7 @@ function Order() {
                             style={{
                               backgroundColor: "rgb(232,234,237)",
                               padding: "4px",
+                              cursor: "pointer",
                             }}
                           />
                           <CountText>{selection.clothesCount}</CountText>
@@ -342,6 +343,7 @@ function Order() {
                             style={{
                               backgroundColor: "rgb(232,234,237)",
                               padding: "4px",
+                              cursor: "pointer",
                             }}
                           />
                         </Count>
@@ -365,9 +367,11 @@ function Order() {
                       }}
                     >
                       <FontAwesomeIcon
-                        icon={faTrash}
+                        icon={faTrashCan}
                         style={{ fontSize: "25px", cursor: "pointer" }}
                         onClick={() => removeClothesSelection(index)}
+                        onMouseEnter={(e) => e.currentTarget.style.color = "rgb(253, 71, 85)"}
+                        onMouseLeave={(e) => e.currentTarget.style.color = ""}
                       />
                     </div>
                   )}
@@ -421,7 +425,11 @@ function Order() {
                   onChange={addressChangeHandler}
                 >
                   {addresses.map((address) => (
-                    <option key={address.addressId} value={address.addressId} style={{textAlign:"right"}}>
+                    <option
+                      key={address.addressId}
+                      value={address.addressId}
+                      style={{ textAlign: "right" }}
+                    >
                       ({address.addressZipcode}) {address.addressDetail}
                     </option>
                   ))}
@@ -438,7 +446,7 @@ function Order() {
                   isOpen={isAddAddressModalOpen}
                   onClose={closeAddAddressModal}
                 >
-                  <AddDeliveryAddress modal={true}/>
+                  <AddDeliveryAddress modal={true} />
                 </Modal>
               </RowRight>
             </Row>

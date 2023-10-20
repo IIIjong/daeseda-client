@@ -71,6 +71,7 @@ const Main = styled.div`
   flex-direction: column;
   gap: 4px;
   margin: 20px;
+  max-width:700px;
 `;
 
 const Title = styled.div`

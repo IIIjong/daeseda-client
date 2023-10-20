@@ -4,7 +4,10 @@ function WarningMessage({ text }) {
   return <Text>{text}</Text>;
 }
 const Text = styled.p`
-  color: rgb(253, 71, 85);
+  /* background-color: rgb(253, 71, 85); */
+  background-color: white;
+color:rgb(253, 71, 85);
+padding:4px 8px;
   font-weight: 500;
 `;
 export default WarningMessage;
