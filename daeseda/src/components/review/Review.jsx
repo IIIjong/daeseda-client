@@ -54,8 +54,7 @@ function Review() {
                 ))}
               </Rating>
               <ReviewInfo>
-                <p>{reviewData.reviewTitle}</p>
-                <Small>{reviewData.reviewContent}</Small>
+                <p>{reviewData.reviewContent}</p>
               </ReviewInfo>
             </ReviewArticle>
           ))}
@@ -71,6 +70,8 @@ const ReviewLayout = styled.section`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
 const ReviewArticle = styled.article`

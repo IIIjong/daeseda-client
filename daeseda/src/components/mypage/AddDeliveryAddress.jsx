@@ -40,10 +40,11 @@ const AddDeliveryAddress = ({ modal }) => {
   const [addressName, setAddressName] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
-  const [addressContent, setAddressContent] = useState("");
+  const [addressRoad, setAddressRoad] = useState("");
   const addressInfo = {
     addressName: addressName,
-    addressDetail: addressContent + " " + addressDetail,
+    addressRoad: addressRoad,
+    addressDetail: addressDetail,
     addressZipcode: addressZipcode,
   };
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const AddDeliveryAddress = ({ modal }) => {
     new window.daum.Postcode({
       oncomplete: function (data) {
         setAddressZipcode(data.zonecode); // 우편번호 설정
-        setAddressContent(data.address); // 주소 설정
+        setAddressRoad(data.address); // 주소 설정
       },
     }).open();
   };
@@ -111,8 +112,8 @@ const AddDeliveryAddress = ({ modal }) => {
         <InfoRow
           label="주소"
           type="text"
-          id="addressContent"
-          value={addressContent}
+          id="addressRoad"
+          value={addressRoad}
           readonly
         />
         <InfoRow
