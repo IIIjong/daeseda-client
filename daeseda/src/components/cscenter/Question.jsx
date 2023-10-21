@@ -10,7 +10,7 @@ const Main = styled.div`
 `;
 
 const Title = styled.div`
-  border-bottom: solid 1px grey;
+  border-bottom: solid 1px rgb(232, 234, 237);
   padding: 10px;
 `;
 
@@ -37,15 +37,21 @@ const P = styled.p`
 `;
 
 const NoticeTitle = styled.p`
-  width: 80%;
+  width: 70%;
 `;
 
 const NoticeDate = styled.p`
+  text-align: center;
+  width: 10%;
+`;
+
+const NoticeNickname = styled.p`
+  text-align: center;
   width: 10%;
 `;
 
 const ButtonWrap = styled.div`
-  margin: 5px;
+  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
 `;
@@ -56,10 +62,11 @@ const Search = styled.div`
   justify-content: flex-end;
 `;
 
-const Question = ({ write }) => {
+const Question = ({ write, mypage }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [boardDummy, setBoardDummy] = useState([]);
+  const [nickname, setNickname] = useState("");
 
   const token = localStorage.getItem("token"); // 토큰
 
@@ -85,17 +92,38 @@ const Question = ({ write }) => {
         });
         setBoardDummy(formattedData);
       } catch (error) {
-        alert("1:1 문의 내역을 불러오는 데 실패하였습니다", error);
+        alert("자유게시판 내역을 불러오는 데 실패하였습니다", error);
       }
     };
 
     fetchData();
   }, []);
 
+  if (mypage) {
+    axios
+      .get(`${serverUrl}/users/myInfo`, { headers })
+      .then(function (response) {
+        setNickname(response.data.userNickname);
+      })
+      .catch(function (error) {
+        alert("내 정보를 불러오는 데 오류가 발생하였습니다", error);
+        console.log(error);
+      });
+  }
+
+  const filteredBoard = boardDummy.filter(
+    (board) => board.userNickname === nickname
+  );
   return (
     <Main>
       <Title>
-        <h3>1:1문의</h3>
+        {mypage == true ? (
+          <h3>
+            {nickname}님이 작성하신 글({filteredBoard.length})
+          </h3>
+        ) : (
+          <h3>자유게시판</h3>
+        )}
       </Title>
       <Search>
         <select
@@ -120,9 +148,32 @@ const Question = ({ write }) => {
           <P>구분</P>
           <NoticeTitle>제목</NoticeTitle>
           <NoticeDate>날짜</NoticeDate>
+          <NoticeNickname>작성자</NoticeNickname>
         </Wrap>
-        {boardDummy.length === 0 ? (
-          <p style={{textAlign:"center", margin:"10px 0"}}>작성된 글이 없습니다</p>
+        {mypage == true ? (
+          filteredBoard.length === 0 ? (
+            <p style={{ textAlign: "center", margin: "10px 0" }}>
+              작성된 글이 없습니다
+            </p>
+          ) : (
+            filteredBoard.map((board) => (
+              <Wrap2
+                key={board.boardId}
+                onClick={() => {
+                  navigate(`${board.boardId}`);
+                }}
+              >
+                <P>{board.boardCategory}</P>
+                <NoticeTitle>{board.boardTitle}</NoticeTitle>
+                <NoticeDate>{board.regDate}</NoticeDate>
+                <NoticeNickname>{board.userNickname}</NoticeNickname>
+              </Wrap2>
+            ))
+          )
+        ) : boardDummy.length === 0 ? (
+          <p style={{ textAlign: "center", margin: "10px 0" }}>
+            작성된 글이 없습니다
+          </p>
         ) : (
           boardDummy.map((board) => (
             <Wrap2
@@ -134,6 +185,7 @@ const Question = ({ write }) => {
               <P>{board.boardCategory}</P>
               <NoticeTitle>{board.boardTitle}</NoticeTitle>
               <NoticeDate>{board.regDate}</NoticeDate>
+              <NoticeNickname>{board.userNickname}</NoticeNickname>
             </Wrap2>
           ))
         )}
@@ -141,7 +193,7 @@ const Question = ({ write }) => {
       {write ? (
         <ButtonWrap>
           <Button
-            text={"1:1문의하기"}
+            text={"글 작성하기"}
             onClick={() => {
               navigate("question-write");
             }}

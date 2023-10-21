@@ -23,11 +23,7 @@ const Content = styled.div`
   gap: 8px;
   margin-top: 10px;
   padding: 10px;
-`;
-const ButtonWrap = styled.div`
-  display: flex;
-  gap: 4px;
-  justify-content: center;
+  width: 400px;
 `;
 const Row = styled.div`
   display: flex;
@@ -68,9 +64,11 @@ const SignupInfo = () => {
         if (response.status === 200) {
           // 이메일 인증 성공
           setCertificationValidation(true);
-  
+
           if (!passwordRegex.test(password)) {
-            alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8자 이상이어야 합니다.");
+            alert(
+              "비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8자 이상이어야 합니다."
+            );
           } else {
             // 회원가입 요청
             axios
@@ -89,11 +87,11 @@ const SignupInfo = () => {
       })
       .catch((error) => {
         console.log("이메일 인증 중 오류가 발생했습니다", error);
-        alert("이메일 인증이 완료되지 않았습니다")
+        alert("이메일 인증이 완료되지 않았습니다");
         setCertificationValidation(false);
       });
   }
-  
+
   function emailCertificationHandler() {
     // 이메일 인증번호 전송을 진행할 시 인증번호가 전송
     axios
@@ -103,10 +101,12 @@ const SignupInfo = () => {
       .then(function (response) {
         setCertificationNumberView(true);
         setCertificationText("전송완료");
+        alert("인증번호가 전송되었습니다");
       })
       .catch(function (error) {
         setCertificationNumberView(false);
         setCertificationText("전송실패");
+        alert("인증번호 전송에 실패하였습니다");
       });
   }
 
@@ -181,10 +181,8 @@ const SignupInfo = () => {
             setPhone(e.target.value);
           }}
         />
+        <Button text={"가입하기"} onClick={signupButton}></Button>
       </Content>
-      <ButtonWrap>
-        <Button text={"다음"} onClick={signupButton}></Button>
-      </ButtonWrap>
     </Main>
   );
 };

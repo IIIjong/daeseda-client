@@ -18,6 +18,7 @@ function QuestionDetail({ question }) {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
+  const [nickname, setNickname] = useState("")
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
@@ -29,6 +30,7 @@ function QuestionDetail({ question }) {
           setCategory(response.data.boardCategory);
           setContent(response.data.boardContent);
           setTitle(response.data.boardTitle);
+          setNickname(response.data.userNickname)
         } else {
           setCategory(response.data.noticeCategory);
           setContent(response.data.noticeContent);
@@ -60,6 +62,8 @@ function QuestionDetail({ question }) {
   return (
     <Main>
       <Title>{title}</Title>
+      {question && 
+      <Small>작성자 - {nickname}</Small>}
       <Small>작성일 - {변환날짜시간(date)}</Small>
       <Content>{content}</Content>
       {question ? <Reply /> : null}
@@ -72,6 +76,10 @@ const Main = styled.div`
   gap: 4px;
   margin: 20px;
   max-width:700px;
+
+  @media (max-width: 700px) {
+    width: 95%;
+  }
 `;
 
 const Title = styled.div`

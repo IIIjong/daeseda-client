@@ -9,6 +9,12 @@ const Main = styled.div`
   flex-direction: column;
   gap: 4px;
   margin: 20px;
+  max-width:700px;
+
+  @media (max-width: 700px) {
+    width: 95%;
+  }
+  
 `;
 
 const Title = styled.div`

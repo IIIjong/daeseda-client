@@ -79,7 +79,6 @@ function Review() {
         ) : (
           filteredReviews.map((review) => (
             <ReviewItem key={review.reviewId}>
-              <h3>{review.reviewTitle}</h3>
               <p>{review.reviewContent}</p>
               <Rating>
                 {Array(Math.round(review.rating)).fill().map((_, i) => (
@@ -110,7 +109,6 @@ const EditDeleteButton = styled.button`
   border: 1px solid rgb(232, 234, 237);
   padding: 4px 8px;
   border-radius: 4px;
-  margin-top: 5px;
 `;
 
 const Title = styled.div`
@@ -123,6 +121,7 @@ const Rating = styled.div`
   display: flex;
   gap: 4px;
   color: #d9d9d9;
+  margin:20px 0;
 `;
 
 const DeliveryWrap = styled.ul`

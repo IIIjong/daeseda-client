@@ -24,7 +24,7 @@ function MyPage() {
           <DeliveryAddress />
         ) : selectedItemId === "withdrawal" ? <Withdraw/> : selectedItemId === "review" ? (
           <MyReview />
-        ): selectedItemId === "board" ? <Question /> : null}
+        ): selectedItemId === "board" ? <Question mypage={true}/> : null}
       </GridLayout>
     </div>
   );

@@ -6,7 +6,7 @@ import { useState } from "react";
 import Button from "../common/Button";
 import axios from "axios";
 
-function ReviewWrite({orderId}) {
+function ReviewWrite({ orderId }) {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const token = localStorage.getItem("token");
 
@@ -15,7 +15,6 @@ function ReviewWrite({orderId}) {
   };
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [title, setTitle] = useState("");
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
   const addImgHandler = (event) => {
@@ -29,7 +28,6 @@ function ReviewWrite({orderId}) {
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
-    formData.append("reviewTitle", title);
     formData.append("orderId", orderId);
     formData.append("rating", rating);
     formData.append("reviewContent", content);
@@ -53,14 +51,6 @@ function ReviewWrite({orderId}) {
   return (
     <ReviewWriteLayout>
       <Title>리뷰작성</Title>
-      <TitleInput
-        type="text"
-        placeholder="리뷰 제목을 입력하세요"
-        value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-      />
       <p>사진</p>
       {selectedImage ? (
         <ReviewImg src={URL.createObjectURL(selectedImage)} alt="리뷰 사진" />

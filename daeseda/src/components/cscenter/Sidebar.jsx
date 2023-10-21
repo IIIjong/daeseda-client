@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const sidebarItems = [
-  { id: "question", label: "1:1문의" },
+  { id: "question", label: "자유게시판" },
   { id: "notice", label: "공지사항" },
   { id: "faq", label: "자주묻는질문" },
 ];

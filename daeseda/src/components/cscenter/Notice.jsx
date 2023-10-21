@@ -10,7 +10,7 @@ const Main = styled.div`
 `;
 
 const Title = styled.div`
-  border-bottom: solid 1px grey;
+  border-bottom: solid 1px rgb(232, 234, 237);
   padding: 10px;
 `;
 
@@ -51,7 +51,6 @@ const NoticeDate = styled.p`
 `;
 
 const Notice = () => {
-
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [noticeDummy, setNoticeDummy] = useState([]);
@@ -65,7 +64,9 @@ const Notice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/notice/list`, {headers});
+        const response = await axios.get(`${serverUrl}/notice/list`, {
+          headers,
+        });
         const formattedData = response.data.map((notice) => {
           // 날짜 변환 로직 추가
           const dateObject = new Date(notice.regDate);

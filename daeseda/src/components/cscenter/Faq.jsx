@@ -10,7 +10,7 @@ const Main = styled.div`
 `;
 
 const Title = styled.div`
-  border-bottom: solid 1px grey;
+border-bottom: solid 1px rgb(232, 234, 237);
   padding: 10px;
 `;
 

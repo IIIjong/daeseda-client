@@ -10,6 +10,11 @@ const Main = styled.div`
   flex-direction: column;
   gap: 4px;
   margin: 20px;
+  max-width:700px;
+
+  @media (max-width: 700px) {
+    width: 95%;
+  }
 `;
 
 const Title = styled.div`
@@ -93,7 +98,7 @@ const QuestionWrite = () => {
           navigate("success");
         })
         .catch(function (error) {
-          alert("문의 작성에 실패하였습니다", error);
+          alert("글 작성에 실패하였습니다", error);
         });
     }
   }
@@ -101,7 +106,7 @@ const QuestionWrite = () => {
   return (
     <Main>
       <Title>
-        <h3>1:1문의</h3>
+        <h3>자유게시판</h3>
       </Title>
       <Content>
         <SubTitle>
@@ -132,7 +137,7 @@ const QuestionWrite = () => {
         ></textarea>
       </Content>
       <ButtonWrap>
-        <Button text={"문의하기"} onClick={questionWriteHandler}></Button>
+        <Button text={"작성하기"} onClick={questionWriteHandler}></Button>
         <Button2
           onClick={() => {
             navigate("/cscenter");

@@ -167,7 +167,7 @@ const ReplyRow = styled.div`
   width: 700px;
   height: 100px;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 700px) {
     width: 100%; // 스크린 너비가 768px 이하일 때 width를 300px로 변경
   }
 `;

@@ -96,7 +96,7 @@ function OrderList() {
 
   return (
     <OrderListLayout>
-      <Title>주문내역({orderList.length}건)</Title>
+      <Title>주문내역({orderList.length})</Title>
       <Table>
         <Header>
           <div style={{ width: "20px", paddingLeft: "50px" }}></div>

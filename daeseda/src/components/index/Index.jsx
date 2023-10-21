@@ -20,6 +20,7 @@ const Background = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 100px;
+  margin-bottom:100px;
   @media (max-width: 768px) {
     margin-top: 15px;
   }
@@ -28,7 +29,6 @@ const Background = styled.div`
 const Text = styled.p`
   color: #ffffff;
   font-size: 48px;
-  margin: 20px;
   font-size: 48px;
   font-weight: 700;
   @media (max-width: 768px) {
@@ -102,6 +102,10 @@ const Button = styled.button`
   cursor: pointer;
   @media (max-width: 768px) {
     margin: 10px;
+  }
+  &:hover{
+    background-color: rgb(93,141,242);
+    border:none;
   }
 `;
 
