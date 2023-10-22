@@ -15,6 +15,8 @@ function Reply() {
   };
 
   const [replyContent, setReplyContent] = useState("");
+  const [nickname, setNickname] = useState("");
+
   const [replyList, setReplyList] = useState([]);
   useEffect(() => {
     axios
@@ -24,6 +26,16 @@ function Reply() {
       })
       .catch(function (error) {
         alert("댓글을 불러오는 도중 에러가 발생하였습니다", error);
+      });
+
+    axios
+      .get(`${serverUrl}/users/myInfo`, { headers })
+      .then(function (response) {
+        setNickname(response.data.userNickname);
+      })
+      .catch(function (error) {
+        alert("유저 정보를 불러오는 도중 에러가 발생하였습니다", error);
+        console.log(error);
       });
   }, []);
 
@@ -60,7 +72,38 @@ function Reply() {
     }
   }
 
-  function updateHandler() {}
+  function updateHandler(replyId, boardId) {
+    const updateReplyContent = prompt("수정할 댓글 내용을 입력하세요:");
+    if (updateReplyContent.length > 0) {
+      axios
+        .put(
+          `${serverUrl}/reply/1`,
+          {
+            replyId: replyId,
+            boardId: boardId,
+            replyContent: updateReplyContent,
+          },
+          { headers }
+        )
+        .then(function (response) {
+          alert("댓글이 수정되었습니다");
+          axios
+            .get(`${serverUrl}/reply/list`)
+            .then(function (response) {
+              setReplyList(response.data);
+            })
+            .catch(function (error) {
+              alert("댓글을 불러오는 도중 에러가 발생하였습니다", error);
+            });
+        })
+        .catch(function (error) {
+          alert("댓글 수정에 실패하였습니다");
+          console.log(error);
+        });
+    } else {
+      alert("아무런 내용도 입력하지 않아 댓글 수정이 취소되었습니다");
+    }
+  }
 
   function deleteHandler(replyId) {
     axios
@@ -126,32 +169,29 @@ function Reply() {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Name>유저명</Name>
+                  <Name>{reply.userNickname}</Name>
                   <Date>{formatDate(reply.regDate)}</Date>
-                  <input
-                    type="text"
-                    value={reply.replyContent}
-                    onChange={(e) => {
-                      // 여기서 댓글 내용을 수정하도록 처리할 수 있습니다.
-                      // e.target.value를 이용해 수정된 내용을 저장하거나 서버로 보낼 수 있습니다.
-                    }}
-                  />
+                  <Content>{reply.replyContent}</Content>
                 </div>
               </ReplyContentWrapper>
-              <ButtonWrapper>
-                <FontAwesomeIcon
-                  icon={faEraser}
-                  onClick={updateHandler}
-                  style={{ cursor: "pointer", color: "gray" }}
-                />
-                <FontAwesomeIcon
-                  icon={faTrashCan}
-                  onClick={() => {
-                    deleteHandler(reply.replyId);
-                  }}
-                  style={{ cursor: "pointer", color: "gray" }}
-                />
-              </ButtonWrapper>
+              {reply.userNickname === nickname ? (
+                <ButtonWrapper>
+                  <FontAwesomeIcon
+                    icon={faEraser}
+                    onClick={() => {
+                      updateHandler(reply.replyId, reply.boardId);
+                    }}
+                    style={{ cursor: "pointer", color: "gray" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrashCan}
+                    onClick={() => {
+                      deleteHandler(reply.replyId);
+                    }}
+                    style={{ cursor: "pointer", color: "gray" }}
+                  />
+                </ButtonWrapper>
+              ) : null}
             </ReplyListRow>
           ))
       )}
@@ -218,7 +258,7 @@ const Date = styled.p`
   margin-bottom: 5px;
 `;
 
-const Content = styled.input`
+const Content = styled.p`
   font-size: 15px;
 `;
 

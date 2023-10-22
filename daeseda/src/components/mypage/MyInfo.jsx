@@ -81,7 +81,7 @@ function MyInfo() {
   return (
     <Main>
       <Title>
-        <h3>내정보</h3>
+        <h3>내 정보</h3>
       </Title>
       <MyInfoLayout>
         {isEditing ? (

@@ -64,8 +64,8 @@ const AddDeliveryAddress = ({ modal }) => {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-
-    axios
+    if(addressName  && addressZipcode && addressRoad && addressDetail) {
+      axios
       .post(`${serverUrl}/users/address/create`, addressInfo, {
         headers,
       })
@@ -80,6 +80,11 @@ const AddDeliveryAddress = ({ modal }) => {
         console.error("주소 추가 실패:", error);
         alert("주소 추가에 실패하였습니다", error)
       });
+    }
+    else {
+      alert("모든 주소 값을 입력 후 추가하세요")
+    }
+    
   };
 
   return (
