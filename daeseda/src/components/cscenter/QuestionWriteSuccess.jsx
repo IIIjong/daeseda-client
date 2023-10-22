@@ -18,7 +18,8 @@ const ShowIdIndex = styled.div`
   text-align: center;
 `;
 const Explanation = styled.div`
-  border-bottom: solid 1px grey;
+  border-bottom: solid 1px rgb(232,234,237);
+  padding:10px;
 `;
 const IdBox = styled.div``;
 const ShowIdBox = styled.div`
@@ -36,13 +37,13 @@ const QuestionWriteSuccess = () => {
   return (
     <MainDiv>
       <Explanation>
-        <h3>1:1문의</h3>
+        <h3>자유게시판</h3>
       </Explanation>
 
       <ShowIdIndex>
         <IdBox>
           <ShowIdBox>
-            <p>문의가 완료됐습니다</p>
+            <p>글 작성이 완료됐습니다</p>
             <Image src={Check} alt="" />
           </ShowIdBox>
         </IdBox>

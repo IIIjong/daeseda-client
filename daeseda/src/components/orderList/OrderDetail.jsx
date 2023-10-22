@@ -8,7 +8,7 @@ function OrderDetail({order, formatDate}) {
     </Row>
     <Row>
       <RowTitle>배송주소</RowTitle>
-      <p>({order.address.addressZipcode}) {order.address.addressDetail}</p>
+      <p>({order.address.addressZipcode}) {order.address.addressRoad} {order.address.addressDetail}</p>
     </Row>
     <Row>
       <RowTitle>수거날짜</RowTitle>

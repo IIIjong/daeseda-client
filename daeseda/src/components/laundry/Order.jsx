@@ -76,6 +76,7 @@ function Order() {
   const [addresses, setAddresses] = useState([]);
   const [addressId, setAddressId] = useState("");
   const [addressName, setAddressName] = useState("");
+  const [addressRoad, setAddressRoad] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
   const token = localStorage.getItem("token");
@@ -97,6 +98,7 @@ function Order() {
           if (selectedAddress) {
             // 선택한 주소 정보를 설정
             setAddressName(selectedAddress.addressName);
+            setAddressRoad(selectedAddress.addressRoad);
             setAddressDetail(selectedAddress.addressDetail);
             setAddressZipcode(selectedAddress.addressZipcode);
           }
@@ -116,6 +118,7 @@ function Order() {
     );
     if (selectedAddress) {
       setAddressName(selectedAddress.addressName);
+      setAddressRoad(selectedAddress.addressRoad);
       setAddressDetail(selectedAddress.addressDetail);
       setAddressZipcode(selectedAddress.addressZipcode);
     }
@@ -254,7 +257,7 @@ function Order() {
             address: {
               addressId: addressId,
               addressName: addressName,
-              addressDetail: addressDetail,
+              addressDetail: addressRoad+addressDetail,
               addressZipcode: addressZipcode,
             },
             clothesCount,
@@ -430,7 +433,7 @@ function Order() {
                       value={address.addressId}
                       style={{ textAlign: "right" }}
                     >
-                      ({address.addressZipcode}) {address.addressDetail}
+                      ({address.addressZipcode}) {address.addressRoad} {address.addressDetail}
                     </option>
                   ))}
                 </select>
@@ -497,6 +500,7 @@ function Order() {
       ) : (
         <Complete
           pickupDate={formattedDate(date)}
+          addressRoad={addressRoad}
           addressDetail={addressDetail}
           deliveryLocation={deliveryLocation}
         />

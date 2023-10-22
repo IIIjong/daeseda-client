@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from "../common/Button";
 import laundry from "../../assets/images/laundry.png";
 import { useNavigate } from "react-router-dom";
-function Complete({pickupDate, addressDetail, deliveryLocation}) {
+function Complete({pickupDate, addressRoad, addressDetail, deliveryLocation}) {
   const navigate = useNavigate();
   return (
     <CompleteLayout>
@@ -26,7 +26,7 @@ function Complete({pickupDate, addressDetail, deliveryLocation}) {
         </Row>
         <Row>
           <p>배송주소</p>
-          <p>{addressDetail}</p>
+          <p>{addressRoad} {addressDetail}</p>
         </Row>
         <Row style={{marginBottom:"20px"}}>
           <p>수거/배송위치</p>
