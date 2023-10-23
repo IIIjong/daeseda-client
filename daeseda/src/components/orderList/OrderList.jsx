@@ -6,14 +6,21 @@ import DeliveryDriver from "./DeliveryDriver";
 import ReviewWrite from "./ReviewWrite";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faSackDollar,
+  faTruck,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import OrderDetail from "./OrderDetail";
+import DeliveryDetail from "./DeliveryDetail";
 
 function OrderList() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
 
   const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
+  const [isDeliveryDetailModalOpen, setIsDeliveryDetailModalOpen] =
+    useState(false);
   const [isReviewWriteModalOpen, setIsReviewWriteModalOpen] = useState(false);
 
   const openOrderDetailModal = () => {
@@ -22,6 +29,14 @@ function OrderList() {
 
   const closeOrderDetailModal = () => {
     setIsOrderDetailModalOpen(false);
+  };
+
+  const openDeliveryDetailModal = () => {
+    setIsDeliveryDetailModalOpen(true);
+  };
+
+  const closeDeliveryDetailModal = () => {
+    setIsDeliveryDetailModalOpen(false);
   };
 
   const openReviewWriteModal = () => {
@@ -45,6 +60,8 @@ function OrderList() {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
+
+  const [deliveryStatus, setDeliveryStatus] = useState({});
   useEffect(() => {
     axios
       .get(`${serverUrl}/orders/list`, { headers })
@@ -72,7 +89,8 @@ function OrderList() {
         pay_method: "card", // 결제 수단 선택 (예: card, vbank, trans 등)
         merchant_uid: randomNumber, // 주문 번호 (고유하게 생성)
         name: order.user.userNickname + "님의 세탁", // 상품명
-        amount: order.totalPrice, // 결제 금액
+        // amount: order.totalPrice, // 결제 금액
+        amount: 100,
         buyer_email: order.user.userEmail, // 구매자 이메일
         buyer_name: order.user.userName, // 구매자 이름
         buyer_tel: order.user.userPhone, // 구매자 전화번호
@@ -84,7 +102,26 @@ function OrderList() {
         if (rsp.success) {
           // 결제 성공 시의 처리
           alert("결제가 성공적으로 이루어졌습니다.");
-          console.log(rsp);
+          axios
+            .post(
+              `${serverUrl}/delivery/request`,
+              {
+                address: {
+                  addressId: order.address.addressId,
+                },
+                order: {
+                  orderId: order.orderId,
+                },
+              },
+              { headers }
+            )
+            .then(function (response) {
+              alert("배송 작업이 시작되었습니다");
+            })
+            .catch(function (error) {
+              alert("배송 요청이 실패하였습니다");
+              console.log(error);
+            });
         } else {
           // 결제 실패 시의 처리
           alert("결제에 실패했습니다. 에러 메시지:" + rsp.error_msg);
@@ -94,18 +131,40 @@ function OrderList() {
     );
   }
 
+  useEffect(() => {
+    // 모든 주문에 대한 배송 정보를 가져오는 로직
+    Promise.all(
+      orderList.map((order) => {
+        return axios.get(
+          `${serverUrl}/delivery/tracking?order=${order.orderId}`,
+          { headers }
+        );
+      })
+    )
+      .then((responses) => {
+        // 각 주문의 배송 정보를 저장
+        const newDeliveryStatus = {};
+        responses.forEach((response, index) => {
+          newDeliveryStatus[orderList[index].orderId] = response.data;
+        });
+        setDeliveryStatus(newDeliveryStatus);
+      })
+      .catch((error) => {
+        alert("배송 정보를 불러오는 데 실패하였습니다");
+      });
+  }, [orderList]);
+
   return (
     <OrderListLayout>
       <Title>주문내역({orderList.length})</Title>
       <Table>
         <Header>
-          <div style={{ width: "20px", paddingLeft: "50px" }}></div>
           <Number>주문번호</Number>
           <Date>회수날짜</Date>
           <Date>배송날짜</Date>
           <Service>세탁서비스</Service>
           <Price>금액</Price>
-          <Status>주문상태</Status>
+          <Status>주문 상태</Status>
           <div style={{ width: "100px" }}></div>
         </Header>
         {orderList.length === 0 ? (
@@ -113,15 +172,6 @@ function OrderList() {
         ) : (
           orderList.map((order) => (
             <List key={order.orderId}>
-              <FontAwesomeIcon
-                icon={faCircleInfo}
-                style={{
-                  width: "20px",
-                  fontSize: "20px",
-                  color: "rgb(253,71,85)",
-                  paddingLeft: "50px",
-                }}
-              />
               <Number onClick={openOrderDetailModal}>{order.orderId}</Number>
               <Modal
                 isOpen={isOrderDetailModalOpen}
@@ -135,7 +185,6 @@ function OrderList() {
               <Price>{order.totalPrice.toLocaleString()}원</Price>
 
               <Status>
-                {/* 상태 텍스트 수정 필요 */}
                 {order.orderStatus === "ORDER"
                   ? "주문 완료"
                   : order.orderStatus === "CASH"
@@ -147,11 +196,15 @@ function OrderList() {
                   : null}
               </Status>
 
-              {/* 테스트를 위해 ORDER 상태일 때 리뷰 작성하기가 나오도록 함, 수정 필요 */}
-              {order.orderStatus === "ORDER" && (
+
+              {order.orderStatus === "COMPLETE" ? (
                 <>
-                  <StatusButton onClick={openReviewWriteModal}>
-                    리뷰쓰기
+                  <StatusButton
+                    onClick={openReviewWriteModal}
+                    style={{ marginRight: "15px" }}
+                  >
+                    <FontAwesomeIcon icon={faPen} />
+                    <p>리뷰 작성하기</p>
                   </StatusButton>
                   <Modal
                     isOpen={isReviewWriteModalOpen}
@@ -159,16 +212,37 @@ function OrderList() {
                   >
                     <ReviewWrite orderId={order.orderId} />
                   </Modal>
-
-                  <StatusButton
-                    onClick={() => {
-                      paymentHandler(order);
-                    }}
-                  >
-                    결제하기
-                  </StatusButton>
                 </>
+              ) : order.orderStatus === "CASH" ? (
+                <StatusButton
+                  onClick={() => {
+                    paymentHandler(order);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSackDollar} />
+                  <p>결제하기</p>
+                </StatusButton>
+              ) : null}
+
+              {deliveryStatus[order.orderId] && (
+                <StatusButton onClick={openDeliveryDetailModal}>
+                  <FontAwesomeIcon icon={faTruck} />
+                  <p>
+                    {deliveryStatus[order.orderId].deliveryStatus === "READY" &&
+                      "배송 준비 중"}
+                    {deliveryStatus[order.orderId].deliveryStatus === "START" &&
+                      "배송 중"}
+                    {deliveryStatus[order.orderId].deliveryStatus === "END" &&
+                      "배송 완료"}
+                  </p>
+                </StatusButton>
               )}
+              <Modal
+                isOpen={isDeliveryDetailModalOpen}
+                onClose={closeDeliveryDetailModal}
+              >
+                <DeliveryDetail orderId={order.orderId} />
+              </Modal>
             </List>
           ))
         )}
@@ -235,20 +309,18 @@ const Status = styled.p`
   text-align: center;
 `;
 
-const StatusButton = styled.button`
-  text-align: center;
-  font-size: 16px;
-  border:1px solid #111111;
-  border-radius:4px;
-  padding:4px;
+const StatusButton = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   box-sizing: border-box;
-
+  cursor: pointer;
+  color: red;
+  border-bottom: 4px solid #ffffff;
   &:hover {
-    background: #5d8df2;
-    color: white;
-    border: 1px solid #5d8df2;
+    border-bottom: 4px solid rgb(232, 234, 237);
+    box-sizing: border-box;
   }
-
 `;
 
 export default OrderList;

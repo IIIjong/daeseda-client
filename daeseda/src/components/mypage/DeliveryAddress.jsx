@@ -69,7 +69,7 @@ function DeliveryAddress() {
       return;
     }
 
-    if (window.confirm('기본 배송지로 설정하시겠습니까?')) {
+    if (window.confirm("기본 배송지로 설정하시겠습니까?")) {
       axios
         .post(
           `${serverUrl}/users/address/setting`,
@@ -82,18 +82,18 @@ function DeliveryAddress() {
         )
         .then((response) => {
           if (response.status === 200) {
-            console.log('기본 배송지로 설정되었습니다.');
+            alert("기본 배송지로 설정되었습니다.");
             setDefaultAddressId(addressId);
           } else {
-            console.error('요청에 실패했습니다.');
+            alert("기본 배송지 설정에 실패했습니다.");
+            console.error("요청에 실패했습니다.");
           }
         })
         .catch((error) => {
-          console.error('요청 중 오류가 발생했습니다.', error);
+          console.error("요청 중 오류가 발생했습니다.", error);
         });
     }
   };
-  
 
   return (
     <Main>
@@ -121,7 +121,9 @@ function DeliveryAddress() {
                   />
                 </NameWrap>
                 <Address>
-                  <MiddleText>{address.addressRoad} {address.addressDetail}</MiddleText>
+                  <MiddleText>
+                    {address.addressRoad} {address.addressDetail}
+                  </MiddleText>
                   <SmallText>({address.addressZipcode})</SmallText>
                 </Address>
                 <ButtonWrapper>

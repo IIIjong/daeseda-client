@@ -59,7 +59,7 @@ function Request({
         <Summary>특수 세탁은 특수 세제를 사용합니다</Summary>
         <CategoryRow>
           <p>가능 품목</p>
-          <Category>반팔, 바지, 수건</Category>
+          <Category>정장, 니트, 코트</Category>
         </CategoryRow>
       </Article>
       <Button text={buttonText} onClick={requestHandler} />

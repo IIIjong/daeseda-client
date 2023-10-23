@@ -315,7 +315,7 @@ function Order() {
                       {clothesDummy.map((clothes) => (
                         <option
                           key={clothes.clothesId}
-                          value={clothes.clothesId}
+                          value={clothes.clothesId-1}
                         >
                           {clothes.clothesName}
                         </option>
