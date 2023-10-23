@@ -183,21 +183,24 @@ function OrderList() {
               <Date>{formatDate(order.deliveryDate)}</Date>
               <Service>{order.washingMethod}</Service>
               <Price>{order.totalPrice.toLocaleString()}원</Price>
-
               <Status>
                 {order.orderStatus === "ORDER"
                   ? "주문 완료"
                   : order.orderStatus === "CASH"
                   ? "결제 대기 중"
-                  : order.orderStatus === "COMPLETE"
-                  ? "결제 완료"
-                  : order.orderStatus === "CANCLE"
-                  ? "주문 취소"
+                  : deliveryStatus[order.orderId] !== ""
+                  ? deliveryStatus[order.orderId].deliveryStatus === "READY"
+                    ? "배송 준비 중"
+                    : deliveryStatus[order.orderId].deliveryStatus === "START"
+                    ? "배송 중"
+                    : deliveryStatus[order.orderId].deliveryStatus === "END"
+                    ? "배송 완료"
+                    : null
                   : null}
               </Status>
 
-
-              {order.orderStatus === "COMPLETE" ? (
+              {deliveryStatus[order.orderId] &&
+              deliveryStatus[order.orderId].deliveryStatus === "END" ? (
                 <>
                   <StatusButton
                     onClick={openReviewWriteModal}
@@ -224,19 +227,6 @@ function OrderList() {
                 </StatusButton>
               ) : null}
 
-              {deliveryStatus[order.orderId] && (
-                <StatusButton onClick={openDeliveryDetailModal}>
-                  <FontAwesomeIcon icon={faTruck} />
-                  <p>
-                    {deliveryStatus[order.orderId].deliveryStatus === "READY" &&
-                      "배송 준비 중"}
-                    {deliveryStatus[order.orderId].deliveryStatus === "START" &&
-                      "배송 중"}
-                    {deliveryStatus[order.orderId].deliveryStatus === "END" &&
-                      "배송 완료"}
-                  </p>
-                </StatusButton>
-              )}
               <Modal
                 isOpen={isDeliveryDetailModalOpen}
                 onClose={closeDeliveryDetailModal}
