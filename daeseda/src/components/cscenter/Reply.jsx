@@ -74,7 +74,8 @@ function Reply() {
 
   function updateHandler(replyId, boardId) {
     const updateReplyContent = prompt("수정할 댓글 내용을 입력하세요:");
-    if (updateReplyContent.length > 0) {
+    if (updateReplyContent === null) return; //취소를 눌렀을 시 댓글 수정 종료
+    if (updateReplyContent.length > 0) { //확인을 눌렀는데 수정 댓글로 무언가 입력했을 때 수정
       axios
         .put(
           `${serverUrl}/reply/1`,
