@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import InfoRow from "../common/InfoRow";
 import axios from "axios";
@@ -14,8 +13,8 @@ function MyInfo() {
   const [initialPhone, setInitialPhone] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
   const serverUrl = process.env.REACT_APP_SERVER_URL;
+
   useEffect(() => {
     if (token) {
       axios
@@ -39,39 +38,79 @@ function MyInfo() {
 
   const handleUpdate = () => {
     if (token) {
-      if (name && nickname && phone) {
-        axios
-          .put(
-            `${serverUrl}/users/users/update`,
-            {
-              userName: name,
-              userNickname: nickname,
-              userPhone: phone,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              alert("사용자 정보가 업데이트되었습니다.");
-              setIsEditing(false);
-            } else {
-              alert("사용자 정보 업데이트에 실패했습니다.");
-            }
-          })
-          .catch((error) => {
-            console.error("사용자 정보 업데이트 중 에러 발생:", error);
-            alert("사용자 정보 업데이트에 실패했습니다.");
-          });
+      if (name || nickname || phone) {
+        if (name) {
+          axios
+            .patch(
+              `${serverUrl}/users/name`,
+              { userName: name },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              if (response.status === 200) {
+                setInitialName(name);
+              }
+            })
+            .catch((error) => {
+              console.error("이름 업데이트 중 에러 발생:", error);
+              alert("이름 업데이트에 실패했습니다.");
+            });
+        }
+
+        if (nickname) {
+          axios
+            .patch(
+              `${serverUrl}/users/nickname`,
+              { userNickname: nickname },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              if (response.status === 200) {
+                setInitialNickname(nickname);
+              }
+            })
+            .catch((error) => {
+              console.error("닉네임 업데이트 중 에러 발생:", error);
+              alert("닉네임 업데이트에 실패했습니다.");
+            });
+        }
+
+        if (phone) {
+          axios
+            .patch(
+              `${serverUrl}/users/phone`,
+              { userPhone: phone },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              if (response.status === 200) {
+                setInitialPhone(phone);
+              }
+            })
+            .catch((error) => {
+              console.error("휴대폰 번호 업데이트 중 에러 발생:", error);
+              alert("휴대폰 번호 업데이트에 실패했습니다.");
+            });
+        }
+        alert("정보가 수정되었습니다.");
+        setIsEditing(false);
       }
     }
   };
 
   const handleCancel = () => {
-    // 취소 버튼을 누를 때 초기 상태로 되돌림
     setName(initialName);
     setNickname(initialNickname);
     setPhone(initialPhone);
@@ -86,32 +125,26 @@ function MyInfo() {
       <MyInfoLayout>
         {isEditing ? (
           <>
-            <InfoRow
+           <InfoRow
               label="이름"
               type="text"
               id="name"
               value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
+              onChange={(e) => setName(e.target.value)}
             />
             <InfoRow
               label="닉네임"
               type="text"
               id="nickname"
               value={nickname}
-              onChange={(e) => {
-                setNickname(e.target.value);
-              }}
+              onChange={(e) => setNickname(e.target.value)}
             />
             <InfoRow
               label="휴대폰 번호"
               type="tel"
               id="phone"
               value={phone}
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
+              onChange={(e) => setPhone(e.target.value)}
             />
             <InfoRow label="이메일 주소" value={user.userEmail} />
             <EditDeleteButton>
@@ -136,6 +169,7 @@ function MyInfo() {
     </Main>
   );
 }
+
 const Main = styled.div`
   display: flex;
   flex-direction: column;
