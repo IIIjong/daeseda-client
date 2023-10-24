@@ -119,7 +119,7 @@ const Question = ({ write, mypage }) => {
       <Title>
         {mypage == true ? (
           <h3>
-            {nickname}님이 작성하신 글({filteredBoard.length})
+            {nickname}님이 작성하신 글 ({filteredBoard.length})
           </h3>
         ) : (
           <h3>자유게시판</h3>
