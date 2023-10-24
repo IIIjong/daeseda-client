@@ -27,7 +27,7 @@ function Review() {
         });
     }
   }, [token]);
-  
+
   useEffect(() => {
     axios
       .get(`${serverUrl}/review/list`)
@@ -39,10 +39,10 @@ function Review() {
         console.log(error);
       });
   }, []);
-  
-  const filteredReviews = reviews.filter((review) => user && review.userNickname === user.userNickname);
-  
-  
+
+  const filteredReviews = reviews.filter(
+    (review) => user && review.userNickname === user.userNickname
+  );
 
   const deleteReview = (reviewId) => {
     if (!window.confirm("리뷰를 삭제하시겠습니까?")) {
@@ -50,12 +50,12 @@ function Review() {
     }
 
     axios
-    .delete(`${serverUrl}/review/${reviewId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-     
+      .delete(`${serverUrl}/review/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
       .then(() => {
         setReviews(reviews.filter((review) => review.reviewId !== reviewId));
         alert("리뷰가 삭제되었습니다.");
@@ -66,12 +66,12 @@ function Review() {
       });
   };
 
-  
-
   return (
     <Main>
       <Title>
-        <h3>{user.userNickname}님의 리뷰 ({filteredReviews.length})</h3>
+        <h3>
+          {user.userNickname}님의 리뷰 ({filteredReviews.length})
+        </h3>
       </Title>
       <DeliveryWrap>
         {filteredReviews.length === 0 ? (
@@ -79,14 +79,31 @@ function Review() {
         ) : (
           filteredReviews.map((review) => (
             <ReviewItem key={review.reviewId}>
-              <p>{review.reviewContent}</p>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "4px" }}
+              >
+                <ReviewCategory
+                  reviewId={review.reviewId}
+                  serverUrl={serverUrl}
+                />
+                <p>{review.reviewContent}</p>
+              </div>
+
               <Rating>
-                {Array(Math.round(review.rating)).fill().map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} style={{ color: "#ffc700" }} />
-                ))}
-                {Array(5 - Math.round(review.rating)).fill().map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} />
-                ))}
+                {Array(Math.round(review.rating))
+                  .fill()
+                  .map((_, i) => (
+                    <FontAwesomeIcon
+                      key={i}
+                      icon={faStar}
+                      style={{ color: "#ffc700" }}
+                    />
+                  ))}
+                {Array(5 - Math.round(review.rating))
+                  .fill()
+                  .map((_, i) => (
+                    <FontAwesomeIcon key={i} icon={faStar} />
+                  ))}
               </Rating>
               <EditDeleteButton onClick={() => deleteReview(review.reviewId)}>
                 삭제하기
@@ -98,6 +115,23 @@ function Review() {
     </Main>
   );
 }
+
+const ReviewCategory = ({ reviewId, serverUrl }) => {
+  const [categoryName, setCategoryName] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${serverUrl}/review-category/${reviewId}`)
+      .then(function (response) {
+        setCategoryName(response.data[0].categories.categoryName);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [serverUrl, reviewId]);
+
+  return <Category>{categoryName}</Category>;
+};
 
 const Main = styled.div`
   display: flex;
@@ -121,7 +155,7 @@ const Rating = styled.div`
   display: flex;
   gap: 4px;
   color: #d9d9d9;
-  margin:20px 0;
+  margin: 20px 0;
 `;
 
 const DeliveryWrap = styled.ul`
@@ -135,6 +169,14 @@ const ReviewItem = styled.li`
   padding: 12px;
   border-radius: 4px;
   margin: 4px 0;
+`;
+
+const Category = styled.p`
+  background-color: rgb(93, 141, 242);
+  color: white;
+  padding: 4px;
+  border-radius: 10px;
+  display: inline-block;
 `;
 
 export default Review;
