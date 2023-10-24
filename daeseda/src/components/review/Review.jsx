@@ -1,15 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStar,
+  faArrowRight,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import review from "../../assets/images/review.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; 
-import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 function Review() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [reviews, setReviews] = useState([]);
+  const [reviewCategory, setReviewCategory] = useState("");
   const groupSize = 5; //슬라이드당 다섯개 표현
 
   useEffect(() => {
@@ -39,19 +44,38 @@ function Review() {
       centerSlidePercentage={100}
       infiniteLoop={true}
       width={1500}
-      >
+    >
       {groupedReviews.map((group, groupIndex) => (
         <ReviewLayout key={groupIndex}>
           {group.map((reviewData, index) => (
             <ReviewArticle key={index}>
-              <Img src={reviewData.imageUrl || review} alt={`Review Image ${index}`} />
+              <ImgWrapper>
+                <Img
+                  src={reviewData.imageUrl || review}
+                  alt={`Review Image ${index}`}
+                />
+
+                <ReviewCategory
+                  reviewId={reviewData.reviewId}
+                  serverUrl={serverUrl}
+                />
+                <Category>{reviewCategory}</Category>
+              </ImgWrapper>
               <Rating>
-                {Array(Math.round(reviewData.rating)).fill().map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} style={{ color: "#ffc700" }} />
-                ))}
-                {Array(5 - Math.round(reviewData.rating)).fill().map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} />
-                ))}
+                {Array(Math.round(reviewData.rating))
+                  .fill()
+                  .map((_, i) => (
+                    <FontAwesomeIcon
+                      key={i}
+                      icon={faStar}
+                      style={{ color: "#ffc700" }}
+                    />
+                  ))}
+                {Array(5 - Math.round(reviewData.rating))
+                  .fill()
+                  .map((_, i) => (
+                    <FontAwesomeIcon key={i} icon={faStar} />
+                  ))}
               </Rating>
               <ReviewInfo>
                 <p>{reviewData.reviewContent}</p>
@@ -64,6 +88,22 @@ function Review() {
   );
 }
 
+const ReviewCategory = ({ reviewId, serverUrl }) => {
+  const [categoryName, setCategoryName] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${serverUrl}/review-category/${reviewId}`)
+      .then(function (response) {
+        setCategoryName(response.data[0].categories.categoryName);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [serverUrl, reviewId]);
+
+  return <Category>{categoryName}</Category>;
+};
 
 const ReviewLayout = styled.section`
   display: flex;
@@ -78,7 +118,14 @@ const ReviewArticle = styled.article`
   width: 200px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
+`;
+
+const ImgWrapper = styled.div`
+  position: relative;
+  width: 200px;
+  height: 200px;
 `;
 
 const Img = styled.img`
@@ -86,6 +133,16 @@ const Img = styled.img`
   box-shadow: 0px 0px 7px #666;
   width: 200px;
   height: 200px;
+`;
+
+const Category = styled.p`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgb(93, 141, 242);
+  color: white;
+  padding: 4px;
+  border-radius: 10px;
 `;
 
 const Rating = styled.div`
@@ -96,13 +153,7 @@ const Rating = styled.div`
 `;
 
 const ReviewInfo = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 2px;
-`;
-
-const Small = styled.p`
-  font-size: 12px;
 `;
 
 export default Review;

@@ -31,7 +31,16 @@ function ReviewWrite({ orderId }) {
     formData.append("orderId", orderId);
     formData.append("rating", rating);
     formData.append("reviewContent", content);
-
+    if (!selectedImage) {
+      alert("리뷰 사진을 추가하세요");
+      return;
+    } else if (rating === 0) {
+      alert("리뷰 평점을 선택하세요");
+      return;
+    } else if (content === "") {
+      alert("리뷰 내용을 입력하세요");
+      return;
+    }
     axios
       .post(`${serverUrl}/review/register`, formData, {
         headers: {
@@ -41,9 +50,11 @@ function ReviewWrite({ orderId }) {
       })
       .then((response) => {
         console.log("리뷰 성공:", response);
+        alert("리뷰가 작성되었습니다");
         window.location.reload();
       })
       .catch((error) => {
+        alert("리뷰 작성이 실패하였습니다");
         console.error("리뷰 실패:", error);
       });
   }

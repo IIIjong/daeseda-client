@@ -201,21 +201,13 @@ function OrderList() {
 
               {deliveryStatus[order.orderId] &&
               deliveryStatus[order.orderId].deliveryStatus === "END" ? (
-                <>
-                  <StatusButton
-                    onClick={openReviewWriteModal}
-                    style={{ marginRight: "15px" }}
-                  >
-                    <FontAwesomeIcon icon={faPen} />
-                    <p>리뷰 작성하기</p>
-                  </StatusButton>
-                  <Modal
-                    isOpen={isReviewWriteModalOpen}
-                    onClose={closeReviewWriteModal}
-                  >
-                    <ReviewWrite orderId={order.orderId} />
-                  </Modal>
-                </>
+                <StatusButton
+                  onClick={openReviewWriteModal}
+                  style={{ marginRight: "15px" }}
+                >
+                  <FontAwesomeIcon icon={faPen} />
+                  <p>리뷰 작성하기</p>
+                </StatusButton>
               ) : order.orderStatus === "CASH" ? (
                 <StatusButton
                   onClick={() => {
@@ -226,6 +218,23 @@ function OrderList() {
                   <p>결제하기</p>
                 </StatusButton>
               ) : null}
+
+              {/* 리뷰 작성을 테스트 하기 위한 코드, 후에 삭제하기 */}
+              <StatusButton
+                onClick={openReviewWriteModal}
+                style={{ marginRight: "15px" }}
+              >
+                <FontAwesomeIcon icon={faPen} />
+                <p>리뷰 작성하기</p>
+              </StatusButton>
+              {/* 여기까지 리뷰 작성을 테스트 하기 위한 코드 */}
+
+              <Modal
+                isOpen={isReviewWriteModalOpen}
+                onClose={closeReviewWriteModal}
+              >
+                <ReviewWrite orderId={order.orderId} />
+              </Modal>
 
               <Modal
                 isOpen={isDeliveryDetailModalOpen}
