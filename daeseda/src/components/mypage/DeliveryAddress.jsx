@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../common/Button";
-import Check from "../common/Check";
+import CheckImg from "../../assets/images/check.png"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -13,11 +13,8 @@ function DeliveryAddress() {
   const token = localStorage.getItem("token");
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const handleEditClick = (addressId) => {
-    // 클릭한 주소의 ID를 사용하여 수정 페이지로 이동
     navigate(`edit-delivery-address/${addressId}`);
   };
-
-  const [firstTerms, setFirstTerms] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -28,9 +25,9 @@ function DeliveryAddress() {
           },
         })
         .then((response) => {
-          setAddresses(response.data); // 주소 목록 데이터 설정
+          setAddresses(response.data);
           setLoading(false);
-        })
+          })
         .catch((error) => {
           console.error("주소 목록을 가져오는 중 에러 발생:", error);
           setLoading(false);
@@ -53,10 +50,9 @@ function DeliveryAddress() {
         data: address,
       })
       .then(() => {
-        // 주소 삭제 성공
         setAddresses(addresses.filter((addr) => addr.addressId !== addressId));
         alert("주소가 삭제되었습니다.");
-        navigate("/myinfo"); // 페이지 갱신
+        navigate("/myinfo");
       })
       .catch((error) => {
         console.error("주소 삭제 중 에러 발생:", error);
@@ -84,6 +80,7 @@ function DeliveryAddress() {
           if (response.status === 200) {
             alert("기본 배송지로 설정되었습니다.");
             setDefaultAddressId(addressId);
+            window.location.reload();
           } else {
             alert("기본 배송지 설정에 실패했습니다.");
             console.error("요청에 실패했습니다.");
@@ -102,23 +99,17 @@ function DeliveryAddress() {
       </Title>
       <DeliveryAddressLayout>
         <DeliveryWrap>
-          {loading ? (
-            <div>Loading...</div>
+          {addresses.length === 0 ? (
+            <p>배송지가 없습니다</p>
           ) : (
             addresses.map((address) => (
               <DeliveryAddressArticle key={address.addressId}>
                 <NameWrap>
                   <Name>{address.addressName}</Name>
-                  <Check
-                    onClick={() => {
-                      setFirstTerms(!firstTerms);
-                      if (defaultAddressId !== address.addressId) {
-                        setDefaultAddressId(address.addressId);
-                        defaultAddressSet(address.addressId);
-                      }
-                    }}
-                    isChecked={defaultAddressId === address.addressId}
-                  />
+                  {address.defaultAddress === true?(
+                    <Image src={CheckImg} />
+                  ) : (<div/>)
+                  }
                 </NameWrap>
                 <Address>
                   <MiddleText>
@@ -137,6 +128,12 @@ function DeliveryAddress() {
                   >
                     삭제하기
                   </EditDeleteButton>
+                  {address.defaultAddress === true ? (<div/>):(<EditDeleteButton
+                    onClick={() => defaultAddressSet(address.addressId, address)}
+                  >
+                    기본 배송지 설정
+                  </EditDeleteButton>)}
+                  
                 </ButtonWrapper>
               </DeliveryAddressArticle>
             ))
@@ -151,6 +148,11 @@ function DeliveryAddress() {
     </Main>
   );
 }
+
+const Image = styled.img`
+width: 25px;
+  height: 25px;
+`;
 const DeliveryWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
