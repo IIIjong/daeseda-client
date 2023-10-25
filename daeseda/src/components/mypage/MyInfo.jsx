@@ -34,9 +34,9 @@ function MyInfo() {
           console.error("회원 정보를 불러오는데 실패했습니다.", error);
         });
     }
-  }, [token]);
+  }, [token, name, nickname, phone, initialName, initialNickname, initialPhone]);
 
-  const handleUpdate = () => {
+  const handleUpdate = ( ) => {
     if (token) {
       if (name || nickname || phone) {
         if (name) {
@@ -129,21 +129,21 @@ function MyInfo() {
               label="이름"
               type="text"
               id="name"
-              value={name}
+              value={name === "" ? initialName : name}
               onChange={(e) => setName(e.target.value)}
             />
             <InfoRow
               label="닉네임"
               type="text"
               id="nickname"
-              value={nickname}
+              value={nickname === "" ? initialNickname : nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
             <InfoRow
               label="휴대폰 번호"
               type="tel"
               id="phone"
-              value={phone}
+              value={phone === "" ? initialPhone : phone}
               onChange={(e) => setPhone(e.target.value)}
             />
             <InfoRow label="이메일 주소" value={user.userEmail} />

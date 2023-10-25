@@ -36,6 +36,7 @@ function Order() {
     useState(false);
   const [deliveryLocation, setDeliveryLocation] = useState("문 앞");
   const [isAddAddressModalOpen, setIsAddAdressModalOpen] = useState(false);
+  const [firstSelect, setFirstSelect] = useState(true)
   // 날짜 관련 함수, 요일을 반환하는 함수 선언식으로 정의
   function getDayOfWeek(date) {
     const daysOfWeek = [
@@ -79,6 +80,11 @@ function Order() {
   const [addressRoad, setAddressRoad] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
   const [addressZipcode, setAddressZipcode] = useState("");
+  const [defaultAddressId, setDefaultAddressId] = useState("");
+  const [defaultAddressName, setDefaultAddressName] = useState("");
+  const [defaultAddressRoad, setDefaultAddressRoad] = useState("");
+  const [defaultAddressDetail, setDefaultAddressDetail] = useState("");
+  const [defaultAddressZipcode, setDefaultAddressZipcode] = useState("");
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) {
@@ -90,13 +96,17 @@ function Order() {
         })
         .then((response) => {
           setAddresses(response.data); // 주소 목록 데이터 설정
-          setAddressId(response.data[0].addressId); // 첫 번째 주소를 선택 (선택된 주소의 ID를 설정)
           const selectedAddress = response.data.find(
-            (address) => address.addressId == response.data[0].addressId
+            (address) => address.defaultAddress == true
           );
-
+          setDefaultAddressId(selectedAddress.addressId)
+          setDefaultAddressName(selectedAddress.addressName)
+          setDefaultAddressRoad(selectedAddress.addressRoad)
+          setDefaultAddressDetail(selectedAddress.addressDetail)
+          setDefaultAddressZipcode(selectedAddress.addressZipcode)
           if (selectedAddress) {
             // 선택한 주소 정보를 설정
+            setAddressId(selectedAddress.addressId)
             setAddressName(selectedAddress.addressName);
             setAddressRoad(selectedAddress.addressRoad);
             setAddressDetail(selectedAddress.addressDetail);
@@ -117,6 +127,7 @@ function Order() {
       (address) => address.addressId == selectedAddressId
     );
     if (selectedAddress) {
+      setAddressId(selectedAddress.addressId)
       setAddressName(selectedAddress.addressName);
       setAddressRoad(selectedAddress.addressRoad);
       setAddressDetail(selectedAddress.addressDetail);
@@ -260,6 +271,7 @@ function Order() {
               addressRoad: addressRoad,
               addressDetail: addressDetail,
               addressZipcode: addressZipcode,
+              defaultAddress: addressId === defaultAddressId ? true : false,
             },
             clothesCount,
             totalPrice: totalPrice,
@@ -422,7 +434,23 @@ function Order() {
             <Row>
               <p>배송주소</p>
               <RowRight>
-                <select
+                {firstSelect ? <select
+                  name=""
+                  id=""
+                  style={{ fontSize: "16px" }}
+                  onChange={addressChangeHandler}
+                  onClick={()=>{
+                    if(firstSelect) setFirstSelect(false)
+                  }}
+                >
+                    <option
+                      key={defaultAddressId}
+                      value={defaultAddressId}
+                      style={{ textAlign: "right" }}
+                    >
+                      ({defaultAddressZipcode}) {defaultAddressRoad} {defaultAddressDetail}
+                    </option>
+                </select> : <select
                   name=""
                   id=""
                   style={{ fontSize: "16px" }}
@@ -437,7 +465,9 @@ function Order() {
                       ({address.addressZipcode}) {address.addressRoad} {address.addressDetail}
                     </option>
                   ))}
-                </select>
+                </select>}
+              
+                
                 <FontAwesomeIcon
                   icon={faPlus}
                   style={{

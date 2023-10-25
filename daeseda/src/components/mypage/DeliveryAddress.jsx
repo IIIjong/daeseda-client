@@ -35,7 +35,7 @@ function DeliveryAddress() {
     } else {
       setLoading(false);
     }
-  }, [token]);
+  }, [token, defaultAddressId]);
 
   const deleteAddress = (addressId, address) => {
     if (!window.confirm("주소를 삭제하시겠습니까?")) {
@@ -80,7 +80,6 @@ function DeliveryAddress() {
           if (response.status === 200) {
             alert("기본 배송지로 설정되었습니다.");
             setDefaultAddressId(addressId);
-            window.location.reload();
           } else {
             alert("기본 배송지 설정에 실패했습니다.");
             console.error("요청에 실패했습니다.");
