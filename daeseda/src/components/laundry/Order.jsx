@@ -141,9 +141,7 @@ function Order() {
   }
 
   function addClothesSelection() {
-    if (clothesSelections.length < 5) {
       setClothesSelections([...clothesSelections, createClothesSelection()]);
-    }
   }
 
   function removeClothesSelection(index) {
@@ -238,12 +236,14 @@ function Order() {
       .filter((selection) => selection.clothesId !== "")
       .map((selection) => ({
         clothes: {
-          clothesId: selection.clothesId,
+          clothesId: parseInt(selection.clothesId)+1,
           clothesName: selection.clothesName,
           categoryId: selection.categoryId,
         },
         count: selection.clothesCount,
       }));
+
+
 
     if (!firstTerms) setFirstTermsWarningMessage(true);
     else setFirstTermsWarningMessage(false);
@@ -257,7 +257,8 @@ function Order() {
             address: {
               addressId: addressId,
               addressName: addressName,
-              addressDetail: addressRoad+addressDetail,
+              addressRoad: addressRoad,
+              addressDetail: addressDetail,
               addressZipcode: addressZipcode,
             },
             clothesCount,
