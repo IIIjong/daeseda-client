@@ -9,11 +9,13 @@ import { useNavigate } from "react-router-dom";
 const BoxContainer = styled.div`
   display: flex;
   height: 565px;
-  background: linear-gradient(45deg, #5d8df2, #72edf2);
+  background: linear-gradient(45deg, #5d8df2, black);
   flex-direction: column;
   align-items: center;
   @media (max-width: 768px) {
-    height: 250px;
+    height: 300px;
+    background: linear-gradient(45deg, #5d8df2, black);
+    margin:0 10px;
   }
 `;
 const Background = styled.div`
@@ -22,7 +24,7 @@ const Background = styled.div`
   margin-top: 100px;
   margin-bottom:100px;
   @media (max-width: 768px) {
-    margin-top: 15px;
+    margin-top: 70px;
   }
 `;
 
@@ -55,7 +57,7 @@ const ContentWrap = styled.div`
   margin-top: 150px;
   @media (max-width: 768px) {
     text-align: center; /* 화면이 작아질 때 가운데 정렬 */
-    margin-top: 50px;
+    margin-top: 5px;
   }
 `;
 
@@ -104,7 +106,7 @@ const Button = styled.button`
     margin: 10px;
   }
   &:hover{
-    background-color: rgb(93,141,242);
+    background-color:rgb(93,141,242);
     border:none;
   }
 `;

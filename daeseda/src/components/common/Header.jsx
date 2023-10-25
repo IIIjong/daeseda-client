@@ -81,7 +81,12 @@ const Login = styled.button`
     box-sizing: border-box;
   }
 `;
-
+const LogoLink = styled(Link)`
+   @media (max-width: 768px) {
+    width: 100%; /* 화면이 작아질 때 버튼을 가득 채우도록 너비 조정 */
+    
+  }
+`;
 const Header = () => {
   const navigate = useNavigate();
 
@@ -121,13 +126,12 @@ const Header = () => {
   return (
     <Container>
       <Navbar>
-        <Link
+        <LogoLink 
           to="/"
-          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        >
-          <LogoImage src={Logo} alt="로고" />
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+<LogoImage src={Logo} alt="로고" />
           <p>대신 세탁해드립니다</p>
-        </Link>
+        </LogoLink>
         <Nav>
           <NavList>
             <NavItem>

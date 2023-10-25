@@ -22,33 +22,25 @@ const Content = styled.div`
 const Wrap2 = styled.div`
   border-bottom: 1px solid gray;
   display: flex;
+  justify-content: space-between;
   padding: 4px 8px;
   cursor: pointer;
 `;
 
 const Wrap = styled.div`
   display: flex;
+  justify-content: space-between;
   background-color: #d9d9d9;
   padding: 4px 8px;
 `;
 
-const P = styled.p`
-  width: 10%;
-`;
+const P = styled.p``;
 
-const NoticeTitle = styled.p`
-  width: 70%;
-`;
+const NoticeTitle = styled.p``;
 
-const NoticeDate = styled.p`
-  text-align: center;
-  width: 10%;
-`;
+const NoticeDate = styled.p``;
 
-const NoticeNickname = styled.p`
-  text-align: center;
-  width: 10%;
-`;
+const NoticeNickname = styled.p``;
 
 const ButtonWrap = styled.div`
   margin-top: 20px;
@@ -60,6 +52,12 @@ const Search = styled.div`
   margin: 5px;
   display: flex;
   justify-content: flex-end;
+`;
+
+const BoardRowLayout = styled.div`
+  display: flex;
+  align-items: center;
+  gap:30px;
 `;
 
 const Question = ({ write, mypage }) => {
@@ -145,10 +143,14 @@ const Question = ({ write, mypage }) => {
       </Search>
       <Content>
         <Wrap>
-          <P>구분</P>
-          <NoticeTitle>제목</NoticeTitle>
-          <NoticeDate>날짜</NoticeDate>
-          <NoticeNickname>작성자</NoticeNickname>
+          <BoardRowLayout>
+            <P>구분</P>
+            <NoticeTitle>제목</NoticeTitle>
+          </BoardRowLayout>
+          <BoardRowLayout>
+            <NoticeDate>날짜</NoticeDate>
+            <NoticeNickname>작성자</NoticeNickname>
+          </BoardRowLayout>
         </Wrap>
         {mypage == true ? (
           filteredBoard.length === 0 ? (
@@ -163,10 +165,14 @@ const Question = ({ write, mypage }) => {
                   navigate(`${board.boardId}`);
                 }}
               >
-                <P>{board.boardCategory}</P>
-                <NoticeTitle>{board.boardTitle}</NoticeTitle>
-                <NoticeDate>{board.regDate}</NoticeDate>
-                <NoticeNickname>{board.userNickname}</NoticeNickname>
+                <BoardRowLayout>
+                  <P>{board.boardCategory}</P>
+                  <NoticeTitle>{board.boardTitle}</NoticeTitle>
+                </BoardRowLayout>
+                <BoardRowLayout>
+                  <NoticeDate>{board.regDate}</NoticeDate>
+                  <NoticeNickname>{board.userNickname}</NoticeNickname>
+                </BoardRowLayout>
               </Wrap2>
             ))
           )
@@ -182,10 +188,14 @@ const Question = ({ write, mypage }) => {
                 navigate(`${board.boardId}`);
               }}
             >
-              <P>{board.boardCategory}</P>
-              <NoticeTitle>{board.boardTitle}</NoticeTitle>
-              <NoticeDate>{board.regDate}</NoticeDate>
-              <NoticeNickname>{board.userNickname}</NoticeNickname>
+              <BoardRowLayout>
+                <P>{board.boardCategory}</P>
+                <NoticeTitle>{board.boardTitle}</NoticeTitle>
+                </BoardRowLayout>
+              <BoardRowLayout>
+                <NoticeDate>{board.regDate}</NoticeDate>
+                <NoticeNickname>{board.userNickname}</NoticeNickname>
+              </BoardRowLayout>
             </Wrap2>
           ))
         )}
