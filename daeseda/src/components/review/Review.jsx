@@ -29,6 +29,23 @@ function Review() {
     groupedReviews.push(reviews.slice(i, i + groupSize));
   }
 
+  function importAll(r) {
+    let images = {};
+    r.keys().forEach((item, index) => {
+      images[item.replace("./", "")] = r(item);
+    });
+    return images;
+  }
+  
+  const reviewImages = importAll(
+    require.context("../../assets/review", false, /\.(png|jpe?g|svg)$/)
+  );
+
+  function extractFileName(url) {
+    const parts = String(url).split('/');
+    return parts[parts.length - 1];
+  }
+
   return (
     <Carousel
       showThumbs={false}
@@ -47,8 +64,8 @@ function Review() {
             <ReviewArticle key={index}>
               <ImgWrapper>
                 <Img
-                  src={reviewData.imageUrl || review}
-                  alt={`Review Image ${index}`}
+                src={reviewImages[extractFileName(reviewData.imageUrl)]}
+                alt={extractFileName(reviewData.imageUrl)}
                 />
 
                 <ReviewCategory
