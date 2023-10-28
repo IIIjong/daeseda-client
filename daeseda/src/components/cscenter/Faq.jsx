@@ -28,26 +28,35 @@ const Search = styled.div`
 const Wrap2 = styled.div`
   border-bottom: 1px solid gray;
   display: flex;
+  justify-content:space-between;
   padding: 4px 8px;
   cursor: pointer;
 `;
 
 const Wrap = styled.div`
   display: flex;
+  justify-content: space-between;
   background-color: #d9d9d9;
   padding: 4px 8px;
 `;
 
 const P = styled.p`
-  width: 10%;
+  
 `;
 
 const NoticeTitle = styled.p`
-  width: 80%;
+  
 `;
 
 const NoticeDate = styled.p`
-  width: 10%;
+  
+`;
+
+
+const BoardRowLayout = styled.div`
+  display: flex;
+  align-items: center;
+  gap:30px;
 `;
 
 const Notice = () => {
@@ -94,9 +103,13 @@ const Notice = () => {
       </Search>
       <Content>
         <Wrap>
+          <BoardRowLayout>
           <P>구분</P>
           <NoticeTitle>제목</NoticeTitle>
+          </BoardRowLayout>
+          <BoardRowLayout>
           <NoticeDate>날짜</NoticeDate>
+          </BoardRowLayout>
         </Wrap>
         {noticeDummy
           .filter((notice) => notice.noticeCategory === "자주묻는질문")
@@ -107,9 +120,13 @@ const Notice = () => {
                 navigate(`faq/${notice.noticeId}`);
               }}
             >
+              <BoardRowLayout>
               <P>{notice.noticeCategory}</P>
               <NoticeTitle>{notice.noticeTitle}</NoticeTitle>
+              </BoardRowLayout>
+              <BoardRowLayout>
               <NoticeDate>{notice.regDate}</NoticeDate>
+              </BoardRowLayout>
             </Wrap2>
           ))}
       </Content>
