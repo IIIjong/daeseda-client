@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InfoRow from "../common/InfoRow";
 import axios from "axios";
+import SmallButton from "../common/SmallButton";
 
 function MyInfo() {
   const [name, setName] = useState("");
@@ -34,9 +35,17 @@ function MyInfo() {
           console.error("회원 정보를 불러오는데 실패했습니다.", error);
         });
     }
-  }, [token, name, nickname, phone, initialName, initialNickname, initialPhone]);
+  }, [
+    token,
+    name,
+    nickname,
+    phone,
+    initialName,
+    initialNickname,
+    initialPhone,
+  ]);
 
-  const handleUpdate = ( ) => {
+  const handleUpdate = () => {
     if (token) {
       if (name || nickname || phone) {
         if (name) {
@@ -125,7 +134,7 @@ function MyInfo() {
       <MyInfoLayout>
         {isEditing ? (
           <>
-           <InfoRow
+            <InfoRow
               label="이름"
               type="text"
               id="name"
@@ -148,10 +157,10 @@ function MyInfo() {
             />
             <InfoRow label="이메일 주소" value={user.userEmail} />
             <EditDeleteButton>
-              <button onClick={handleUpdate}>저장</button>
+              <SmallButton text="저장" onClick={handleUpdate} />
             </EditDeleteButton>
             <EditDeleteButton>
-              <button onClick={handleCancel}>취소</button>
+              <WhiteButton onClick={handleCancel}>취소</WhiteButton>
             </EditDeleteButton>
           </>
         ) : (
@@ -161,7 +170,7 @@ function MyInfo() {
             <InfoRow label="휴대폰 번호" value={user.userPhone} />
             <InfoRow label="이메일 주소" value={user.userEmail} />
             <EditDeleteButton>
-              <button onClick={() => setIsEditing(true)}>수정</button>
+              <SmallButton onClick={() => setIsEditing(true)} text="수정" />
             </EditDeleteButton>
           </>
         )}
@@ -188,10 +197,17 @@ const MyInfoLayout = styled.div`
 `;
 
 const EditDeleteButton = styled.button`
-  border: 1px solid rgb(232, 234, 237);
+  margin: 5px;
+`;
+
+const WhiteButton = styled.p`
+background-color: white;
+border:1px solid rgb(93,141,242);
+  color: rgb(93,141,242);
+  font-size: 14px;
   padding: 4px 8px;
   border-radius: 4px;
-  margin: 5px;
+  cursor: pointer;
 `;
 
 export default MyInfo;

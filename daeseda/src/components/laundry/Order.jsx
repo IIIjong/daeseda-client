@@ -260,44 +260,43 @@ function Order() {
     else setFirstTermsWarningMessage(false);
     if (!secondTerms) setSecondTermsWarningMessage(true);
     else setSecondTermsWarningMessage(false);
-    if (firstTerms && secondTerms) {
-      console.log(clothesCount)
-      // axios
-      //   .post(
-      //     `${serverUrl}/orders/request`,
-      //     {
-      //       address: {
-      //         addressId: addressId,
-      //         addressName: addressName,
-      //         addressRoad: addressRoad,
-      //         addressDetail: addressDetail,
-      //         addressZipcode: addressZipcode,
-      //         defaultAddress: addressId === defaultAddressId ? true : false,
-      //       },
-      //       clothesCount,
-      //       totalPrice: totalPrice,
-      //       washingMethod:
-      //         normalLaundry && specialLaundry
-      //           ? "일반세탁, 특수세탁"
-      //           : normalLaundry
-      //           ? "일반세탁"
-      //           : specialLaundry
-      //           ? "특수세탁"
-      //           : null,
-      //       pickupDate: addDaysToDate(new Date(date), 0),
-      //       deliveryDate: addDaysToDate(new Date(date), 3),
-      //       deliveryLocation: deliveryLocation,
-      //     },
-      //     { headers }
-      //   )
-      //   .then(function (response) {
-      //     setOrderComplete(true);
-      //   })
-      //   .catch(function (error) {
-      //     alert("주문에 실패했습니다");
-      //     console.log("주문 실패 오류 발생:", error);
-      //     setOrderComplete(false);
-      //   });
+    if (firstTerms && secondTerms && addressId) {
+      axios
+        .post(
+          `${serverUrl}/orders/request`,
+          {
+            address: {
+              addressId: addressId,
+              addressName: addressName,
+              addressRoad: addressRoad,
+              addressDetail: addressDetail,
+              addressZipcode: addressZipcode,
+              defaultAddress: addressId === defaultAddressId ? true : false,
+            },
+            clothesCount,
+            totalPrice: totalPrice,
+            washingMethod:
+              normalLaundry && specialLaundry
+                ? "일반세탁, 특수세탁"
+                : normalLaundry
+                ? "일반세탁"
+                : specialLaundry
+                ? "특수세탁"
+                : null,
+            pickupDate: addDaysToDate(new Date(date), 0),
+            deliveryDate: addDaysToDate(new Date(date), 3),
+            deliveryLocation: deliveryLocation,
+          },
+          { headers }
+        )
+        .then(function (response) {
+          setOrderComplete(true);
+        })
+        .catch(function (error) {
+          alert("주문에 실패했습니다");
+          console.log("주문 실패 오류 발생:", error);
+          setOrderComplete(false);
+        });
     }
   }
 
