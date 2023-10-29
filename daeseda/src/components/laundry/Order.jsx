@@ -96,6 +96,13 @@ function Order() {
         })
         .then((response) => {
           setAddresses(response.data); // 주소 목록 데이터 설정
+
+          setAddressId(response.data[0].addressId)
+          setAddressName(response.data[0].addressName);
+          setAddressRoad(response.data[0].addressRoad);
+          setAddressDetail(response.data[0].addressDetail);
+          setAddressZipcode(response.data[0].addressZipcode);
+          
           const selectedAddress = response.data.find(
             (address) => address.defaultAddress == true
           );
@@ -126,6 +133,7 @@ function Order() {
     const selectedAddress = addresses.find(
       (address) => address.addressId == selectedAddressId
     );
+    console.log("hi", selectedAddress)
     if (selectedAddress) {
       setAddressId(selectedAddress.addressId)
       setAddressName(selectedAddress.addressName);
@@ -260,7 +268,7 @@ function Order() {
     else setFirstTermsWarningMessage(false);
     if (!secondTerms) setSecondTermsWarningMessage(true);
     else setSecondTermsWarningMessage(false);
-    if (firstTerms && secondTerms && addressId) {
+    if (firstTerms && secondTerms) {
       axios
         .post(
           `${serverUrl}/orders/request`,
@@ -434,7 +442,7 @@ function Order() {
             <Row>
               <p>배송주소</p>
               <RowRight>
-                {firstSelect ? <select
+                {firstSelect && defaultAddressId ? <select
                   name=""
                   id=""
                   style={{ fontSize: "16px" }}
