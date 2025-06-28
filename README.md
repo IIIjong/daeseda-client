@@ -198,16 +198,22 @@
 
 - 메인
 ![figma](/daeseda/docs/figma/image33.png)
+
 - 로그인
 ![figma](/daeseda/docs/figma/image29.jpg)
+
 - 회원가입
 ![figma](/daeseda/docs/figma/image31.png)
+
 - 고객센터
 ![figma](/daeseda/docs/figma/image30.png)
+
 - 이메일 찾기, 비밀번호 찾기
 ![figma](/daeseda/docs/figma/image32.png)
+
 - 세탁 신청하기, 신청완료, 주문내역, 기사정보, 리뷰작성, 결제, 리뷰 게시판
 ![figma](/daeseda/docs/figma/image34.png)
+
 </details>
 
 ## 📋 프로젝트 결과
@@ -220,24 +226,35 @@
 
 - 메인
 ![result](/daeseda/docs/results/image1.png)
+
 - 로그인
 ![result](/daeseda/docs/results/image3.png)
+
 - 회원가입
 ![result](/daeseda/docs/results/image5.png)
+
 - 주문
 ![result](/daeseda/docs/results/image7.png)
+
 - 주문 확인
 ![result](/daeseda/docs/results/image9.png)
+
 - 결제
 ![result](/daeseda/docs/results/image11.png)
+
 - 리뷰
 ![result](/daeseda/docs/results/image13.png)
+
 - 게시판
 ![result](/daeseda/docs/results/image15.png)
+
 - 문의
 ![result](/daeseda/docs/results/image17.png)
+
 - 회원탈퇴
 ![result](/daeseda/docs/results/image19.png)
+
 - 배송지 관리
 ![result](/daeseda/docs/results/image21.png)
+
 </details>
