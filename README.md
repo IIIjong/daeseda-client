@@ -80,21 +80,42 @@
 </details>
 
 ---
-## 📋 프로젝트 문서 정리
+## 📋 프로젝트 기획 / 설계 단계
 
 <details>
-<summary>📝 프로젝트 기획/설계 단계</summary>
+<summary>📌 정보구조도</summary>
 
-### 정보구조도  
-![정보구조도](URL_여기에_이미지_링크)
-
-### 플로우차트  
-![플로우차트](URL_여기에_이미지_링크)
-
-### ERD 다이어그램  
-![ERD 다이어그램](URL_여기에_이미지_링크)
+![정보구조도](/daeseda/docs/flowcharts/image19.png)
 
 </details>
+
+
+<details>
+<summary>🗺️ 플로우차트</summary>
+
+![로그인 플로우차트 1](/daeseda/docs/flowcharts/image21.png)
+![로그인 플로우차트 2](/daeseda/docs/flowcharts/image22.png)
+![로그인 플로우차트 3](/daeseda/docs/flowcharts/image23.png)
+![로그인 플로우차트 4](/daeseda/docs/flowcharts/image24.png)
+
+</details>
+
+
+<details>
+<summary>🛠️ ERD 다이어그램</summary>
+
+- 피터 첸 표기법
+![ERD 다이어그램](/daeseda/docs/erd/image25.png)
+
+- I/E 표기법
+![ERD 다이어그램](/daeseda/docs/erd/image26.png)
+
+- 최종 ERD 다이어그램
+![ERD 다이어그램](/daeseda/docs/erd/image57.png)
+
+
+</details>
+
 
 <details>
 <summary>📝 커밋 메시지 컨벤션</summary>
@@ -166,4 +187,57 @@
 - pages 폴더 내 파일명은 `index.jsx`로 작성 (import 문장 경로 간결화 목적)  
 - pages 폴더 내 파일 함수명은 `페이지명Page`로 작성 (컴포넌트명과 겹치는 상황 방지)
   
+</details>
+
+---
+## 🎨 프로젝트 디자인 단계 (Figma Design)
+<details>
+
+
+<summary>보기</summary>
+
+- 메인
+![figma](/daeseda/docs/figma/image33.png)
+- 로그인
+![figma](/daeseda/docs/figma/image29.jpg)
+- 회원가입
+![figma](/daeseda/docs/figma/image31.png)
+- 고객센터
+![figma](/daeseda/docs/figma/image30.png)
+- 이메일 찾기, 비밀번호 찾기
+![figma](/daeseda/docs/figma/image32.png)
+- 세탁 신청하기, 신청완료, 주문내역, 기사정보, 리뷰작성, 결제, 리뷰 게시판
+![figma](/daeseda/docs/figma/image34.png)
+</details>
+
+## 📋 프로젝트 결과
+
+
+<details>
+
+
+<summary>보기</summary>
+
+- 메인
+![result](/daeseda/docs/results/image1.png)
+- 로그인
+![result](/daeseda/docs/results/image3.png)
+- 회원가입
+![result](/daeseda/docs/results/image5.png)
+- 주문
+![result](/daeseda/docs/results/image7.png)
+- 주문 확인
+![result](/daeseda/docs/results/image9.png)
+- 결제
+![result](/daeseda/docs/results/image11.png)
+- 리뷰
+![result](/daeseda/docs/results/image13.png)
+- 게시판
+![result](/daeseda/docs/results/image15.png)
+- 문의
+![result](/daeseda/docs/results/image17.png)
+- 회원탈퇴
+![result](/daeseda/docs/results/image19.png)
+- 배송지 관리
+![result](/daeseda/docs/results/image21.png)
 </details>
