@@ -197,7 +197,7 @@
 <summary>보기</summary>
 
 - 메인
-![result](/daeseda/docs/figma/image33.png)
+![figma](/daeseda/docs/figma/image33.png)
 
 - 로그인
 ![figma](/daeseda/docs/figma/image29.jpg)
