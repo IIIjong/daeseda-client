@@ -30,9 +30,15 @@
 - 사용자 경험(UX)을 고려한 디자인 시안 제작
 - 경쟁 서비스 분석 및 트렌드 자료 조사
 ---
+
 ## 🛠️ 협업 도구 및 기술 스택
+<details>
 
 
+<summary>보기</summary>
+
+
+### 🛠️ 협업
 <div style="display:flex; gap:10px; align-items:center;">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" width="40"/> 
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="40"/>
@@ -71,6 +77,7 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="40"/>
 </div>
 
+</details>
 
 ---
 ## 📋 프로젝트 문서 정리
@@ -113,7 +120,34 @@
 <details>
 <summary>📂 폴더 구조</summary>
 
-[![폴더 구조](https://github.com/Daeseda/daeseda-client/assets/113826092/a97d55aa-160d-4668-91d7-fd3da76dd40a)](링크)
+📁 **src**  
+├── 📂 **assets**  
+│   ├── 📂 **fonts**  
+│   │   └── font.ttf  
+│   └── 📂 **images**  
+│       └── 🖼️ image.png  
+│  
+├── 📂 **components**  
+│   ├── 🧩 **common** (공통으로 사용되는 컴포넌트)  
+│   │   ├── 🧭 Header.jsx  
+│   │   ├── 🔘 Button.jsx  
+│   │   ├── 📝 Input.jsx  
+│   │   └── 📦 Modal.jsx  
+│   ├── 🔐 **login** (로그인 페이지에 사용되는 컴포넌트)  
+│   │   └── 🔍 FindId.jsx  
+│   └── 📝 **signup** (회원가입 페이지에 사용되는 컴포넌트)  
+│       └── ...  
+│  
+├── 📂 **pages**  
+│   ├── 🏠 **index**  
+│   │   └── 🗂️ index.jsx  
+│   └── 🔐 **login**  
+│       └── 🗂️ index.jsx  
+│  
+└── 📂 **styles**  
+    ├── 🔤 fonts.css  
+    └── 🧹 reset.css  
+
 
 </details>
 
